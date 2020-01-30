@@ -1,0 +1,38 @@
+importar("hola");
+importar("archivo");
+
+entero var1,var2,var3,_var4 = 0;
+booleano var1,var2 = falso;
+var2 = verdadero || falso && var2 ;
+vacio principal(){
+	estructura estructuraPrincipal{
+		entero hola;
+		entero adios;
+		cadena bai;
+		booleano jai;	
+	}
+	llamada_metodo1();
+	punto(100,100,"#fdaf",50);
+	cadena(100,100,"fasdf","hola mundooooo");
+	
+}
+	
+vacio llamada_metodo1(){
+	imprimir("cadena de ejemplo");
+}
+entero metodo(entero carnet){
+	estructura unCarnet{
+		entero carnet1;	
+	}
+	unCarnet estructura_carnet;
+	estructura_carnet.carnet1 = 2015;
+	carnet = 201513629;
+	retornar unCarnet.carnet1;
+}
+
+
+
+	
+estructura EstructuraFalsa{
+	entero hola;
+}

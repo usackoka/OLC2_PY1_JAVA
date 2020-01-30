@@ -1,0 +1,104 @@
+
+
+
+ent vara = 2;
+ent varb = 3;
+
+ent suma(){
+    ent varc = vara + varc;
+    regresar varc;
+}
+
+fusion persona{
+    ent edad;
+    chr nombre[20];
+};
+
+zro metodo(ent a, char b[]){
+    persona obj;
+    obj = _reservar(_pesode(persona));
+    obj.edad = a;
+    obj.nombre = b;
+}
+
+//Probando comentarios
+
+/*
+ comentarios
+ multilinea
+*/
+
+#definir hola 25
+
+ent [] funcion(ent a, char b[]){
+    persona obj;
+    obj = _reservar(_pesode(persona));
+    obj.edad = a;
+    regresar 'z';
+    regresar;
+    var = 25;
+    var = tomar(8,5.0);
+    rompe;
+    i++;
+    siga;
+
+    if(true){
+
+    }
+    else if(true){
+
+    }
+    else{
+
+    }
+
+    if(true){
+
+    }
+    else{
+        switch(3){
+            case 1:
+                romper;
+            case 2:
+                {
+                    ent i = 0;
+                }
+                romper;
+            default:
+                ent x = 10;
+        }
+    }
+
+    if(true){
+        switch(3){
+            case 1:
+                romper;
+            case 2:
+                {
+                    ent i = 0;
+                }
+                romper;
+        }
+    }
+
+    while(true){
+        digito--;
+        llamada();
+    }
+
+    repeat{
+        _imp("%d",digito);
+        digito++;
+    } when(digito <= 9);
+
+    for(ent x = 0; x < 9; x++){
+        _imp("fdsd");
+    }
+
+
+}
+
+chr a[5] = "134";
+chr b[] = "hola mundo";
+
+

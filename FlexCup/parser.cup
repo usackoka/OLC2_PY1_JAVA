@@ -1,0 +1,487 @@
+package gt.edu.usac.olc2.analisis;
+
+import java_cup.runtime.*;
+
+parser code
+{:
+    /* RAIZ */
+        //Principal p;
+
+    /**
+    *   Metodo que retorna la raiz del arbol
+    **/
+    /*public Principal GetAst(){
+        return p;
+    }*/
+    /**
+     * Método al que se llama automáticamente ante algún error sintactico.
+     **/
+    public void syntax_error(Symbol s){
+            System.err.println("Error sintactico en la linea: " + (s.left) +" Columna: " +s.right+ ". No se esperaba este componente: " + s.value+"."); 
+    }
+    /**
+     * Método al que se llama en el momento en que ya no es posible una recuperación de errores.
+     **/
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+            System.err.println("Error Sintactico irrecuperable en la Lienea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.");
+    }
+:}
+
+terminal String NLO,FUSIONR,ENTR,ZROR,CHRR,DECR,BULR,IFR,WHILER,FORR,REPEATR,SWITCHR,CASER,DEFAULTR,ROMPERR,SIGAR,DEFINIRR,IMPORTARR,REGRESARR,WHENR,RSTRINGR;
+terminal String NUMERAL,LEFT_BRACKET,RIGHT_BRACKET,LEFT_BRACES,RIGHT_BRACES,LEFT_PARENT,RIGHT_PARENT,COMMA,SEMI,EQ,NOT_EQ,PLUS,MINUS,TIMES,POT,MOD,DIV,GTR,GTR_EQ,LSS,LSS_EQ;
+terminal String AND,OR,NOT,DOT,TWO_POINTS,ENT_LIT,DEC_LIT,BOOL_LIT,STRING_LIT,CHAR_LIT,ID,ELSER,UMINUS,UPLUS,RLBL,RTXT,RTXTA,RTXTP,RTXTN,RBTON,RMENSAGE;
+
+non terminal S,Declarations,Declaration,ImportDef,StructDef,ConstDef,VarDef,FunctionsDef,NucleoDef,AttributeList,Attribute,Type,ArrayList,Expr,IdList;
+non terminal Params,ParamList,Param,ArrayParam,Instructions, InstructionList,Instruction,VarDefGui,TypeGui,FunctionsDefGui;
+non terminal IfDef, ReturnDef,RomperDef,SigaDef,SwitchDef,RepeatDef,WhileDef,ForDef,AssigmentDef,CallDef,ElseDef,CaseList,DefaultCase,StatementDef;
+non terminal ExprList,Constant,BinExpr,Logical,Arithmetic,Relational,UnExpr;
+
+precedence left OR;
+precedence left AND;
+precedence left NOT_EQ,EQ;
+precedence nonassoc GTR,GTR_EQ,LSS,LSS_EQ;
+precedence left PLUS,MINUS;
+precedence left TIMES,DIV,MOD,POT;
+precedence right NOT,UMINUS,UPLUS;
+
+start with S;
+
+S ::= Declarations;
+
+Declarations::= Declarations Declaration
+    {:
+    :}
+    | Declaration
+    {:
+    :}
+;
+
+Declaration ::= ImportDef
+    {:
+    :}
+    | StructDef
+    {:
+    :}
+    | ConstDef
+    {:
+    :}
+    | VarDef
+    {:
+    :}
+    | FunctionsDef
+    {:
+    :}
+    | NucleoDef
+    {:
+    :}
+    | VarDefGui
+    {:
+    :}
+    | FunctionsDefGui
+    {:
+    :}
+;
+
+ImportDef ::= NUMERAL IMPORTARR RSTRINGR
+    {:
+    :}
+;
+
+StructDef ::= FUSIONR ID LEFT_BRACES AttributeList RIGHT_BRACES SEMI
+    {:
+    :}
+;
+
+AttributeList ::= AttributeList Attribute
+    {:
+    :}
+    | Attribute
+    {:
+    :}
+;
+
+Attribute ::= Type ID SEMI
+    {:
+    :}
+    | Type ID ArrayList SEMI
+    {:
+    :}
+;
+
+Type ::= ENTR
+    {:
+    :}
+    | CHRR
+    {:
+    :}
+    | DECR
+    {:
+    :}
+    | BULR
+    {:
+    :}
+    | ID
+    {:
+    :}
+;
+
+TypeGui::= RLBL
+    {:
+    :}
+    | RTXT
+    {:
+    :}
+    | RTXTA
+    {:
+    :}
+    | RTXTN
+    {:
+    :}
+    |RTXTP
+    {:
+    :}
+    | RBTON
+    {:
+    :}
+;
+
+ArrayList ::= ArrayList LEFT_BRACKET Expr RIGHT_BRACKET
+    {:
+    :}
+    | LEFT_BRACKET Expr RIGHT_BRACKET
+    {:
+    :}
+;
+
+ArrayParam ::= ArrayParam LEFT_BRACKET RIGHT_BRACKET
+    {:
+    :}
+    | LEFT_BRACKET RIGHT_BRACKET
+    {:
+    :}
+;
+
+ConstDef ::= NUMERAL DEFINIRR ID Expr
+    {:
+    :}
+;
+
+VarDef ::= Type IdList SEMI
+    {:
+    :}
+    | Type IdList EQ Expr SEMI
+    {:
+    :}
+;
+
+VarDefGui ::= TypeGui IdList SEMI
+    {:
+    :}
+;
+
+IdList ::= IdList COMMA ID
+    {:
+    :}
+    | ID
+    {:
+    :}
+;
+
+FunctionsDef ::= ZROR ID LEFT_PARENT Params RIGHT_PARENT LEFT_BRACES Instructions RIGHT_BRACES
+    {:
+    :}
+    | Type ID LEFT_PARENT Params RIGHT_PARENT LEFT_BRACES Instructions RIGHT_BRACES
+    {:
+    :}
+    | Type ArrayParam ID LEFT_PARENT Params RIGHT_PARENT LEFT_BRACES Instructions RIGHT_BRACES
+    {:
+    :}
+;
+
+FunctionsDefGui ::= ZROR ID TWO_POINTS ID LEFT_PARENT RIGHT_PARENT LEFT_BRACES Instructions RIGHT_BRACES
+    {:
+    :}
+;
+
+Params ::= ParamList
+    {:
+    :}
+    | /* empty */
+    {:
+    :}
+;
+
+ParamList ::= ParamList Param
+    {:
+    :}
+    | Param
+    {:
+    :}
+;
+
+Param ::= Type ID COMMA
+    {:
+    :}
+    | Type ID ArrayParam COMMA
+    {:
+    :}
+;
+
+Instructions ::= InstructionList
+    {:
+    :}
+    | /* empty */
+    {:
+    :}
+;
+
+InstructionList ::= InstructionList Instruction
+    {:
+    :}
+    | Instruction
+    {:
+    :}
+;
+
+Instruction ::= ReturnDef
+    {:
+    :}
+    | RomperDef
+    {:
+    :}
+    | SigaDef
+    {:
+    :}
+    | IfDef
+    {:
+    :}
+    | SwitchDef
+    {:
+    :}
+    | WhileDef
+    {:
+    :}
+    | RepeatDef
+    {:
+    :}
+    | ForDef
+    {:
+    :}
+    | AssigmentDef SEMI
+    {:
+    :}
+    | CallDef
+    {:
+    :}
+    | VarDef
+    {:
+    :}
+    | StatementDef
+    {:
+    :}
+;
+
+ReturnDef ::= REGRESARR Expr SEMI
+    {:
+    :}
+    | REGRESARR SEMI
+    {:
+    :}
+;
+
+RomperDef ::= ROMPERR
+    {:
+    :}
+;
+
+SigaDef ::= SIGAR
+    {:
+    :}
+;
+
+IfDef ::= IFR LEFT_PARENT Expr RIGHT_PARENT LEFT_BRACES Instructions RIGHT_BRACES
+    {:
+    :}
+    | IFR LEFT_PARENT Expr RIGHT_PARENT LEFT_BRACES Instructions RIGHT_BRACES ElseDef
+    {:
+    :}
+;
+
+ElseDef ::= ELSER IfDef
+    {:
+    :}
+    | ELSER LEFT_BRACES Instructions RIGHT_BRACES
+    {:
+    :}
+;
+
+WhileDef ::= WHILER LEFT_PARENT Expr RIGHT_PARENT LEFT_BRACES Instructions RIGHT_BRACES
+    {:
+    :}
+;
+
+RepeatDef ::= REPEATR LEFT_BRACES Instructions RIGHT_BRACES WHENR LEFT_PARENT Expr RIGHT_PARENT SEMI
+    {:
+    :}
+;
+
+ForDef ::= FORR LEFT_PARENT VarDef Expr SEMI AssigmentDef RIGHT_PARENT LEFT_BRACES Instructions RIGHT_BRACES
+    {:
+    :}
+    | FORR LEFT_PARENT AssigmentDef SEMI Expr SEMI AssigmentDef RIGHT_PARENT LEFT_BRACES Instructions RIGHT_BRACES
+    {:
+    :}
+;
+
+SwitchDef ::= SWITCHR LEFT_PARENT Expr RIGHT_PARENT LEFT_BRACES CaseList DefaultCase RIGHT_BRACES
+    {:
+    :}
+;
+
+CaseList ::= CaseList CASER Expr TWO_POINTS Instructions
+    {:
+    :}
+    | CASER Expr TWO_POINTS Instructions
+    {:
+    :}
+;
+
+DefaultCase ::= DEFAULTR TWO_POINTS Instructions
+    {:
+    :}
+    | /*empty*/
+    {:
+    :}
+;
+
+StatementDef ::= LEFT_BRACES Instructions RIGHT_BRACES
+    {:
+    :}
+;
+
+CallDef ::= ID LEFT_PARENT RIGHT_PARENT SEMI
+    {:
+    :}
+    | ID LEFT_PARENT ExprList RIGHT_PARENT SEMI
+    {:
+    :}
+;
+
+AssigmentDef ::= ID EQ Expr SEMI
+    {:
+    :}
+;
+
+ExprList ::= ExprList COMMA Expr
+    {:
+    :}
+    | Expr
+    {:
+    :}
+;
+
+Expr ::= Constant
+    {:
+    :}
+    | BinExpr
+    {:
+    :}
+    | UnExpr
+    {:
+    :}
+    | LEFT_PARENT Expr RIGHT_PARENT
+    {:
+    :}
+;
+
+Constant ::= ENT_LIT
+    {:
+    :}
+    | CHAR_LIT
+    {:
+    :}
+    | BOOL_LIT
+    {:
+    :}
+    | DEC_LIT
+    {:
+    :}
+    | NLO
+    {:
+    :}
+    | STRING_LIT
+    {:
+    :}
+;
+
+BinExpr ::= Arithmetic
+    {:
+    :}
+    | Logical
+    {:
+    :}
+    | Relational
+    {:
+    :}
+;
+
+UnExpr::= MINUS Expr
+    {:
+    :}
+    %prec UMINUS
+    | NOT Expr
+    {:
+    :}
+    | PLUS Expr:v1
+    {:
+    :}
+    %prec UPLUS   
+;
+
+Arithmetic ::= Expr PLUS Expr
+    {:
+    :}
+    | Expr MINUS Expr
+    {:
+    :}
+    | Expr TIMES Expr
+    {:
+    :}
+    | Expr DIV Expr
+    {:
+    :}
+    | Expr POT Expr
+    {:
+    :}
+    | Expr MOD Expr
+    {:
+    :}
+;
+
+Logical ::= Expr OR Expr
+    {:
+    :}
+    | Expr AND Expr
+    {:
+    :}
+;
+
+Relational ::= Expr LSS Expr
+    {:
+    :}
+    | Expr LSS_EQ Expr
+    {:
+    :}
+    | Expr GTR Expr
+    {:
+    :}
+    | Expr GTR_EQ Expr
+    {:
+    :}
+    | Expr EQ Expr
+    {:
+    :}
+    | Expr NOT_EQ Expr
+    {:
+    :}
+;

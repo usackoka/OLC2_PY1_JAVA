@@ -1,0 +1,24 @@
+var nombre:=:"Hola";
+nombre:=: -4;
+var nombre1:=: "hola2";
+print(nombre);
+nombre:=: -4;
+print(nombre);
+if(nombre==2){
+	print("en el if");
+}elif(nombre==3){
+	print("primer elif");
+}if not{
+	
+	print("MI PRIMER IF NOT");
+}
+for(var i :=:0; i <10; i++){
+	print(i);
+	if(i==0){
+		print("Es el 7");
+		smash;	
+	}
+	
+}
+	
+	

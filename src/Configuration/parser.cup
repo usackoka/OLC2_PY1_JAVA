@@ -1,0 +1,127 @@
+package Configuration;
+
+import java_cup.runtime.*;
+
+parser code
+{:
+    /* RAIZ */
+        //Principal p;
+
+    /**
+    *   Metodo que retorna la raiz del arbol
+    **/
+    /*public Principal GetAst(){
+        return p;
+    }*/
+    /**
+     * Método al que se llama automáticamente ante algún error sintactico.
+     **/
+    public void syntax_error(Symbol s){
+            System.err.println("Error sintactico en la linea: " + (s.left) +" Columna: " +s.right+ ". No se esperaba este componente: " + s.value+"."); 
+    }
+    /**
+     * Método al que se llama en el momento en que ya no es posible una recuperación de errores.
+     **/
+    public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
+            System.err.println("Error Sintactico irrecuperable en la Lienea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.");
+    }
+:}
+
+terminal String PROYECTO,ARCHIVO,CARPETA,RUTA,NOMBRE,CORRER,CONFIGURACION,FECHAMOD,LEFT_BRACES,RIGHT_BRACES,COMMA,TWO_POINTS,CADENA;
+
+non terminal S,ProyectoDef,ConfigurationList,ConfigurationDef,AtributoList,AtributoDef;
+non terminal ArchivoDef, CarpetaDef, ArchivoList, CarpetaList,AtributoArchivo,AtributoCarpeta ;
+
+start with S;
+
+S ::= ProyectoDef
+    {:
+    :};
+
+ProyectoDef ::= LEFT_BRACES PROYECTO TWO_POINTS AtributoList RIGHT_BRACES
+    {:
+    :}
+;
+
+AtributoList ::= AtributoList COMMA AtributoDef
+    {:
+    :}
+    | AtributoDef
+    {:
+    :}
+;
+
+AtributoDef ::= RUTA TWO_POINTS CADENA
+    {:
+    :}
+    | NOMBRE TWO_POINTS CADENA
+    {:
+    :}
+    | CORRER TWO_POINTS CADENA
+    {:
+    :}
+    | CONFIGURACION TWO_POINTS LEFT_BRACES ConfigurationList RIGHT_BRACES
+    {:
+    :}
+;    
+
+ConfigurationList ::= ConfigurationList COMMA ConfigurationDef
+    {:
+    :}
+    | ConfigurationDef
+    {:
+    :}
+;
+
+ConfigurationDef ::= ArchivoDef
+    {:
+    :}
+    | CarpetaDef
+    {:
+    :}
+;
+
+ArchivoDef ::= ARCHIVO TWO_POINTS LEFT_BRACES ArchivoList RIGHT_BRACES
+    {:
+    :}
+;
+
+CarpetaDef ::= CARPETA TWO_POINTS LEFT_BRACES CarpetaList RIGHT_BRACES
+    {:
+    :}
+;
+
+ArchivoList ::= ArchivoList COMMA AtributoArchivo
+    {:
+    :}
+    | AtributoArchivo
+    {:
+    :}
+;
+
+CarpetaList ::= CarpetaList COMMA AtributoCarpeta
+    {:
+    :}
+    | AtributoCarpeta
+    {:
+    :}
+;
+
+AtributoArchivo ::= NOMBRE TWO_POINTS CADENA
+    {:
+    :}
+    | FECHAMOD TWO_POINTS CADENA
+    {:
+    :}
+;
+
+AtributoCarpeta ::= NOMBRE TWO_POINTS CADENA
+    {:
+    :}
+    | ArchivoDef
+    {:
+    :}
+    | CarpetaDef
+    {:
+    :}
+;

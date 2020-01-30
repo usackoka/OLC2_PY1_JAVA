@@ -1,0 +1,49 @@
+
+
+Rlbl lblNum1;
+Rlbl lblNum2;
+RtxtA tx;
+Rbton btnSumar;
+zro R:iniciar_ventana() {
+    _Nuevo_GUI(lblNum1);
+    _Nuevo_GUI(tx);
+    _Nuevo_GUI(btnSumar);
+    lblNum1.setancho(4 * 20);
+    lblNum1.setalto(20);
+    lblNum1.setTexto("pavel");
+    lblNum1.setpos(50,50);
+    
+    tx.setancho(100);
+    tx.setalto(100);
+    tx.setpos(100,100);
+    Rstring strNum1 = lblNum1.getTexto();
+    chr chrNum1[_pesode(strNum1)];
+    chrNum1 = _atxt(strNum1);
+    //_imp("%s",chrNum1);
+
+
+    ent x[2] = lblNum1.getPos();
+    _imp("%e",x[0]);
+    _imp("%e",x[1]);
+
+    btnSumar.settexto("Sumar");
+    btnSumar.setpos(150,150);
+
+    _alto_y_ancho(300,500);
+}
+
+zro btnSumar:al_dar_click() {
+    chr cad1[20] = "Click boton";
+    _imp("%s",cad1);
+    Rmensaje("La suma es: %e", 43);
+}
+
+zro main(){
+    
+    _abrir_ventana(gui);
+}
+
+
+
+
+
