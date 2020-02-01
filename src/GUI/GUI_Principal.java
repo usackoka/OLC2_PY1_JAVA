@@ -38,9 +38,8 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
         //this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         inicializarTablas();
         
-
-        //System.out.println(ackerman(4, 1));
     }
+    
     public void restartApplication() throws URISyntaxException, IOException 
     { 
         final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java"; 
@@ -112,101 +111,6 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
         tablaErrores.setShowGrid(true);
     }
     
-    /*
-    public static void addError(Token te){
-        tabPaneTablas.setSelectedIndex(0);
-        Object[] newRow={te.lexema, te.componenteLexico,te.descripcion,
-            te.columna,te.fila,te.archivo};
-        dtmErrores.addRow(newRow);
-    }
-    
-    public static void MostrarTablaDeSimbolos(TablaDeSimbolos tbs){
-        tabPaneTablas.setSelectedIndex(1);
-        for (int i = dtmDebugger.getRowCount()-1;i>-1; i--) {
-                dtmDebugger.removeRow(i);
-        }
-        
-        for (Object simbolo : tbs) {
-            if(simbolo instanceof Variable){
-                Variable te = (Variable)simbolo;
-                Object[] newRow={te.id, "Variable",te.getTBS_VALOR(),
-                te.ambito,te.columna,te.fila};
-                dtmDebugger.addRow(newRow);
-            }else if(simbolo instanceof Funcion){
-                Funcion te = (Funcion)simbolo;
-                Object[] newRow={te.idFuncion, "Funcion",((Funcion)simbolo).tipoDato.toString(),
-                ((Funcion)simbolo).nombreClase,te.columna,te.fila};
-                dtmDebugger.addRow(newRow);
-            }else if(simbolo instanceof Clase){
-                Clase te = (Clase)simbolo;
-                Object[] newRow={te.nombreClase, "Clase",((Clase)simbolo).toString(),
-                ((Clase)simbolo).nombreClase,te.columna,te.fila};
-                dtmDebugger.addRow(newRow);
-            }
-        }
-    }
-    
-    public static void MostrarErrores(ArrayList<Token> TablaErrores, String nombreArchivo){
-        tabPaneTablas.setSelectedIndex(0);
-            for (int i = dtmErrores.getRowCount()-1;i>-1; i--) {
-                dtmErrores.removeRow(i);
-            }
-            for (int i = 0; i < TablaErrores.size(); i++) {
-                Token te = TablaErrores.get(i);
-                Object[] newRow={te.lexema, te.componenteLexico,te.descripcion,
-                    te.columna,te.fila,nombreArchivo};
-                dtmErrores.addRow(newRow);
-            }
-    }
-    
-    public static void MostrarErroresHTML(ArrayList<Token> TablaErrores){
-        File ff = new File("Errores.html");
-        FileWriter f = null;
-        try {
-            f = new FileWriter(ff);
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-        try {
-            String write = "<html><head><title>Lista Errores"
-                    + "</title></head><body><h2 align=\"center\">TABLA DE ERRORES</h2>"
-                    + "<br><table align=\"center\">"
-                    + "<tr>"
-                    + "<td>NUMERO</td>"
-                    + "<td>LEXEMA</td>"
-                    + "<td>FILA</td>"
-                    + "<td>COLUMNA</td>"
-                    + "<td>DESCRIPCION</td>"
-                    + "<td>COMPONENTE LEXICO</td>"
-                    + "</tr>";
-            int i=0;
-            for (Token token : TablaErrores) {
-                i++;
-                write += "<tr>";
-                write += "<td>"+i+"</td>";
-                write += "<td>"+token.lexema+"</td>";
-                write += "<td>"+token.fila+"</td>";
-                write += "<td>"+token.columna+"</td>";
-                write += "<td>"+token.descripcion+"</td>";
-                write += "<td>"+token.componenteLexico+"</td>";
-                write += "</tr>";
-            }
-            
-            write+= "</table></body></html>";
-            f.append(write);
-            f.close();
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-        
-        try {
-            Desktop.getDesktop().open(ff);
-        } catch (IOException ex) {
-            System.out.println(ex);
-        }
-    }
-    */
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -246,8 +150,6 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
         jMenu3 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
 
         jMenu4.setText("jMenu4");
 
@@ -444,22 +346,6 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
         });
         jMenu3.add(jMenuItem11);
 
-        jMenuItem7.setText("Errores");
-        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem7ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem7);
-
-        jMenuItem8.setText("Tabla de Simbolos");
-        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem8ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem8);
-
         jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
@@ -487,9 +373,8 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(txtDebugger, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
                     .addComponent(txtConsola2)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(tabPaneTablas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)))
+                    .addComponent(tabPaneTablas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -571,21 +456,6 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
         }
     }//GEN-LAST:event_tabPrincipalStateChanged
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        try {
-            // TODO add your handling code here:
-            Desktop.getDesktop().open(new File("Manuales\\mu.pdf"));
-        } catch (IOException ex) {
-            System.out.println("catch abrir manual");
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
-
-    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-
-        
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
-
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         // TODO add your handling code here:
         if(paginaActual!=null){
@@ -648,33 +518,11 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
             }
         }
         );
-        
+       
          this.revalidate();
         this.repaint();
-        
-
     }
     
-    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        // TODO add your handling code here:
-          File objetofile = new File ("Errores.html");
-        try {
-            Desktop.getDesktop().open(objetofile);
-        } catch (IOException ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jMenuItem7ActionPerformed
-
-    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        // TODO add your handling code here:
-         File objetofile = new File ("TablaS.html");
-        try {
-            Desktop.getDesktop().open(objetofile);
-        } catch (IOException ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jMenuItem8ActionPerformed
-
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
         // TODO add your handling code here:
         
@@ -704,9 +552,7 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
     }//GEN-LAST:event_jTree2MouseClicked
 
     private void jTree2TreeCollapsed(javax.swing.event.TreeExpansionEvent evt) {//GEN-FIRST:event_jTree2TreeCollapsed
-        // TODO add your handling code here:
-        //System.out.println("actualizacion");
-       // iniciarArbol();
+      
     }//GEN-LAST:event_jTree2TreeCollapsed
 
     private void jMenuItem14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem14ActionPerformed
@@ -715,6 +561,20 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
                 GuardarPag2(pag);
         }
     }//GEN-LAST:event_jMenuItem14ActionPerformed
+
+    private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
+
+    }//GEN-LAST:event_jMenuItem11ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        try {
+            // TODO add your handling code here:
+            Desktop.getDesktop().open(new File("Manuales\\mu.pdf"));
+        } catch (IOException ex) {
+            System.out.println("catch abrir manual");
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -769,8 +629,6 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -812,8 +670,8 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
               e2.printStackTrace();
            }
         }
-    
     }
+    
     public static void println(String cadena){
         txtConsola.setText(txtConsola.getText()+"\n"+cadena);
     }
