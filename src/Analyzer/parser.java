@@ -1297,18 +1297,18 @@ public class parser extends java_cup.runtime.lr_parser {
      * Método al que se llama automáticamente ante algún error sintactico.
      **/
     public void syntax_error(Symbol s){
-            System.err.println("Error sintactico en la linea: " + (s.left) +" Columna: " +s.right+ ". No se esperaba este componente: " + s.value+"."); 
+            System.out.println("Error sintactico en la linea: " + (s.left) +" Columna: " +s.right+ ". No se esperaba este componente: " + s.value+"."); 
             Singleton.getInstance().addError(s.left,s.right,"Sintactico : No se esperaba este componente: " + s.value+".");
            
-    }
+ }
     /**
      * Método al que se llama en el momento en que ya no es posible una recuperación de errores.
      **/
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
-            System.err.println("Error Sintactico irrecuperable en la Lienea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.");
+            System.out.println("Error Sintactico irrecuperable en la Lienea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.");
             Singleton.getInstance().addError(s.left,s.right,"Sintactico : No se esperaba este componente: " + s.value+".");
            
-    }
+ }
 
 
 /** Cup generated class to encapsulate user supplied action code.*/

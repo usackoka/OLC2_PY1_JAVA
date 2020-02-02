@@ -1,7 +1,0 @@
-Rstring cadena = "";
-zro main(){
-    _read("fichero.txt",cadena);
-    _close();
-     chr cad[ ] = _atxt(cadena);
-    _imp("%s",cad);
-}
