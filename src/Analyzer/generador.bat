@@ -1,7 +1,7 @@
-SET JFLEX_HOME= C:\libs
+SET JFLEX_HOME= D:\libs
 cd .\
-java -jar C:\Users\D_ALCAZAR\Documents\compi 2 k\OLC2_DIC_19_PY1\FlexCup\jflex-1.6.1\lib\jflex-1.6.1.jar lexer.jflex
-C:\Users\D_ALCAZAR\Documents\NetBeansProjects\cup_flex_junio_2019_ev2\librerias\jflex-1.6.1.jar
+java -jar %JFLEX_HOME%\jflex-1.6.1.jar lexer.jflex
+pause
 cd .\
 java -jar %JFLEX_HOME%\java-cup-11b.jar -parser parser parser.cup
-pause
+pause 
