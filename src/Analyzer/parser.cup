@@ -78,700 +78,532 @@ S ::= Declarations : arg0
 
 Declarations::= Declarations:arg0 Declaration:arg1
     {:
-        arg0.add(arg1);
-        RESULT = arg0;
     :}
     | Declaration:arg0
     {:
-        RESULT = new LinkedList<>();
-        RESULT.add(arg0);
     :}
 ;
 
 Declaration ::= ImportDef:arg0
     {:
-        RESULT = arg0;
     :}
     | StructDef:arg0
     {:
-        RESULT = arg0;
     :}
     | ConstDef : arg0
     {:
-        RESULT = arg0;
     :}
     | VarDef : arg0
     {:
-        RESULT = arg0;
     :}
     | FunctionsDef : arg0
     {:
-        RESULT = arg0;
     :}
     | NucleoDef : arg0
     {:
-        RESULT = arg0;
     :}
     | FunctionsDefGui : arg0
     {:
-        RESULT = arg0;
     :}
 ;
 
 NucleoDef ::= ZROR MAIN : arg0 LEFT_PARENT RIGHT_PARENT LEFT_BRACES  Instructions:arg1 RIGHT_BRACES
     {:
-        RESULT = new Main(arg0left,arg0right,arg1);
     :}
 ;
 
 ImportDef ::= NUMERAL IMPORTARR STRING_LIT:arg0
     {:
-        RESULT = new ImportDef(arg0,arg0left,arg0right);
     :}
 ;
 
 StructDef ::= FUSIONR ID:arg0 LEFT_BRACES AttributeList:arg1 RIGHT_BRACES SEMI
     {:
-        RESULT = new FusionDef(arg0,arg1,arg0left,arg0right);
     :}
 ;
 
 AttributeList ::= AttributeList : arg0 Attribute : arg1
     {:
-        arg0.add(arg1);
-        RESULT = arg0;
     :}
     | Attribute : arg0
     {:
-        RESULT = new LinkedList<>();
-        RESULT.add(arg0);
     :}
 ;
 
 Attribute ::= Type : arg0 ID : arg1 SEMI
     {:
-        RESULT = new Parameter(arg1,arg0,arg0left,arg0right);
     :}
     | Type : arg0 ID : arg1 ArrayList : arg2 SEMI
     {:
-        arg2.setTipoarreglo(arg0);
-        RESULT = new Parameter(arg1,arg2,arg0left,arg0right);
     :}
 ;
 
 Type ::= ENTR
     {:
-        RESULT = new Primitivo(Objeto.Tipo.INT,null);
     :}
     | CHRR
     {:
-        RESULT = new Primitivo(Objeto.Tipo.CHAR,null);
     :}
     | DECR
     {:
-        RESULT = new Primitivo(Objeto.Tipo.DECIMAL,null);
     :}
     | BULR
     {:
-        RESULT = new Primitivo(Objeto.Tipo.BOOLEAN,null);
     :}
     | ID : arg0
     {:
-        RESULT = new Fusion(arg0,null);
     :}
     | RLBL
     {:
-        RESULT = new RLabel();
     :}
     | RTXT
     {:
-        RESULT = new Rtxt();
     :}
     | RTXTA
     {:
-        RESULT = new RtxtA();
     :}
     | RTXTN
     {:
-        RESULT = new RtxtN();
     :}
     | RTXTP
     {:
-        RESULT = new RtxtP();
     :}
     | RBTON
     {:
-        RESULT = new Rboton();
     :}
     | RSTRINGR
     {:
-        RESULT = new RString("");
     :}
 ;
 
 
 ArrayList ::= ArrayList : arg0 LEFT_BRACKET Expr : arg1 RIGHT_BRACKET
     {:
-        arg0.setTipoarreglo(new Arreglo(null,arg1));
-        RESULT = arg0;
     :}
     | LEFT_BRACKET Expr:arg0 RIGHT_BRACKET
     {:
-        RESULT = new Arreglo(null,arg0);
     :}
 ;
 
 ArrayParam ::= ArrayParam : arg0 LEFT_BRACKET RIGHT_BRACKET
     {:
-        arg0.setTipoarreglo(new Arreglo(null));
-        RESULT = arg0;
     :}
     | LEFT_BRACKET RIGHT_BRACKET
     {:
-        RESULT = new Arreglo(null);
     :}
 ;
 
 ConstDef ::= NUMERAL DEFINIRR ID : arg0 Expr : arg1
     {:
-        RESULT = new ConstDef(arg0left,arg0right,arg0,arg1);
     :}
 ;
 
 VarDef ::= Type : arg0 IdList : arg1 SEMI
     {:
-        RESULT = new VarDef(arg1,null,arg0,arg0left,arg0right);
     :}
     | Type : arg0 IdList : arg1 ASIG Expr : arg2 SEMI
     {:
-        RESULT = new VarDef(arg1,arg2,arg0,arg0left,arg0right);
     :}
     | Type : arg0 IdList : arg1 ASIG TIMES Access : arg2 SEMI
     {:
-        RESULT = null;
     :}
     | Type : arg0 IdList : arg1 ArrayParam : arg2 ASIG Expr : arg3 SEMI 
     {:
-        arg2.setTipoarreglo(arg0);
-        RESULT = new VarDef(arg1,arg3,arg2,arg0left,arg0right);
     :}
     | Type : arg0 IdList : arg1 ArrayParam : arg2 ASIG TIMES Access : arg3 SEMI 
     {:
-        arg2.setTipoarreglo(arg0);
-        RESULT = null;
     :}
     | Type : arg0 IdList : arg1 ArrayList : arg2 SEMI
     {:
-        arg2.setTipoarreglo(arg0);
-        RESULT = new VarDef(arg1,null,arg2,arg0left,arg0right);
     :}
     | Type : arg0 IdList : arg1 ArrayList : arg2 ASIG Expr : arg3 SEMI
     {:
-        arg2.setTipoarreglo(arg0);
-        RESULT = new VarDef(arg1,arg3,arg2,arg0left,arg0right);
     :}
     | Type : arg0 IdList : arg1 ArrayList : arg2 ASIG TIMES Access : arg3 SEMI
     {:
-        arg2.setTipoarreglo(arg0);
-        RESULT = null;
     :}
 ;
 
 IdList ::= IdList : arg0 COMMA ID : arg1
     {:
-        arg0.add(arg1);
-        RESULT = arg0;
     :}
     | ID : arg0
     {:
-        RESULT = new LinkedList<>();
-        RESULT.add(arg0);
     :}
 ;
 
 FunctionsDef ::= ZROR ID : arg0 LEFT_PARENT Params : arg1 RIGHT_PARENT LEFT_BRACES Instructions : arg2 RIGHT_BRACES
     {:
-        RESULT = new Function(arg0,arg1,arg2,null,arg0right,arg0left,true);
     :}
     | Type : arg0 ID : arg1 LEFT_PARENT Params : arg2 RIGHT_PARENT LEFT_BRACES Instructions : arg3 RIGHT_BRACES
     {:
-        RESULT = new Function(arg1,arg2,arg3,arg0,arg1right,arg1left,false);
     :}
     | Type : arg0 ArrayParam : arg1 ID : arg2 LEFT_PARENT Params : arg3 RIGHT_PARENT LEFT_BRACES Instructions : arg4 RIGHT_BRACES
     {:
-        arg1.setTipoarreglo(arg0);
-        RESULT = new Function(arg2,arg3,arg4,arg1,arg1right,arg1left,false);
     :}
 ;
 
 FunctionsDefGui ::= ZROR ID : arg0 TWO_POINTS ID : arg1 LEFT_PARENT RIGHT_PARENT LEFT_BRACES Instructions : arg2 RIGHT_BRACES
     {:
-        RESULT = new FunctionGui(arg0,arg1,arg2,arg0left,arg0right);
     :}
 ;
 
 Params ::= ParamList : arg0
     {:
-        RESULT = arg0;
     :}
     | /* empty */
     {:
-        RESULT = new LinkedList<>();
     :}
 ;
 
 ParamList ::= ParamList : arg0 COMMA Param : arg1
     {:
-        arg0.add(arg1);
-        RESULT = arg0;
     :}
     | Param : arg0
     {:
-        RESULT = new LinkedList<>();
-        RESULT.add(arg0);
     :}
 ;
 
 Param ::= Type : arg0 ID : arg1
     {:
-        RESULT = new Parameter(arg1,arg0,arg0left,arg0right);
     :}
     | Type : arg0 ID : arg1 ArrayParam : arg2
     {:
-        arg2.setTipoarreglo(arg0);
-        RESULT = new Parameter(arg1,arg2,arg1left,arg1right);
     :}
 ;
 
 Instructions ::= InstructionList : arg0
     {:
-        RESULT = arg0;
     :}
     | /* empty */
     {:
-        RESULT = new LinkedList<>();
     :}
 ;
 
 InstructionList ::= InstructionList : arg0 Instruction : arg1
     {:
-        arg0.add(arg1);
-        RESULT = arg0;
     :}
     | Instruction : arg0
     {:
-        RESULT = new LinkedList<>();
-        RESULT.add(arg0);
     :}
 ;
 
 Instruction ::= ReturnDef : arg0
     {:
-        RESULT = arg0;
     :}
     | RomperDef : arg0
     {:
-        RESULT = arg0;
     :}
     | SigaDef : arg0
     {:
-        RESULT = arg0;
     :}
     | IfDef : arg0
     {:
-        RESULT = arg0;
     :}
     | SwitchDef : arg0
     {:
-        RESULT = arg0;
     :}
     | WhileDef : arg0
     {:
-        RESULT = arg0;
     :}
     | RepeatDef : arg0
     {:
-        RESULT = arg0;
     :}
     | ForDef : arg0
     {:
-        RESULT = arg0;
     :}
     | AssigmentDef : arg0 SEMI
     {:
-        RESULT = arg0;
     :}
     | CallDef : arg0
     {:
-        RESULT = arg0;
     :}
     | VarDef : arg0
     {:
-        RESULT = arg0;
     :}
     | StatementDef : arg0
     {:
-        RESULT = arg0;
     :}
     | InputOutputDef : arg0
     {:
-        RESULT = arg0;
     :}
 ;
 
 ReturnDef ::= REGRESARR Expr : arg0 SEMI
     {:
-        RESULT = new Return(arg0left,arg0right,arg0);
     :}
     | REGRESARR : arg0 SEMI
     {:
-        RESULT = new Return(arg0left,arg0right,null);
     :}
 ;
 
 RomperDef ::= ROMPERR : arg0 SEMI
     {:
-        RESULT = new Break(arg0left,arg0right);
     :}
 ;
 
 SigaDef ::= SIGAR : arg0 SEMI
     {:
-        RESULT = new Continue(arg0left,arg0right);
     :}
 ;
 
 IfDef ::= IFR LEFT_PARENT Expr : arg0 RIGHT_PARENT LEFT_BRACES Instructions : arg1 RIGHT_BRACES
     {:
-        RESULT = new If(arg0left,arg0right,arg0,arg1);
     :}
     | IFR LEFT_PARENT Expr : arg0 RIGHT_PARENT LEFT_BRACES Instructions : arg1 RIGHT_BRACES ElseDef : arg2
     {:
-        RESULT = new IfElse(arg0left,arg0right,arg0,arg1,arg2);
     :}
 ;
 
 ElseDef ::= ELSER IfDef : arg0
     {:
-        RESULT = arg0;
     :}
     | ELSER : arg0 LEFT_BRACES Instructions : arg1 RIGHT_BRACES
     {:
-        RESULT = new Else(arg0left,arg0right,arg1);
     :}
 ;
 
 WhileDef ::= WHILER LEFT_PARENT Expr : arg0 RIGHT_PARENT LEFT_BRACES Instructions : arg1 RIGHT_BRACES
     {:
-        RESULT = new While(arg0left,arg0right,arg0,arg1);
     :}
 ;
 
 RepeatDef ::= REPEATR LEFT_BRACES Instructions : arg0 RIGHT_BRACES WHENR LEFT_PARENT Expr : arg1 RIGHT_PARENT SEMI
     {:
-        RESULT = new Repeat(arg1left,arg1right,arg1,arg0);
     :}
 ;
 
 ForDef ::= FORR LEFT_PARENT VarDef : arg0 Expr : arg1 SEMI AssigmentDef : arg2 RIGHT_PARENT LEFT_BRACES Instructions : arg3 RIGHT_BRACES
     {:
-        RESULT = new For(arg0left,arg0right,arg0,arg2,arg1,arg3);
     :}
     | FORR LEFT_PARENT AssigmentDef : arg0 SEMI Expr : arg1 SEMI AssigmentDef : arg2 RIGHT_PARENT LEFT_BRACES Instructions : arg3 RIGHT_BRACES
     {:
-        RESULT = new For(arg0left,arg0right,arg0,arg2,arg1,arg3);
     :}
 ;
 
 SwitchDef ::= SWITCHR LEFT_PARENT Expr : arg0 RIGHT_PARENT LEFT_BRACES CaseList : arg1 DefaultCase : arg2 RIGHT_BRACES
     {:
-        RESULT = new Switch(arg0left,arg0right,arg0,arg1,arg2);
     :}
 ;
 
 CaseList ::= CaseList : arg0 CASER Expr : arg1 TWO_POINTS Instructions : arg2
     {:
-        arg0.add(new Case(arg1left,arg1right,arg1,arg2));
     :}
     | CASER Expr : arg0 TWO_POINTS Instructions : arg1
     {:
-        RESULT = new LinkedList<>();
-        RESULT.add(new Case(arg0left,arg0right,arg0,arg1));
     :}
 ;
 
 DefaultCase ::= DEFAULTR : arg0 TWO_POINTS Instructions : arg1
     {:
-        RESULT = new Else(arg0left,arg0right,arg1);
     :}
     | /*empty*/
     {:
-        RESULT = null;
     :}
 ;
 
 StatementDef ::= LEFT_BRACES Instructions : arg0 RIGHT_BRACES
     {:
-        RESULT = new Statement(arg0left,arg0right,arg0);
     :}
 ;
 
 CallDef ::= Access : arg0 SEMI
     {:
-        RESULT = new Call(arg0,arg0left,arg0right);
     :}
 ;
 
 AssigmentDef ::= Access : arg0 ASIG Expr : arg1
     {:
-        RESULT = new Assignment(arg0left,arg0right,arg0,arg1);
     :}
     | Access : arg0 ASIG TIMES Access : arg1
     {:
-        RESULT = null;
     :}
     | Access : arg0 PLUSPLUS
     {:
-        RESULT = new Assignment(arg0left,arg0right,new PostExpr(arg0left,arg0right,arg0,'+'),null);
     :}
     | Access : arg0 MINUSMINUS
     {:
-        RESULT = new Assignment(arg0left,arg0right,new PostExpr(arg0left,arg0right,arg0,'-'),null);
     :}
 ;
 
 InputOutputDef ::= RIMP : arg0 LEFT_PARENT ExprList : arg1 RIGHT_PARENT SEMI
     {:
-        RESULT = new Imp(arg0left,arg0right,arg1);
     :}
     | RWRITE : arg0 LEFT_PARENT Expr : arg1 RIGHT_PARENT SEMI
     {:
-        RESULT = new Write(arg0left,arg0right,arg1);
     :}
     | RAPEND : arg0 LEFT_PARENT Expr : arg1 RIGHT_PARENT SEMI
     {:
-        RESULT = new Apend(arg0left,arg0right,arg1);
     :}
     | RWF : arg0 LEFT_PARENT ExprList : arg1 RIGHT_PARENT SEMI
     {:
-        RESULT = new Wf(arg0left,arg0right,arg1);
     :}
     | RCLOSE : arg0 LEFT_PARENT RIGHT_PARENT SEMI
     {:
-        RESULT = new Close(arg0left,arg0right);
     :}
     | RREAD : arg0 LEFT_PARENT Expr : arg1 COMMA Expr : arg2 RIGHT_PARENT SEMI
     {:
-        RESULT = new Read(arg0left,arg0right,arg1,arg2);
     :}
     | RMENSAGE : arg0 LEFT_PARENT ExprList : arg1 RIGHT_PARENT SEMI
     {:
-        RESULT = new Rmensage(arg0left,arg0right,arg1);
     :}
 ;
 
 ExprList ::= ExprList : arg0 COMMA Expr : arg1
     {:
-        arg0.add(arg1);
-        RESULT = arg0;
     :}
     | Expr : arg0
     {:
-        RESULT = new LinkedList<>();
-        RESULT.add(arg0);
     :}
 ;
 
 Expr ::= Constant : arg0    
     {:
-        RESULT = arg0;
     :}
     | BinExpr : arg0
     {:
-        RESULT = arg0;
     :}
     | UnExpr : arg0
     {:
-        RESULT = arg0;
     :}
     | Access : arg0
     {:
-        RESULT = arg0;
     :}
     | LEFT_PARENT Expr : arg0 RIGHT_PARENT
     {:
-        RESULT = arg0;
     :}
     | ArrayDec : arg0
     {:
-        RESULT = arg0;
     :}
 ;
 
 Constant ::= ENT_LIT : arg0
     {:
-        RESULT = new  Constant(Objeto.Tipo.INT,Integer.parseInt(arg0),arg0left,arg0right);
     :}
     | CHAR_LIT : arg0
     {:
-        RESULT = new  Constant(Objeto.Tipo.CHAR,arg0,arg0left,arg0right);
     :}
     | BOOL_LIT : arg0
     {:
-        RESULT = new  Constant(Objeto.Tipo.BOOLEAN,Boolean.parseBoolean(arg0),arg0left,arg0right);
     :}
     | DEC_LIT : arg0
     {:
-        RESULT = new  Constant(Objeto.Tipo.DECIMAL,Double.parseDouble(arg0),arg0left,arg0right);
     :}
     | NLO : arg0
     {:
-        RESULT = new  Constant(Objeto.Tipo.NULL,null,arg0left,arg0right);
     :}
     | STRING_LIT : arg0
     {:
-        RESULT = new  Constant(Objeto.Tipo.STRING,arg0.substring(1, arg0.length() - 1),arg0left,arg0right);
     :}
 ;
 
 BinExpr ::= Arithmetic : arg0
     {:
-        RESULT = arg0;
     :}
     | Logical : arg0
     {:
-        RESULT = arg0;
     :}
     | Relational : arg0
     {:
-        RESULT = arg0;
     :}
     | PostExpr : arg0
     {:
-        RESULT = arg0;
     :}
 ;
 
 UnExpr::= MINUS Expr : arg0
     {:
-        RESULT = new UnExpr(arg0left,arg0right,arg0,'-');
     :}
     %prec UMINUS
     | NOT Expr : arg0
     {:
-        RESULT = new UnExpr(arg0left,arg0right,arg0,'!');
     :}
     | PLUS Expr : arg0
     {:
-        RESULT = new UnExpr(arg0left,arg0right,arg0,'+');
     :}
     %prec UPLUS
 ;
 
 PostExpr ::= Expr : arg0 PLUSPLUS
     {:
-        RESULT = new PostExpr(arg0left,arg0right,arg0,'+');
     :}
     | Expr : arg0 MINUSMINUS
     {:
-        RESULT = new PostExpr(arg0left,arg0right,arg0,'-');
     :}
 ;
 
 Arithmetic ::= Expr : arg0 PLUS Expr : arg1
     {:
-        RESULT = new Arithmetic(arg0left,arg0right,arg0,arg1,'+');
     :}
     | Expr : arg0 MINUS Expr : arg1
     {:
-        RESULT = new Arithmetic(arg0left,arg0right,arg0,arg1,'-');
     :}
     | Expr : arg0 TIMES Expr : arg1
     {:
-        RESULT = new Arithmetic(arg0left,arg0right,arg0,arg1,'*');
     :}
     | Expr : arg0 DIV Expr : arg1
     {:
-        RESULT = new Arithmetic(arg0left,arg0right,arg0,arg1,'/');
     :}
     | Expr : arg0 POT Expr : arg1
     {:
-        RESULT = new Arithmetic(arg0left,arg0right,arg0,arg1,'^');
     :}
     | Expr : arg0 MOD Expr : arg1
     {:
-        RESULT = new Arithmetic(arg0left,arg0right,arg0,arg1,'%');
     :}
 ;
 
 Logical ::= Expr : arg0 OR Expr : arg1
     {:
-        RESULT = new Logical(arg0left,arg0right,arg0,arg1,'|');
     :}
     | Expr : arg0 AND Expr : arg1
     {:
-        RESULT = new Logical(arg0left,arg0right,arg0,arg1,'&');
     :}
 ;
 
 Relational ::= Expr : arg0 LSS Expr : arg1
     {:
-        RESULT = new Relational(arg0left,arg0right,arg0,arg1,"<");
     :}
     | Expr : arg0 LSS_EQ Expr : arg1
     {:
-        RESULT = new Relational(arg0left,arg0right,arg0,arg1,"<=");
     :}
     | Expr : arg0 GTR Expr : arg1
     {:
-        RESULT = new Relational(arg0left,arg0right,arg0,arg1,">");
     :}
     | Expr : arg0 GTR_EQ Expr : arg1
     {:
-        RESULT = new Relational(arg0left,arg0right,arg0,arg1,">=");
     :}
     | Expr : arg0 EQ Expr : arg1
     {:
-        RESULT = new Relational(arg0left,arg0right,arg0,arg1,"=");
     :}
     | Expr : arg0 NOT_EQ Expr : arg1
     {:
-        RESULT = new Relational(arg0left,arg0right,arg0,arg1,"<>");
     :}
 ;
 
 Access ::= ID : arg0
     {:
-        RESULT = new Access(arg0left,arg0right,null,arg0);
     :}
     | ID : arg0 LEFT_PARENT ExprList : arg1 RIGHT_PARENT
     {:
-        RESULT = new AccessFunction(arg0left,arg0right,null,arg0,arg1);
     :}
     | ID : arg0 LEFT_PARENT RIGHT_PARENT
     {:
-        RESULT = new AccessFunction(arg0left,arg0right,null,arg0,new LinkedList<>());
     :}
     | Access : arg0 DOT ID : arg1
     {:
-        RESULT = new Access(arg1left,arg1right,arg0,arg1);
     :}
     | Access : arg0 LEFT_BRACKET Expr : arg1 RIGHT_BRACKET
     {:
-        RESULT = new AccessArray(arg1left,arg1right,arg0,arg1);
     :}
     | Access : arg0 DOT ID : arg1 LEFT_PARENT ExprList : arg2 RIGHT_PARENT
     {:
-        RESULT = new AccessFunction(arg1left,arg1right,arg0,arg1,arg2);
     :}
     | Access : arg0 DOT ID : arg1 LEFT_PARENT RIGHT_PARENT
     {:
-        RESULT = new AccessFunction(arg1left,arg1right,arg0,arg1,new LinkedList<>());
     :}
 ;
 
 ArrayDec ::= LEFT_BRACES : arg0 ExprList : arg1 RIGHT_BRACES
     {:
-        RESULT = new NewArray(arg0left,arg0right,arg1);
     :}
 ;
