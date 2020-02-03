@@ -57,7 +57,8 @@ public class GUI_Principal extends javax.swing.JFrame{
     } 
     
     private void cargarImagen(String ruta, JLabel lbl2){
-        lbl2.addMouseListener(this);
+        //eventos para el debbugger
+        //lbl2.addMouseListener(this);
         ImageIcon fot = new ImageIcon(ruta);
         Icon icono = new ImageIcon(fot.getImage().getScaledInstance(lbl2.getWidth(), lbl2.getHeight(), Image.SCALE_DEFAULT));
         lbl2.setIcon(icono);
