@@ -1,8 +1,6 @@
 package GUI;
 
 import Analyzer.*;
-import Principal.Principal;
-import Principal.Singleton;
 import java.awt.Desktop;
 import java.awt.FileDialog;
 import java.io.*;
@@ -20,7 +18,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
 
-public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
+public class GUI_Principal extends javax.swing.JFrame{
 
     public static Pagina paginaActual;
     ArrayList<Pagina> paginas;
@@ -31,7 +29,7 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
         initComponents();
         ventanaAbierta = "";
         paginas = new ArrayList<>();
-        paginaActual = new Pagina();
+        paginaActual = null;
         this.setLocationRelativeTo(null);
         txtConsola2.setEditable(false);
         txtLineas.setEditable(false);
@@ -672,11 +670,6 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
         }
     }
     
-    public static void println(String cadena){
-        txtConsola.setText(txtConsola.getText()+"\n"+cadena);
-    }
-    
-    
     private void AnalizarColine()
     {
         txtConsola.setText("");
@@ -708,7 +701,6 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
             System.err.println(ex.toString());
         }
     }
-   
     
     private void GuardarComo(String cadena)
     {
@@ -777,7 +769,7 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
     {
       AgregarPestana(nombreArchivo);
         
-        //leo el archivo
+      //leo el archivo
       File archivo = null;
       FileReader fr = null;
       BufferedReader br = null;
@@ -838,7 +830,6 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
         System.out.println("-------------"+directorio);
         Abrir2(nombreArchivo,rutatotal,directorio);
     }
-    
 
     private void AgregarPestana(String nombre)
     {
@@ -857,31 +848,6 @@ public class GUI_Principal extends javax.swing.JFrame implements MouseListener{
 		        position+=t[index].length();
 	}
 	area.setCaretPosition(position+line-1);
-    }
-
-    @Override
-    public void mousePressed(MouseEvent me) {
-        
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent me) {
-        
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent me) {
-        
-    }
-
-    @Override
-    public void mouseExited(MouseEvent me) {
-        
-    }
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }
