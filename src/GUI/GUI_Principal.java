@@ -11,8 +11,6 @@ import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.net.URISyntaxException;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -449,7 +447,6 @@ public class GUI_Principal extends javax.swing.JFrame{
                 paginaActual = paginas.get(index);
             }catch(Exception e)
             {
-                System.out.println("catch pagina");
             }
         }
     }//GEN-LAST:event_tabPrincipalStateChanged
@@ -672,6 +669,13 @@ public class GUI_Principal extends javax.swing.JFrame{
     
     private void AnalizarColine()
     {
+        
+        //si hay algo para analizar
+        if(paginaActual==null){
+            JOptionPane.showMessageDialog(null, "Nada para analizar");
+            return;
+        }
+        
         txtConsola.setText("");
         dtmErrores.setRowCount(0);
         String cadena = paginaActual.txtEntrada.getText();
