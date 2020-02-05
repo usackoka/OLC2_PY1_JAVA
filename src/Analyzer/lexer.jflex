@@ -29,7 +29,7 @@ comentario_linea ="//".*\r\n|"//".*\n|"//".*\r|"//".*
 
 %%
 <YYINITIAL>{
-    "nlo"           {return new Symbol(sym.NLO,yyline,yychar,yytext());}
+    "null"           {return new Symbol(sym.nulo,yyline,yychar,yytext());}
     "fusion"        {return new Symbol(sym.FUSIONR,yyline,yychar,yytext());}    
     "ent"           {return new Symbol(sym.ENTR,yyline,yychar,yytext());}
     "zro"           {return new Symbol(sym.ZROR,yyline,yychar,yytext());}
