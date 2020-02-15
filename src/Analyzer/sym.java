@@ -8,157 +8,107 @@ package Analyzer;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int RTXTA = 60;
-  public static final int TIMES = 36;
-  public static final int SIGAR = 17;
-  public static final int RIGHT_PARENT = 29;
-  public static final int NUMERAL = 23;
-  public static final int STRING_LIT = 52;
-  public static final int TWO_POINTS = 48;
-  public static final int SEMI = 31;
-  public static final int IMPORTARR = 19;
-  public static final int REGRESARR = 20;
-  public static final int COMMA = 30;
-  public static final int RWRITE = 68;
-  public static final int POT = 37;
-  public static final int WHENR = 21;
-  public static final int NOT = 46;
-  public static final int BULR = 8;
-  public static final int ENTR = 4;
-  public static final int DECR = 7;
-  public static final int EQ = 32;
-  public static final int LEFT_BRACES = 26;
-  public static final int MOD = 38;
-  public static final int RBTON = 63;
-  public static final int RAPEND = 66;
-  public static final int FUSIONR = 3;
-  public static final int ROMPERR = 16;
-  public static final int UPLUS = 57;
-  public static final int PLUS = 34;
-  public static final int BOOL_LIT = 51;
-  public static final int ZROR = 5;
-  public static final int DIV = 39;
-  public static final int RSTRINGR = 22;
-  public static final int DOT = 47;
-  public static final int FORR = 11;
-  public static final int RREAD = 65;
-  public static final int DEFINIRR = 18;
+  public static final int igualigual = 26;
+  public static final int res_continue = 15;
+  public static final int res_if = 7;
+  public static final int UMINUS = 48;
+  public static final int UPLUS = 49;
+  public static final int coma = 24;
+  public static final int igual = 27;
+  public static final int ternario = 34;
+  public static final int l_llave = 20;
+  public static final int res_break = 14;
+  public static final int r_llave = 21;
+  public static final int res_case = 12;
+  public static final int r_parent = 23;
+  public static final int numero = 44;
+  public static final int res_while = 9;
+  public static final int res_default = 13;
+  public static final int menos = 29;
+  public static final int menor = 38;
   public static final int EOF = 0;
-  public static final int LEFT_BRACKET = 24;
-  public static final int RLBL = 58;
-  public static final int LEFT_PARENT = 28;
-  public static final int GTR = 40;
-  public static final int LSS = 42;
-  public static final int MAIN = 73;
-  public static final int MINUS = 35;
-  public static final int LSS_EQ = 43;
-  public static final int OR = 45;
-  public static final int ELSER = 55;
-  public static final int CHRR = 6;
+  public static final int mas = 28;
   public static final int error = 1;
-  public static final int RIGHT_BRACES = 27;
-  public static final int DEC_LIT = 50;
-  public static final int RTXT = 59;
-  public static final int RIGHT_BRACKET = 25;
-  public static final int ID = 54;
-  public static final int MINUSMINUS = 72;
-  public static final int NLO = 2;
-  public static final int REPEATR = 12;
-  public static final int RCLOSE = 67;
-  public static final int NOT_EQ = 33;
-  public static final int RMENSAGE = 64;
-  public static final int CASER = 14;
-  public static final int GTR_EQ = 41;
-  public static final int ENT_LIT = 49;
-  public static final int ASIG = 74;
-  public static final int WHILER = 10;
-  public static final int PLUSPLUS = 71;
-  public static final int CHAR_LIT = 53;
-  public static final int DEFAULTR = 15;
-  public static final int IFR = 9;
-  public static final int RTXTP = 61;
-  public static final int RTXTN = 62;
-  public static final int RWF = 70;
-  public static final int RIMP = 69;
-  public static final int AND = 44;
-  public static final int UMINUS = 56;
-  public static final int SWITCHR = 13;
+  public static final int doble = 45;
+  public static final int mayor = 36;
+  public static final int or = 41;
+  public static final int menorigual = 37;
+  public static final int res_false = 3;
+  public static final int res_do = 17;
+  public static final int por = 30;
+  public static final int dospuntos = 43;
+  public static final int id = 46;
+  public static final int potencia = 31;
+  public static final int res_true = 4;
+  public static final int res_for = 10;
+  public static final int l_corchete = 18;
+  public static final int res_null = 2;
+  public static final int mayorigual = 35;
+  public static final int diferente = 39;
+  public static final int not = 42;
+  public static final int and = 40;
+  public static final int puntocoma = 25;
+  public static final int res_return = 16;
+  public static final int modular = 32;
+  public static final int res_else = 8;
+  public static final int div = 33;
+  public static final int res_function = 5;
+  public static final int l_parent = 22;
+  public static final int res_in = 6;
+  public static final int cadena = 47;
+  public static final int res_switch = 11;
+  public static final int r_corchete = 19;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
-  "NLO",
-  "FUSIONR",
-  "ENTR",
-  "ZROR",
-  "CHRR",
-  "DECR",
-  "BULR",
-  "IFR",
-  "WHILER",
-  "FORR",
-  "REPEATR",
-  "SWITCHR",
-  "CASER",
-  "DEFAULTR",
-  "ROMPERR",
-  "SIGAR",
-  "DEFINIRR",
-  "IMPORTARR",
-  "REGRESARR",
-  "WHENR",
-  "RSTRINGR",
-  "NUMERAL",
-  "LEFT_BRACKET",
-  "RIGHT_BRACKET",
-  "LEFT_BRACES",
-  "RIGHT_BRACES",
-  "LEFT_PARENT",
-  "RIGHT_PARENT",
-  "COMMA",
-  "SEMI",
-  "EQ",
-  "NOT_EQ",
-  "PLUS",
-  "MINUS",
-  "TIMES",
-  "POT",
-  "MOD",
-  "DIV",
-  "GTR",
-  "GTR_EQ",
-  "LSS",
-  "LSS_EQ",
-  "AND",
-  "OR",
-  "NOT",
-  "DOT",
-  "TWO_POINTS",
-  "ENT_LIT",
-  "DEC_LIT",
-  "BOOL_LIT",
-  "STRING_LIT",
-  "CHAR_LIT",
-  "ID",
-  "ELSER",
+  "res_null",
+  "res_false",
+  "res_true",
+  "res_function",
+  "res_in",
+  "res_if",
+  "res_else",
+  "res_while",
+  "res_for",
+  "res_switch",
+  "res_case",
+  "res_default",
+  "res_break",
+  "res_continue",
+  "res_return",
+  "res_do",
+  "l_corchete",
+  "r_corchete",
+  "l_llave",
+  "r_llave",
+  "l_parent",
+  "r_parent",
+  "coma",
+  "puntocoma",
+  "igualigual",
+  "igual",
+  "mas",
+  "menos",
+  "por",
+  "potencia",
+  "modular",
+  "div",
+  "ternario",
+  "mayorigual",
+  "mayor",
+  "menorigual",
+  "menor",
+  "diferente",
+  "and",
+  "or",
+  "not",
+  "dospuntos",
+  "numero",
+  "doble",
+  "id",
+  "cadena",
   "UMINUS",
-  "UPLUS",
-  "RLBL",
-  "RTXT",
-  "RTXTA",
-  "RTXTP",
-  "RTXTN",
-  "RBTON",
-  "RMENSAGE",
-  "RREAD",
-  "RAPEND",
-  "RCLOSE",
-  "RWRITE",
-  "RIMP",
-  "RWF",
-  "PLUSPLUS",
-  "MINUSMINUS",
-  "MAIN",
-  "ASIG"
+  "UPLUS"
   };
 }
 

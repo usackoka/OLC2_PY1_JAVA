@@ -1,22 +1,17 @@
 package Analyzer;
 
 import java_cup.runtime.*;
-import Interpreter.INSTRUCCION.*;
-import Interpreter.Objeto.*;
-import Interpreter.Operation.*;
-import Principal.*;
 import java.util.LinkedList;
 
 parser code
 {:
     /* RAIZ */
-    Principal p;
 
     /**
     *   Metodo que retorna la raiz del arbol
     **/
     public Principal GetAst(){
-        return p;
+       // return p;
     }
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
@@ -36,22 +31,32 @@ parser code
  }
 :}
 
-terminal String res_null,res_if,res_while,res_for,res_switch,res_case,res_default,
-res_break,res_continue,res_final,res_import,res_return,res_when,res_string,
-l_corchete,r_corchete,l_llave,r_llave,l_parent,r_parent,coma,puntocoma,igualigual,diferente,mas,menos,por,potencia,modular,div,
-mayor,mayorigual,menor,menorigual,masmas,menosmenos
-and,or,not,punto,dospuntos,
-numero,doble,cadena,caracter,id,
-res_else,UMINUS,UPLUS,res_mian, res_print, res_println, res_true, res_false;
+terminal String res_null, res_false, res_true,
 
-non terminal S;
+res_function, res_in, 
 
-non terminal LISTA_INSTRUCCIONES,BLOQUES,LISTA_CASOS,DECLARACIONES,
-INSTRUCCION,IF,res_return,res_break,res_continue,SWITCH,WHILE,FOR,ASIGNACION,LLAMADA,ELSE,DEFAULT,SENTENCIA,
-VARIABLE,FUNCION,DECLARACION,IMPORT,StructDef,ConstDef,ATRIBUTO,PARAMETRO,
-LISTA_ATRIBUTOS,LISTA_PARAMETROS,PARAMETROS,TIPO,LISTA_ID,LISTA_E,CONSTANTE,BINARIA,LOGICA,ARITMETICA,
-RELACIONAL,UNARIA,POST_E,ACCESO,E,DECLARACION_ARREGLO,ARREGLO_PARAM,LISTA_ARREGLO;
+res_if, res_else, res_while, res_for, res_switch, res_case, res_default, res_break, res_continue, res_return, res_do,
 
+l_corchete, r_corchete, l_llave, r_llave, l_parent, r_parent,
+coma, puntocoma, igualigual, igual, mas, menos, por, potencia, modular, div, ternario, mayorigual, mayor, menorigual, menor, diferente,
+and, or, not, dospuntos,
+
+numero, doble, id, cadena,
+
+UMINUS,UPLUS
+;
+
+non terminal S
+;
+
+non terminal DECLARACIONES, DECLARACION, VARIABLE, FUNCION, PARAMETROS,
+LISTA_PARAMETROS, PARAMETRO, BLOQUES, LISTA_BLOQUES, SENTENCIA, INSTRUCCION,
+RETURN, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, LISTA_CASOS, DEFAULT,
+LISTA_E, E, LLAMADA, CONSTANTE, BINARIA, UNARIA, ARITMETICA, LOGICA,
+RELACIONAL, PUEDE_SEMICOLON, TERNARIA
+;
+
+precedence left ternario;
 precedence left or;
 precedence left and;
 precedence left diferente,igualigual;
@@ -59,14 +64,13 @@ precedence nonassoc mayor,mayorigual,menor,menorigual;
 precedence left mas,menos;
 precedence left por,div,modular;
 precedence left potencia;
-precedence right not,UMINUS,UPLUS,masmas,menosmenos;
+precedence right not,UMINUS,UPLUS;
 precedence left l_parent,r_parent,l_corchete,r_corchete;
 
 start with S;
 
 S ::= DECLARACIONES:a
     {:
-        p = new Principal(a);
     :}
 ;
 
@@ -78,24 +82,26 @@ DECLARACIONES::= DECLARACIONES:a DECLARACION:b
     :}
 ;
 
-DECLARACION ::= VARIABLE:a
+DECLARACION ::= FUNCION:a
     {:
     :}
-    | FUNCION:a
+    | SENTENCIA:a
+    {:
+    :}
+    | INSTRUCCION:a PUEDE_SEMICOLON
     {:
     :}
 ;
 
-VARIABLE ::= 
+VARIABLE ::= id:a igual E:b 
+    {:
+    :}
 ;
 
-FUNCION ::= res_main id:a l_parent PARAMETROS:b r_parent l_llave BLOQUES:c r_llave
+FUNCION ::= id:a igual res_function l_parent PARAMETROS:b r_parent l_llave BLOQUES:c r_llave
     {:
     :}
-    | TIPO:a id:b l_parent PARAMETROS:c r_parent l_llave BLOQUES:d r_llave
-    {:
-    :}
-    | TIPO:a ARREGLO_PARAM:b id:c l_parent PARAMETROS:d r_parent l_llave BLOQUES:e r_llave
+    | id:a igual l_parent PARAMETROS:b r_parent igual mayor l_llave BLOQUES:c r_llave
     {:
     :}
 ;
@@ -116,18 +122,15 @@ LISTA_PARAMETROS ::= LISTA_PARAMETROS:a coma PARAMETRO:b
     :}
 ;
 
-PARAMETRO ::= TIPO:a id:b
+PARAMETRO ::= id:b
     {:
     :}
-    | TIPO:a id:b ARREGLO_PARAM:c
+    | res_default
     {:
     :}
 ;
 
-BLOQUES ::= LISTA_INSTRUCCIONES:a
-    {:
-    :}
-    | LISTA_SENTENCIAS:a
+BLOQUES ::= LISTA_BLOQUES:a
     {:
     :}
     | /* empty */
@@ -135,18 +138,16 @@ BLOQUES ::= LISTA_INSTRUCCIONES:a
     :}
 ;
 
-LISTA_SENTENCIAS ::= LISTA_SENTENCIAS:a SENTENCIA:b
+LISTA_BLOQUES ::= LISTA_BLOQUES:a INSTRUCCION:b PUEDE_SEMICOLON
     {:
     :}
-    | SENTENCIA:a
+    | LISTA_BLOQUES:a SENTENCIA:b
     {:
     :}
-;
-
-LISTA_INSTRUCCIONES ::= LISTA_INSTRUCCIONES:a INSTRUCCION:b
+    | SENTENCIA:a 
     {:
     :}
-    | INSTRUCCION:a
+    | INSTRUCCION:a PUEDE_SEMICOLON
     {:
     :}
 ;
@@ -160,21 +161,18 @@ SENTENCIA ::= IF:a
     | WHILE:a
     {:
     :}
+    | DOWHILE:a
+    {:
+    :}
     | FOR:a
     {:
     :}
+;
 
-INSTRUCCION ::= res_return:a
-    {:
-    :}
-    | res_break:a
+INSTRUCCION ::= res_break:a
     {:
     :}
     | res_continue:a
-    {:
-    :}
-    
-    | ASIGNACION:a puntocoma
     {:
     :}
     | LLAMADA:a
@@ -183,28 +181,15 @@ INSTRUCCION ::= res_return:a
     | VARIABLE:a
     {:
     :}
-    | SENTENCIA:a
-    {:
-    :}
-    | InputOutputDef:a
+    | RETURN:a
     {:
     :}
 ;
 
-res_return ::= res_return E:a puntocoma
+RETURN ::= res_return l_parent E:a r_parent
     {:
     :}
-    | res_return:a puntocoma
-    {:
-    :}
-;
-
-res_break ::= res_break:a puntocoma
-    {:
-    :}
-;
-
-res_continue ::= res_continue:a puntocoma
+    | res_return
     {:
     :}
 ;
@@ -230,15 +215,12 @@ WHILE ::= res_while l_parent E:a r_parent l_llave BLOQUES:b r_llave
     :}
 ;
 
-RepeatDef ::= REPEATR l_llave BLOQUES:a r_llave res_when l_parent E:b r_parent puntocoma
+DOWHILE ::= res_do l_llave BLOQUES:a r_llave res_while l_parent E:b r_parent puntocoma
     {:
     :}
 ;
 
-FOR ::= res_for l_parent VARIABLE:a E:b puntocoma ASIGNACION:c r_parent l_llave BLOQUES:d r_llave
-    {:
-    :}
-    | res_for l_parent ASIGNACION:a puntocoma E:b puntocoma ASIGNACION:c r_parent l_llave BLOQUES:d r_llave
+FOR ::= res_for l_parent id:a res_in E:b r_parent l_llave BLOQUES:c r_llave
     {:
     :}
 ;
@@ -281,13 +263,28 @@ E ::= CONSTANTE:a
     | UNARIA:a
     {:
     :}
-    | ACCESO:a
+    | TERNARIA:a 
+    {:
+    :}
+    | LLAMADA:a
     {:
     :}
     | l_parent E:a r_parent
     {:
     :}
+    /*
     | DECLARACION_ARREGLO:a
+    {:
+    :}
+    */
+;
+
+TERNARIA ::= E:a ternario E:b dospuntos E:c 
+{:
+:}
+;
+
+LLAMADA ::= id:a l_parent LISTA_E:b r_parent
     {:
     :}
 ;
@@ -321,9 +318,6 @@ BINARIA ::= ARITMETICA:a
     | RELACIONAL:a
     {:
     :}
-    | POST_E:a
-    {:
-    :}
 ;
 
 UNARIA::= menos E:a
@@ -337,14 +331,6 @@ UNARIA::= menos E:a
     {:
     :}
     %prec UPLUS
-;
-
-POST_E ::= E:a masmas
-    {:
-    :}
-    | E:a menosmenos
-    {:
-    :}
 ;
 
 ARITMETICA ::= E:a mas E:b
@@ -395,10 +381,6 @@ RELACIONAL ::= E:a menor E:b
     :}
 ;
 
-LISTA_ID ::= LISTA_ID:a coma id:b
-    {:
-    :}
-    | id:a
-    {:
-    :}
+PUEDE_SEMICOLON ::= puntocoma
+    | /*empty*/
 ;
