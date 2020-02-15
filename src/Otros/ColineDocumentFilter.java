@@ -195,20 +195,11 @@ public final class ColineDocumentFilter extends DocumentFilter {
      */
     private Pattern buildPattern() {
         StringBuilder sb = new StringBuilder();
-        palabras_reservadas.add("ent");
-        palabras_reservadas.add("zro");
-        palabras_reservadas.add("chr");
-        palabras_reservadas.add("dec");
-        palabras_reservadas.add("bul");
-        palabras_reservadas.add("romper");
-        palabras_reservadas.add("siga");
-        palabras_reservadas.add("definir");
-        palabras_reservadas.add("fusion");
-        palabras_reservadas.add("importar");
-        palabras_reservadas.add("regresar");
-        palabras_reservadas.add("nlo");
-        //================= METODOS =======================
-        palabras_reservadas.add("void");
+        palabras_reservadas.add("null");
+        palabras_reservadas.add("true");
+        palabras_reservadas.add("false");
+        palabras_reservadas.add("function");
+        palabras_reservadas.add("in");
         //================ SENTENCIAS =======================
         palabras_reservadas.add("break");
         palabras_reservadas.add("continue");
@@ -216,24 +207,12 @@ public final class ColineDocumentFilter extends DocumentFilter {
         palabras_reservadas.add("switch");
         palabras_reservadas.add("case");
         palabras_reservadas.add("if");
-        palabras_reservadas.add("else if");
         palabras_reservadas.add("else");
         palabras_reservadas.add("while");
         palabras_reservadas.add("do");
         palabras_reservadas.add("default");
         palabras_reservadas.add("for");
-        palabras_reservadas.add("println");
         palabras_reservadas.add("print");
-        palabras_reservadas.add("read_file");
-        palabras_reservadas.add("write_file");
-        palabras_reservadas.add("read");
-        palabras_reservadas.add("graph");
-        //======================= CASTEOS ========================
-        palabras_reservadas.add("str");
-        palabras_reservadas.add("toDouble");
-        palabras_reservadas.add("toInt");
-        palabras_reservadas.add("toChar");
-        palabras_reservadas.add("@Override");
 
         for (String token : palabras_reservadas) {
             sb.append("(?i)\\b"); // Start of word boundary
