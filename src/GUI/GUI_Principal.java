@@ -530,7 +530,7 @@ public class GUI_Principal extends javax.swing.JFrame{
             // disable the "All files" option.
             //
             jFileFolder.setAcceptAllFileFilterUsed(false);
-            //    
+            //     
             if (jFileFolder.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
 //              System.out.println("getCurrentDirectory(): " 
 //                 +  jFileFolder.getCurrentDirectory());

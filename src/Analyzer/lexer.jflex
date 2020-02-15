@@ -31,6 +31,7 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
     "char"              {return new Symbol(sym.res_char,yyline,yychar,yytext());}
     "double"            {return new Symbol(sym.res_double,yyline,yychar,yytext());}
     "boolean"           {return new Symbol(sym.res_boolean,yyline,yychar,yytext());}
+    "String"            {return new Symbol(sym.res_string,yyline,yychar,yytext());}
     "if"                {return new Symbol(sym.res_if,yyline,yychar,yytext());}
     "else"              {return new Symbol(sym.res_else,yyline,yychar,yytext());}
     "while"             {return new Symbol(sym.res_while,yyline,yychar,yytext());}
@@ -78,6 +79,12 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
     "!"             {return new Symbol(sym.not,yyline,yychar, yytext());}
     "."             {return new Symbol(sym.punto,yyline,yychar, yytext());}
     ":"             {return new Symbol(sym.dospuntos,yyline,yychar, yytext());}
+
+    {numero}            {return new Symbol(sym.numero,yyline,yychar,yytext());}
+    {doble}             {return new Symbol(sym.doble,yyline,yychar,yytext());}
+    {id}                {return new Symbol(sym.id,yyline,yychar,yytext());}
+    {caracter}          {return new Symbol(sym.caracter,yyline,yychar,yytext());}
+    {cadena}            {return new Symbol(sym.cadena,yyline,yychar,yytext());}
 }
 
 //------> INGORAR ESPACIOS EN BLANCO

@@ -1,7 +1,7 @@
 package Analyzer;
 
 import java_cup.runtime.*;
-import Interpreter.Instruction.*;
+import Interpreter.INSTRUCCION.*;
 import Interpreter.Objeto.*;
 import Interpreter.Operation.*;
 import Principal.*;
@@ -36,121 +36,124 @@ parser code
  }
 :}
 
-terminal String NLO,FUSIONR,ENTR,ZROR,CHRR,DECR,BULR,IFR,WHILER,FORR,REPEATR,SWITCHR,CASER,DEFAULTR,ROMPERR,SIGAR,DEFINIRR,IMPORTARR,REGRESARR,WHENR,RSTRINGR;
-terminal String NUMERAL,LEFT_BRACKET,RIGHT_BRACKET,LEFT_BRACES,RIGHT_BRACES,LEFT_PARENT,RIGHT_PARENT,COMMA,SEMI,EQ,NOT_EQ,PLUS,MINUS,TIMES,POT,MOD,DIV,GTR,GTR_EQ,LSS,LSS_EQ;
-terminal String AND,OR,NOT,DOT,TWO_POINTS,ENT_LIT,DEC_LIT,BOOL_LIT,STRING_LIT,CHAR_LIT,ID,ELSER,UMINUS,UPLUS,RLBL,RTXT,RTXTA,RTXTP,RTXTN,RBTON,RMENSAGE;
-terminal String RREAD,RAPEND,RCLOSE,RWRITE,RIMP,RWF,PLUSPLUS,MINUSMINUS,MAIN,ASIG;
+terminal String res_null,res_int,res_main,res_char,res_double,res_boolean,res_if,res_while,res_for,res_switch,res_case,res_default,
+res_break,res_continue,res_final,res_import,res_return,res_when,res_string,
+l_corchete,r_corchete,l_llave,r_llave,l_parent,r_parent,coma,puntocoma,igualigual,diferente,mas,menos,por,potencia,modular,div,
+mayor,mayorigual,menor,menorigual,masmas,menosmenos
+and,or,not,punto,dospuntos,
+numero,doble,cadena,caracter,id,
+res_else,UMINUS,UPLUS,res_mian, res_print, res_println;
 
 non terminal S;
 
-non terminal LinkedList<Instruction> InstructionList,Instructions,CaseList,Declarations;
-non terminal Instruction Instruction,IfDef,ReturnDef,RomperDef,SigaDef,SwitchDef,RepeatDef,WhileDef,ForDef,AssigmentDef,CallDef,ElseDef,DefaultCase,StatementDef,
-             VarDef,FunctionsDef,Declaration,ImportDef,StructDef,ConstDef,NucleoDef,FunctionsDefGui,InputOutputDef;
+non terminal LinkedList<INSTRUCCION> LISTA_INSTRUCCIONES,INSTRUCCIONES,LISTA_CASOS,DECLARACIONES;
+non terminal INSTRUCCION INSTRUCCION,IF,RETURN,BREAK,CONTINUE,SWITCH,WHILE,FOR,ASIGNACION,LLAMADA,ELSE,DEFAULT,SENTENCIA,
+             VARIABLE,FUNCION,DECLARACION,IMPORT,StructDef,ConstDef;
 
-non terminal Parameter Attribute,Param;
-non terminal LinkedList<Parameter> AttributeList,ParamList,Params;
-non terminal Objeto Type;
+non terminal Parameter ATRIBUTO,PARAMETRO;
+non terminal LinkedList<Parameter> LISTA_ATRIBUTOS,LISTA_PARAMETROS,PARAMETROS;
+non terminal Objeto TIPO;
 
-non terminal LinkedList<String> IdList;
+non terminal LinkedList<String> LISTA_ID;
 
-non terminal LinkedList<Operation> ExprList;
-non terminal Operation Constant,BinExpr,Logical,Arithmetic,Relational,UnExpr,PostExpr,Access,Expr,ArrayDec;
+non terminal LinkedList<Operation> LISTA_E;
+non terminal Operation CONSTANTE,BINARIA,LOGICA,ARITMETICA,RELACIONAL,UNARIA,POST_E,ACCESO,E,DECLARACION_ARREGLO;
 
-non terminal Arreglo ArrayParam,ArrayList;
+non terminal Arreglo ARREGLO_PARAM,LISTA_ARREGLO;
 
-precedence left OR;
-precedence left AND;
-precedence left NOT_EQ,EQ;
-precedence nonassoc GTR,GTR_EQ,LSS,LSS_EQ;
-precedence left PLUS,MINUS;
-precedence left TIMES,DIV,MOD;
-precedence left POT;
-precedence right NOT,UMINUS,UPLUS,PLUSPLUS,MINUSMINUS;
-precedence left LEFT_PARENT,RIGHT_PARENT,LEFT_BRACKET,RIGHT_BRACKET;
+precedence left or;
+precedence left and;
+precedence left diferente,igualigual;
+precedence nonassoc mayor,mayorigual,menor,menorigual;
+precedence left mas,menos;
+precedence left por,div,modular;
+precedence left potencia;
+precedence right not,UMINUS,UPLUS,masmas,menosmenos;
+precedence left l_parent,r_parent,l_corchete,r_corchete;
 
 start with S;
 
-S ::= Declarations : arg0
+S ::= DECLARACIONES : a
     {:
-        p = new Principal(arg0);
+        p = new Principal(a);
     :}
 ;
 
-Declarations::= Declarations:arg0 Declaration:arg1
+DECLARACIONES::= DECLARACIONES:a DECLARACION:b
     {:
     :}
-    | Declaration:arg0
-    {:
-    :}
-;
-
-Declaration ::= ImportDef:arg0
-    {:
-    :}
-    | StructDef:arg0
-    {:
-    :}
-    | ConstDef : arg0
-    {:
-    :}
-    | VarDef : arg0
-    {:
-    :}
-    | FunctionsDef : arg0
-    {:
-    :}
-    | NucleoDef : arg0
-    {:
-    :}
-    | FunctionsDefGui : arg0
+    | DECLARACION:a
     {:
     :}
 ;
 
-NucleoDef ::= ZROR MAIN : arg0 LEFT_PARENT RIGHT_PARENT LEFT_BRACES  Instructions:arg1 RIGHT_BRACES
+DECLARACION ::= IMPORT:a
+    {:
+    :}
+    | StructDef:a
+    {:
+    :}
+    | ConstDef : a
+    {:
+    :}
+    | VARIABLE : a
+    {:
+    :}
+    | FUNCION : a
+    {:
+    :}
+    | NucleoDef : a
+    {:
+    :}
+    | FunctionsDefGui : a
     {:
     :}
 ;
 
-ImportDef ::= NUMERAL IMPORTARR STRING_LIT:arg0
+NucleoDef ::= res_main res_main : a l_parent r_parent l_llave  INSTRUCCIONES:b r_llave
     {:
     :}
 ;
 
-StructDef ::= FUSIONR ID:arg0 LEFT_BRACES AttributeList:arg1 RIGHT_BRACES SEMI
+IMPORT ::= NUMERAL res_import cadena:a
     {:
     :}
 ;
 
-AttributeList ::= AttributeList : arg0 Attribute : arg1
-    {:
-    :}
-    | Attribute : arg0
+StructDef ::= FUSIONR id:a l_llave LISTA_ATRIBUTOS:b r_llave puntocoma
     {:
     :}
 ;
 
-Attribute ::= Type : arg0 ID : arg1 SEMI
+LISTA_ATRIBUTOS ::= LISTA_ATRIBUTOS : a ATRIBUTO : b
     {:
     :}
-    | Type : arg0 ID : arg1 ArrayList : arg2 SEMI
+    | ATRIBUTO : a
     {:
     :}
 ;
 
-Type ::= ENTR
+ATRIBUTO ::= TIPO : a id : b puntocoma
     {:
     :}
-    | CHRR
+    | TIPO : a id : b LISTA_ARREGLO : c puntocoma
     {:
     :}
-    | DECR
+;
+
+TIPO ::= res_int
     {:
     :}
-    | BULR
+    | res_char
     {:
     :}
-    | ID : arg0
+    | res_double
+    {:
+    :}
+    | res_boolean
+    {:
+    :}
+    | id : a
     {:
     :}
     | RLBL
@@ -171,84 +174,84 @@ Type ::= ENTR
     | RBTON
     {:
     :}
-    | RSTRINGR
+    | res_string
     {:
     :}
 ;
 
 
-ArrayList ::= ArrayList : arg0 LEFT_BRACKET Expr : arg1 RIGHT_BRACKET
+LISTA_ARREGLO ::= LISTA_ARREGLO : a l_corchete E : b r_corchete
     {:
     :}
-    | LEFT_BRACKET Expr:arg0 RIGHT_BRACKET
-    {:
-    :}
-;
-
-ArrayParam ::= ArrayParam : arg0 LEFT_BRACKET RIGHT_BRACKET
-    {:
-    :}
-    | LEFT_BRACKET RIGHT_BRACKET
+    | l_corchete E:a r_corchete
     {:
     :}
 ;
 
-ConstDef ::= NUMERAL DEFINIRR ID : arg0 Expr : arg1
+ARREGLO_PARAM ::= ARREGLO_PARAM : a l_corchete r_corchete
+    {:
+    :}
+    | l_corchete r_corchete
     {:
     :}
 ;
 
-VarDef ::= Type : arg0 IdList : arg1 SEMI
-    {:
-    :}
-    | Type : arg0 IdList : arg1 ASIG Expr : arg2 SEMI
-    {:
-    :}
-    | Type : arg0 IdList : arg1 ASIG TIMES Access : arg2 SEMI
-    {:
-    :}
-    | Type : arg0 IdList : arg1 ArrayParam : arg2 ASIG Expr : arg3 SEMI 
-    {:
-    :}
-    | Type : arg0 IdList : arg1 ArrayParam : arg2 ASIG TIMES Access : arg3 SEMI 
-    {:
-    :}
-    | Type : arg0 IdList : arg1 ArrayList : arg2 SEMI
-    {:
-    :}
-    | Type : arg0 IdList : arg1 ArrayList : arg2 ASIG Expr : arg3 SEMI
-    {:
-    :}
-    | Type : arg0 IdList : arg1 ArrayList : arg2 ASIG TIMES Access : arg3 SEMI
+ConstDef ::= NUMERAL res_final id : a E : b
     {:
     :}
 ;
 
-IdList ::= IdList : arg0 COMMA ID : arg1
+VARIABLE ::= TIPO : a LISTA_ID : b puntocoma
     {:
     :}
-    | ID : arg0
+    | TIPO : a LISTA_ID : b ASIG E : c puntocoma
+    {:
+    :}
+    | TIPO : a LISTA_ID : b ASIG por ACCESO : c puntocoma
+    {:
+    :}
+    | TIPO : a LISTA_ID : b ARREGLO_PARAM : c ASIG E : d puntocoma 
+    {:
+    :}
+    | TIPO : a LISTA_ID : b ARREGLO_PARAM : c ASIG por ACCESO : d puntocoma 
+    {:
+    :}
+    | TIPO : a LISTA_ID : b LISTA_ARREGLO : c puntocoma
+    {:
+    :}
+    | TIPO : a LISTA_ID : b LISTA_ARREGLO : c ASIG E : d puntocoma
+    {:
+    :}
+    | TIPO : a LISTA_ID : b LISTA_ARREGLO : c ASIG por ACCESO : d puntocoma
     {:
     :}
 ;
 
-FunctionsDef ::= ZROR ID : arg0 LEFT_PARENT Params : arg1 RIGHT_PARENT LEFT_BRACES Instructions : arg2 RIGHT_BRACES
+LISTA_ID ::= LISTA_ID : a coma id : b
     {:
     :}
-    | Type : arg0 ID : arg1 LEFT_PARENT Params : arg2 RIGHT_PARENT LEFT_BRACES Instructions : arg3 RIGHT_BRACES
-    {:
-    :}
-    | Type : arg0 ArrayParam : arg1 ID : arg2 LEFT_PARENT Params : arg3 RIGHT_PARENT LEFT_BRACES Instructions : arg4 RIGHT_BRACES
+    | id : a
     {:
     :}
 ;
 
-FunctionsDefGui ::= ZROR ID : arg0 TWO_POINTS ID : arg1 LEFT_PARENT RIGHT_PARENT LEFT_BRACES Instructions : arg2 RIGHT_BRACES
+FUNCION ::= res_main id : a l_parent PARAMETROS : b r_parent l_llave INSTRUCCIONES : c r_llave
+    {:
+    :}
+    | TIPO : a id : b l_parent PARAMETROS : c r_parent l_llave INSTRUCCIONES : d r_llave
+    {:
+    :}
+    | TIPO : a ARREGLO_PARAM : b id : c l_parent PARAMETROS : d r_parent l_llave INSTRUCCIONES : e r_llave
     {:
     :}
 ;
 
-Params ::= ParamList : arg0
+FunctionsDefGui ::= res_main id : a dospuntos id : b l_parent r_parent l_llave INSTRUCCIONES : c r_llave
+    {:
+    :}
+;
+
+PARAMETROS ::= LISTA_PARAMETROS : a
     {:
     :}
     | /* empty */
@@ -256,23 +259,23 @@ Params ::= ParamList : arg0
     :}
 ;
 
-ParamList ::= ParamList : arg0 COMMA Param : arg1
+LISTA_PARAMETROS ::= LISTA_PARAMETROS : a coma PARAMETRO : b
     {:
     :}
-    | Param : arg0
-    {:
-    :}
-;
-
-Param ::= Type : arg0 ID : arg1
-    {:
-    :}
-    | Type : arg0 ID : arg1 ArrayParam : arg2
+    | PARAMETRO : a
     {:
     :}
 ;
 
-Instructions ::= InstructionList : arg0
+PARAMETRO ::= TIPO : a id : b
+    {:
+    :}
+    | TIPO : a id : b ARREGLO_PARAM : c
+    {:
+    :}
+;
+
+INSTRUCCIONES ::= LISTA_INSTRUCCIONES : a
     {:
     :}
     | /* empty */
@@ -280,121 +283,121 @@ Instructions ::= InstructionList : arg0
     :}
 ;
 
-InstructionList ::= InstructionList : arg0 Instruction : arg1
+LISTA_INSTRUCCIONES ::= LISTA_INSTRUCCIONES : a INSTRUCCION : b
     {:
     :}
-    | Instruction : arg0
-    {:
-    :}
-;
-
-Instruction ::= ReturnDef : arg0
-    {:
-    :}
-    | RomperDef : arg0
-    {:
-    :}
-    | SigaDef : arg0
-    {:
-    :}
-    | IfDef : arg0
-    {:
-    :}
-    | SwitchDef : arg0
-    {:
-    :}
-    | WhileDef : arg0
-    {:
-    :}
-    | RepeatDef : arg0
-    {:
-    :}
-    | ForDef : arg0
-    {:
-    :}
-    | AssigmentDef : arg0 SEMI
-    {:
-    :}
-    | CallDef : arg0
-    {:
-    :}
-    | VarDef : arg0
-    {:
-    :}
-    | StatementDef : arg0
-    {:
-    :}
-    | InputOutputDef : arg0
+    | INSTRUCCION : a
     {:
     :}
 ;
 
-ReturnDef ::= REGRESARR Expr : arg0 SEMI
+INSTRUCCION ::= RETURN : a
     {:
     :}
-    | REGRESARR : arg0 SEMI
+    | BREAK : a
     {:
     :}
-;
-
-RomperDef ::= ROMPERR : arg0 SEMI
+    | CONTINUE : a
     {:
     :}
-;
-
-SigaDef ::= SIGAR : arg0 SEMI
+    | IF : a
     {:
     :}
-;
-
-IfDef ::= IFR LEFT_PARENT Expr : arg0 RIGHT_PARENT LEFT_BRACES Instructions : arg1 RIGHT_BRACES
+    | SWITCH : a
     {:
     :}
-    | IFR LEFT_PARENT Expr : arg0 RIGHT_PARENT LEFT_BRACES Instructions : arg1 RIGHT_BRACES ElseDef : arg2
+    | WHILE : a
     {:
     :}
-;
-
-ElseDef ::= ELSER IfDef : arg0
+    | RepeatDef : a
     {:
     :}
-    | ELSER : arg0 LEFT_BRACES Instructions : arg1 RIGHT_BRACES
+    | FOR : a
     {:
     :}
-;
-
-WhileDef ::= WHILER LEFT_PARENT Expr : arg0 RIGHT_PARENT LEFT_BRACES Instructions : arg1 RIGHT_BRACES
+    | ASIGNACION : a puntocoma
     {:
     :}
-;
-
-RepeatDef ::= REPEATR LEFT_BRACES Instructions : arg0 RIGHT_BRACES WHENR LEFT_PARENT Expr : arg1 RIGHT_PARENT SEMI
+    | LLAMADA : a
+    {:
+    :}
+    | VARIABLE : a
+    {:
+    :}
+    | SENTENCIA : a
+    {:
+    :}
+    | InputOutputDef : a
     {:
     :}
 ;
 
-ForDef ::= FORR LEFT_PARENT VarDef : arg0 Expr : arg1 SEMI AssigmentDef : arg2 RIGHT_PARENT LEFT_BRACES Instructions : arg3 RIGHT_BRACES
+RETURN ::= res_return E : a puntocoma
     {:
     :}
-    | FORR LEFT_PARENT AssigmentDef : arg0 SEMI Expr : arg1 SEMI AssigmentDef : arg2 RIGHT_PARENT LEFT_BRACES Instructions : arg3 RIGHT_BRACES
-    {:
-    :}
-;
-
-SwitchDef ::= SWITCHR LEFT_PARENT Expr : arg0 RIGHT_PARENT LEFT_BRACES CaseList : arg1 DefaultCase : arg2 RIGHT_BRACES
+    | res_return : a puntocoma
     {:
     :}
 ;
 
-CaseList ::= CaseList : arg0 CASER Expr : arg1 TWO_POINTS Instructions : arg2
-    {:
-    :}
-    | CASER Expr : arg0 TWO_POINTS Instructions : arg1
+BREAK ::= res_break : a puntocoma
     {:
     :}
 ;
 
-DefaultCase ::= DEFAULTR : arg0 TWO_POINTS Instructions : arg1
+CONTINUE ::= res_continue : a puntocoma
+    {:
+    :}
+;
+
+IF ::= res_if l_parent E : a r_parent l_llave INSTRUCCIONES : b r_llave
+    {:
+    :}
+    | res_if l_parent E : a r_parent l_llave INSTRUCCIONES : b r_llave ELSE : c
+    {:
+    :}
+;
+
+ELSE ::= res_else IF : a
+    {:
+    :}
+    | res_else : a l_llave INSTRUCCIONES : b r_llave
+    {:
+    :}
+;
+
+WHILE ::= res_while l_parent E : a r_parent l_llave INSTRUCCIONES : b r_llave
+    {:
+    :}
+;
+
+RepeatDef ::= REPEATR l_llave INSTRUCCIONES : a r_llave res_when l_parent E : b r_parent puntocoma
+    {:
+    :}
+;
+
+FOR ::= res_for l_parent VARIABLE : a E : b puntocoma ASIGNACION : c r_parent l_llave INSTRUCCIONES : d r_llave
+    {:
+    :}
+    | res_for l_parent ASIGNACION : a puntocoma E : b puntocoma ASIGNACION : c r_parent l_llave INSTRUCCIONES : d r_llave
+    {:
+    :}
+;
+
+SWITCH ::= res_switch l_parent E : a r_parent l_llave LISTA_CASOS : b DEFAULT : c r_llave
+    {:
+    :}
+;
+
+LISTA_CASOS ::= LISTA_CASOS : a res_case E : b dospuntos INSTRUCCIONES : c
+    {:
+    :}
+    | res_case E : a dospuntos INSTRUCCIONES : b
+    {:
+    :}
+;
+
+DEFAULT ::= res_default : a dospuntos INSTRUCCIONES : b
     {:
     :}
     | /*empty*/
@@ -402,208 +405,208 @@ DefaultCase ::= DEFAULTR : arg0 TWO_POINTS Instructions : arg1
     :}
 ;
 
-StatementDef ::= LEFT_BRACES Instructions : arg0 RIGHT_BRACES
+SENTENCIA ::= l_llave INSTRUCCIONES : a r_llave
     {:
     :}
 ;
 
-CallDef ::= Access : arg0 SEMI
+LLAMADA ::= ACCESO : a puntocoma
     {:
     :}
 ;
 
-AssigmentDef ::= Access : arg0 ASIG Expr : arg1
+ASIGNACION ::= ACCESO : a ASIG E : b
     {:
     :}
-    | Access : arg0 ASIG TIMES Access : arg1
+    | ACCESO : a ASIG por ACCESO : b
     {:
     :}
-    | Access : arg0 PLUSPLUS
+    | ACCESO : a masmas
     {:
     :}
-    | Access : arg0 MINUSMINUS
-    {:
-    :}
-;
-
-InputOutputDef ::= RIMP : arg0 LEFT_PARENT ExprList : arg1 RIGHT_PARENT SEMI
-    {:
-    :}
-    | RWRITE : arg0 LEFT_PARENT Expr : arg1 RIGHT_PARENT SEMI
-    {:
-    :}
-    | RAPEND : arg0 LEFT_PARENT Expr : arg1 RIGHT_PARENT SEMI
-    {:
-    :}
-    | RWF : arg0 LEFT_PARENT ExprList : arg1 RIGHT_PARENT SEMI
-    {:
-    :}
-    | RCLOSE : arg0 LEFT_PARENT RIGHT_PARENT SEMI
-    {:
-    :}
-    | RREAD : arg0 LEFT_PARENT Expr : arg1 COMMA Expr : arg2 RIGHT_PARENT SEMI
-    {:
-    :}
-    | RMENSAGE : arg0 LEFT_PARENT ExprList : arg1 RIGHT_PARENT SEMI
+    | ACCESO : a menosmenos
     {:
     :}
 ;
 
-ExprList ::= ExprList : arg0 COMMA Expr : arg1
+InputOutputDef ::= RIMP : a l_parent LISTA_E : b r_parent puntocoma
     {:
     :}
-    | Expr : arg0
+    | RWRITE : a l_parent E : b r_parent puntocoma
     {:
     :}
-;
-
-Expr ::= Constant : arg0    
+    | RAPEND : a l_parent E : b r_parent puntocoma
     {:
     :}
-    | BinExpr : arg0
+    | RWF : a l_parent LISTA_E : b r_parent puntocoma
     {:
     :}
-    | UnExpr : arg0
+    | RCLOSE : a l_parent r_parent puntocoma
     {:
     :}
-    | Access : arg0
+    | RREAD : a l_parent E : b coma E : c r_parent puntocoma
     {:
     :}
-    | LEFT_PARENT Expr : arg0 RIGHT_PARENT
-    {:
-    :}
-    | ArrayDec : arg0
+    | RMENSAGE : a l_parent LISTA_E : b r_parent puntocoma
     {:
     :}
 ;
 
-Constant ::= ENT_LIT : arg0
+LISTA_E ::= LISTA_E : a coma E : b
     {:
     :}
-    | CHAR_LIT : arg0
-    {:
-    :}
-    | BOOL_LIT : arg0
-    {:
-    :}
-    | DEC_LIT : arg0
-    {:
-    :}
-    | NLO : arg0
-    {:
-    :}
-    | STRING_LIT : arg0
+    | E : a
     {:
     :}
 ;
 
-BinExpr ::= Arithmetic : arg0
+E ::= CONSTANTE : a    
     {:
     :}
-    | Logical : arg0
+    | BINARIA : a
     {:
     :}
-    | Relational : arg0
+    | UNARIA : a
     {:
     :}
-    | PostExpr : arg0
+    | ACCESO : a
+    {:
+    :}
+    | l_parent E : a r_parent
+    {:
+    :}
+    | DECLARACION_ARREGLO : a
     {:
     :}
 ;
 
-UnExpr::= MINUS Expr : arg0
+CONSTANTE ::= numero : a
+    {:
+    :}
+    | caracter : a
+    {:
+    :}
+    | BOOL_LIT : a
+    {:
+    :}
+    | doble : a
+    {:
+    :}
+    | res_null : a
+    {:
+    :}
+    | cadena : a
+    {:
+    :}
+;
+
+BINARIA ::= ARITMETICA : a
+    {:
+    :}
+    | LOGICA : a
+    {:
+    :}
+    | RELACIONAL : a
+    {:
+    :}
+    | POST_E : a
+    {:
+    :}
+;
+
+UNARIA::= menos E : a
     {:
     :}
     %prec UMINUS
-    | NOT Expr : arg0
+    | not E : a
     {:
     :}
-    | PLUS Expr : arg0
+    | mas E : a
     {:
     :}
     %prec UPLUS
 ;
 
-PostExpr ::= Expr : arg0 PLUSPLUS
+POST_E ::= E : a masmas
     {:
     :}
-    | Expr : arg0 MINUSMINUS
-    {:
-    :}
-;
-
-Arithmetic ::= Expr : arg0 PLUS Expr : arg1
-    {:
-    :}
-    | Expr : arg0 MINUS Expr : arg1
-    {:
-    :}
-    | Expr : arg0 TIMES Expr : arg1
-    {:
-    :}
-    | Expr : arg0 DIV Expr : arg1
-    {:
-    :}
-    | Expr : arg0 POT Expr : arg1
-    {:
-    :}
-    | Expr : arg0 MOD Expr : arg1
+    | E : a menosmenos
     {:
     :}
 ;
 
-Logical ::= Expr : arg0 OR Expr : arg1
+ARITMETICA ::= E : a mas E : b
     {:
     :}
-    | Expr : arg0 AND Expr : arg1
+    | E : a menos E : b
     {:
     :}
-;
-
-Relational ::= Expr : arg0 LSS Expr : arg1
+    | E : a por E : b
     {:
     :}
-    | Expr : arg0 LSS_EQ Expr : arg1
+    | E : a div E : b
     {:
     :}
-    | Expr : arg0 GTR Expr : arg1
+    | E : a potencia E : b
     {:
     :}
-    | Expr : arg0 GTR_EQ Expr : arg1
-    {:
-    :}
-    | Expr : arg0 EQ Expr : arg1
-    {:
-    :}
-    | Expr : arg0 NOT_EQ Expr : arg1
+    | E : a modular E : b
     {:
     :}
 ;
 
-Access ::= ID : arg0
+LOGICA ::= E : a or E : b
     {:
     :}
-    | ID : arg0 LEFT_PARENT ExprList : arg1 RIGHT_PARENT
-    {:
-    :}
-    | ID : arg0 LEFT_PARENT RIGHT_PARENT
-    {:
-    :}
-    | Access : arg0 DOT ID : arg1
-    {:
-    :}
-    | Access : arg0 LEFT_BRACKET Expr : arg1 RIGHT_BRACKET
-    {:
-    :}
-    | Access : arg0 DOT ID : arg1 LEFT_PARENT ExprList : arg2 RIGHT_PARENT
-    {:
-    :}
-    | Access : arg0 DOT ID : arg1 LEFT_PARENT RIGHT_PARENT
+    | E : a and E : b
     {:
     :}
 ;
 
-ArrayDec ::= LEFT_BRACES : arg0 ExprList : arg1 RIGHT_BRACES
+RELACIONAL ::= E : a menor E : b
+    {:
+    :}
+    | E : a menorigual E : b
+    {:
+    :}
+    | E : a mayor E : b
+    {:
+    :}
+    | E : a mayorigual E : b
+    {:
+    :}
+    | E : a igualigual E : b
+    {:
+    :}
+    | E : a diferente E : b
+    {:
+    :}
+;
+
+ACCESO ::= id : a
+    {:
+    :}
+    | id : a l_parent LISTA_E : b r_parent
+    {:
+    :}
+    | id : a l_parent r_parent
+    {:
+    :}
+    | ACCESO : a punto id : b
+    {:
+    :}
+    | ACCESO : a l_corchete E : b r_corchete
+    {:
+    :}
+    | ACCESO : a punto id : b l_parent LISTA_E : c r_parent
+    {:
+    :}
+    | ACCESO : a punto id : b l_parent r_parent
+    {:
+    :}
+;
+
+DECLARACION_ARREGLO ::= l_llave : a LISTA_E : b r_llave
     {:
     :}
 ;
