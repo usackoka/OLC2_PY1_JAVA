@@ -15,8 +15,8 @@ import Principal.Singleton;
 //---> Expresiones Regulares
 numero = (\d)+ //[0-9]+
 doble = [0-9]+"."[0-9]+
-comentario_linea = "//"~"\n"
-comentario_multilinea = "/*"~"*/"
+comentario_linea = "#"~"\n"
+comentario_multilinea = "#*"~"*#"
 id = [a-zA-Z]([a-zA-Z]|"_"|[0-9])*
 caracter = "'"([^\"\n])?"'"
 cadena = ([\"]([^\"\n]|(\\\"))*[\"])
@@ -25,13 +25,17 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
 
 %%
 <YYINITIAL>{
-    "null"              {return new Symbol(sym.res_null,yyline,yychar,yytext());}
-    "int"               {return new Symbol(sym.res_int,yyline,yychar,yytext());}
-    "void"              {return new Symbol(sym.res_void,yyline,yychar,yytext());}
-    "char"              {return new Symbol(sym.res_char,yyline,yychar,yytext());}
-    "double"            {return new Symbol(sym.res_double,yyline,yychar,yytext());}
+    //tipos de dato
+    "integer"           {return new Symbol(sym.res_int,yyline,yychar,yytext());}
+    "numeric"           {return new Symbol(sym.res_double,yyline,yychar,yytext());}
     "boolean"           {return new Symbol(sym.res_boolean,yyline,yychar,yytext());}
     "String"            {return new Symbol(sym.res_string,yyline,yychar,yytext());}
+    
+    //valores
+    "null"              {return new Symbol(sym.res_null,yyline,yychar,yytext());}
+    "true"              {return new Symbol(sym.res_false,yyline,yychar,yytext());}
+    "false"             {return new Symbol(sym.res_true,yyline,yychar,yytext());}
+
     "if"                {return new Symbol(sym.res_if,yyline,yychar,yytext());}
     "else"              {return new Symbol(sym.res_else,yyline,yychar,yytext());}
     "while"             {return new Symbol(sym.res_while,yyline,yychar,yytext());}
@@ -67,15 +71,15 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
     "-"             {return new Symbol(sym.menos,yyline,yychar, yytext());}
     "*"             {return new Symbol(sym.por,yyline,yychar, yytext());}
     "^"             {return new Symbol(sym.potencia,yyline,yychar, yytext());}
-    "%"             {return new Symbol(sym.modular,yyline,yychar, yytext());}
+    "%%"             {return new Symbol(sym.modular,yyline,yychar, yytext());}
     "/"             {return new Symbol(sym.div,yyline,yychar, yytext());}
     ">="            {return new Symbol(sym.mayorigual,yyline,yychar, yytext());}
     ">"             {return new Symbol(sym.mayor,yyline,yychar, yytext());}
     "<="            {return new Symbol(sym.menorigual,yyline,yychar, yytext());}
     "<"             {return new Symbol(sym.menor,yyline,yychar, yytext());}
     "!="            {return new Symbol(sym.diferente,yyline,yychar, yytext());}
-    "&&"            {return new Symbol(sym.and,yyline,yychar, yytext());}
-    "||"            {return new Symbol(sym.or,yyline,yychar, yytext());}
+    "&"            {return new Symbol(sym.and,yyline,yychar, yytext());}
+    "|"            {return new Symbol(sym.or,yyline,yychar, yytext());}
     "!"             {return new Symbol(sym.not,yyline,yychar, yytext());}
     "."             {return new Symbol(sym.punto,yyline,yychar, yytext());}
     ":"             {return new Symbol(sym.dospuntos,yyline,yychar, yytext());}
