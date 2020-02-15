@@ -26,10 +26,11 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
 %%
 <YYINITIAL>{
     //tipos de dato
-    "integer"           {return new Symbol(sym.res_int,yyline,yychar,yytext());}
+    /*"integer"           {return new Symbol(sym.res_int,yyline,yychar,yytext());}
     "numeric"           {return new Symbol(sym.res_double,yyline,yychar,yytext());}
     "boolean"           {return new Symbol(sym.res_boolean,yyline,yychar,yytext());}
     "String"            {return new Symbol(sym.res_string,yyline,yychar,yytext());}
+    */
     
     //valores
     "null"              {return new Symbol(sym.res_null,yyline,yychar,yytext());}
@@ -40,17 +41,13 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
     "else"              {return new Symbol(sym.res_else,yyline,yychar,yytext());}
     "while"             {return new Symbol(sym.res_while,yyline,yychar,yytext());}
     "for"               {return new Symbol(sym.res_for,yyline,yychar,yytext());}
-    "repeat"            {return new Symbol(sym.res_repeat,yyline,yychar,yytext());}
     "switch"            {return new Symbol(sym.res_switch,yyline,yychar,yytext());}
     "case"              {return new Symbol(sym.res_case,yyline,yychar,yytext());}
     "default"           {return new Symbol(sym.res_default,yyline,yychar,yytext());}
     "break"             {return new Symbol(sym.res_break,yyline,yychar,yytext());}
     "continue"          {return new Symbol(sym.res_continue,yyline,yychar,yytext());}
-    "final"             {return new Symbol(sym.res_final,yyline,yychar,yytext());}
-    "import"            {return new Symbol(sym.res_import,yyline,yychar,yytext());}
     "return"            {return new Symbol(sym.res_return,yyline,yychar,yytext());}
     "do"                {return new Symbol(sym.res_do,yyline,yychar,yytext());}
-    "main"              {return new Symbol(sym.res_main,yyline,yychar,yytext());}
 
     "print"             {return new Symbol(sym.res_print,yyline,yychar,yytext());}
     "println"           {return new Symbol(sym.res_println,yyline,yychar,yytext());}
@@ -73,6 +70,7 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
     "^"             {return new Symbol(sym.potencia,yyline,yychar, yytext());}
     "%%"             {return new Symbol(sym.modular,yyline,yychar, yytext());}
     "/"             {return new Symbol(sym.div,yyline,yychar, yytext());}
+    "?"             {return new Symbol(sym.ternario,yyline,yychar, yytext());}
     ">="            {return new Symbol(sym.mayorigual,yyline,yychar, yytext());}
     ">"             {return new Symbol(sym.mayor,yyline,yychar, yytext());}
     "<="            {return new Symbol(sym.menorigual,yyline,yychar, yytext());}

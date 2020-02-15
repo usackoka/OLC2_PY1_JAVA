@@ -36,30 +36,21 @@ parser code
  }
 :}
 
-terminal String res_null,res_int,res_main,res_char,res_double,res_boolean,res_if,res_while,res_for,res_switch,res_case,res_default,
+terminal String res_null,res_if,res_while,res_for,res_switch,res_case,res_default,
 res_break,res_continue,res_final,res_import,res_return,res_when,res_string,
 l_corchete,r_corchete,l_llave,r_llave,l_parent,r_parent,coma,puntocoma,igualigual,diferente,mas,menos,por,potencia,modular,div,
 mayor,mayorigual,menor,menorigual,masmas,menosmenos
 and,or,not,punto,dospuntos,
 numero,doble,cadena,caracter,id,
-res_else,UMINUS,UPLUS,res_mian, res_print, res_println;
+res_else,UMINUS,UPLUS,res_mian, res_print, res_println, res_true, res_false;
 
 non terminal S;
 
-non terminal LinkedList<INSTRUCCION> LISTA_INSTRUCCIONES,INSTRUCCIONES,LISTA_CASOS,DECLARACIONES;
-non terminal INSTRUCCION INSTRUCCION,IF,RETURN,BREAK,CONTINUE,SWITCH,WHILE,FOR,ASIGNACION,LLAMADA,ELSE,DEFAULT,SENTENCIA,
-             VARIABLE,FUNCION,DECLARACION,IMPORT,StructDef,ConstDef;
-
-non terminal Parameter ATRIBUTO,PARAMETRO;
-non terminal LinkedList<Parameter> LISTA_ATRIBUTOS,LISTA_PARAMETROS,PARAMETROS;
-non terminal Objeto TIPO;
-
-non terminal LinkedList<String> LISTA_ID;
-
-non terminal LinkedList<Operation> LISTA_E;
-non terminal Operation CONSTANTE,BINARIA,LOGICA,ARITMETICA,RELACIONAL,UNARIA,POST_E,ACCESO,E,DECLARACION_ARREGLO;
-
-non terminal Arreglo ARREGLO_PARAM,LISTA_ARREGLO;
+non terminal LISTA_INSTRUCCIONES,BLOQUES,LISTA_CASOS,DECLARACIONES,
+INSTRUCCION,IF,res_return,res_break,res_continue,SWITCH,WHILE,FOR,ASIGNACION,LLAMADA,ELSE,DEFAULT,SENTENCIA,
+VARIABLE,FUNCION,DECLARACION,IMPORT,StructDef,ConstDef,ATRIBUTO,PARAMETRO,
+LISTA_ATRIBUTOS,LISTA_PARAMETROS,PARAMETROS,TIPO,LISTA_ID,LISTA_E,CONSTANTE,BINARIA,LOGICA,ARITMETICA,
+RELACIONAL,UNARIA,POST_E,ACCESO,E,DECLARACION_ARREGLO,ARREGLO_PARAM,LISTA_ARREGLO;
 
 precedence left or;
 precedence left and;
@@ -73,7 +64,7 @@ precedence left l_parent,r_parent,l_corchete,r_corchete;
 
 start with S;
 
-S ::= DECLARACIONES : a
+S ::= DECLARACIONES:a
     {:
         p = new Principal(a);
     :}
@@ -87,171 +78,29 @@ DECLARACIONES::= DECLARACIONES:a DECLARACION:b
     :}
 ;
 
-DECLARACION ::= IMPORT:a
+DECLARACION ::= VARIABLE:a
     {:
     :}
-    | StructDef:a
-    {:
-    :}
-    | ConstDef : a
-    {:
-    :}
-    | VARIABLE : a
-    {:
-    :}
-    | FUNCION : a
-    {:
-    :}
-    | NucleoDef : a
-    {:
-    :}
-    | FunctionsDefGui : a
+    | FUNCION:a
     {:
     :}
 ;
 
-NucleoDef ::= res_main res_main : a l_parent r_parent l_llave  INSTRUCCIONES:b r_llave
+VARIABLE ::= 
+;
+
+FUNCION ::= res_main id:a l_parent PARAMETROS:b r_parent l_llave BLOQUES:c r_llave
+    {:
+    :}
+    | TIPO:a id:b l_parent PARAMETROS:c r_parent l_llave BLOQUES:d r_llave
+    {:
+    :}
+    | TIPO:a ARREGLO_PARAM:b id:c l_parent PARAMETROS:d r_parent l_llave BLOQUES:e r_llave
     {:
     :}
 ;
 
-IMPORT ::= NUMERAL res_import cadena:a
-    {:
-    :}
-;
-
-StructDef ::= FUSIONR id:a l_llave LISTA_ATRIBUTOS:b r_llave puntocoma
-    {:
-    :}
-;
-
-LISTA_ATRIBUTOS ::= LISTA_ATRIBUTOS : a ATRIBUTO : b
-    {:
-    :}
-    | ATRIBUTO : a
-    {:
-    :}
-;
-
-ATRIBUTO ::= TIPO : a id : b puntocoma
-    {:
-    :}
-    | TIPO : a id : b LISTA_ARREGLO : c puntocoma
-    {:
-    :}
-;
-
-TIPO ::= res_int
-    {:
-    :}
-    | res_char
-    {:
-    :}
-    | res_double
-    {:
-    :}
-    | res_boolean
-    {:
-    :}
-    | id : a
-    {:
-    :}
-    | RLBL
-    {:
-    :}
-    | RTXT
-    {:
-    :}
-    | RTXTA
-    {:
-    :}
-    | RTXTN
-    {:
-    :}
-    | RTXTP
-    {:
-    :}
-    | RBTON
-    {:
-    :}
-    | res_string
-    {:
-    :}
-;
-
-
-LISTA_ARREGLO ::= LISTA_ARREGLO : a l_corchete E : b r_corchete
-    {:
-    :}
-    | l_corchete E:a r_corchete
-    {:
-    :}
-;
-
-ARREGLO_PARAM ::= ARREGLO_PARAM : a l_corchete r_corchete
-    {:
-    :}
-    | l_corchete r_corchete
-    {:
-    :}
-;
-
-ConstDef ::= NUMERAL res_final id : a E : b
-    {:
-    :}
-;
-
-VARIABLE ::= TIPO : a LISTA_ID : b puntocoma
-    {:
-    :}
-    | TIPO : a LISTA_ID : b ASIG E : c puntocoma
-    {:
-    :}
-    | TIPO : a LISTA_ID : b ASIG por ACCESO : c puntocoma
-    {:
-    :}
-    | TIPO : a LISTA_ID : b ARREGLO_PARAM : c ASIG E : d puntocoma 
-    {:
-    :}
-    | TIPO : a LISTA_ID : b ARREGLO_PARAM : c ASIG por ACCESO : d puntocoma 
-    {:
-    :}
-    | TIPO : a LISTA_ID : b LISTA_ARREGLO : c puntocoma
-    {:
-    :}
-    | TIPO : a LISTA_ID : b LISTA_ARREGLO : c ASIG E : d puntocoma
-    {:
-    :}
-    | TIPO : a LISTA_ID : b LISTA_ARREGLO : c ASIG por ACCESO : d puntocoma
-    {:
-    :}
-;
-
-LISTA_ID ::= LISTA_ID : a coma id : b
-    {:
-    :}
-    | id : a
-    {:
-    :}
-;
-
-FUNCION ::= res_main id : a l_parent PARAMETROS : b r_parent l_llave INSTRUCCIONES : c r_llave
-    {:
-    :}
-    | TIPO : a id : b l_parent PARAMETROS : c r_parent l_llave INSTRUCCIONES : d r_llave
-    {:
-    :}
-    | TIPO : a ARREGLO_PARAM : b id : c l_parent PARAMETROS : d r_parent l_llave INSTRUCCIONES : e r_llave
-    {:
-    :}
-;
-
-FunctionsDefGui ::= res_main id : a dospuntos id : b l_parent r_parent l_llave INSTRUCCIONES : c r_llave
-    {:
-    :}
-;
-
-PARAMETROS ::= LISTA_PARAMETROS : a
+PARAMETROS ::= LISTA_PARAMETROS:a
     {:
     :}
     | /* empty */
@@ -259,23 +108,26 @@ PARAMETROS ::= LISTA_PARAMETROS : a
     :}
 ;
 
-LISTA_PARAMETROS ::= LISTA_PARAMETROS : a coma PARAMETRO : b
+LISTA_PARAMETROS ::= LISTA_PARAMETROS:a coma PARAMETRO:b
     {:
     :}
-    | PARAMETRO : a
-    {:
-    :}
-;
-
-PARAMETRO ::= TIPO : a id : b
-    {:
-    :}
-    | TIPO : a id : b ARREGLO_PARAM : c
+    | PARAMETRO:a
     {:
     :}
 ;
 
-INSTRUCCIONES ::= LISTA_INSTRUCCIONES : a
+PARAMETRO ::= TIPO:a id:b
+    {:
+    :}
+    | TIPO:a id:b ARREGLO_PARAM:c
+    {:
+    :}
+;
+
+BLOQUES ::= LISTA_INSTRUCCIONES:a
+    {:
+    :}
+    | LISTA_SENTENCIAS:a
     {:
     :}
     | /* empty */
@@ -283,121 +135,128 @@ INSTRUCCIONES ::= LISTA_INSTRUCCIONES : a
     :}
 ;
 
-LISTA_INSTRUCCIONES ::= LISTA_INSTRUCCIONES : a INSTRUCCION : b
+LISTA_SENTENCIAS ::= LISTA_SENTENCIAS:a SENTENCIA:b
     {:
     :}
-    | INSTRUCCION : a
-    {:
-    :}
-;
-
-INSTRUCCION ::= RETURN : a
-    {:
-    :}
-    | BREAK : a
-    {:
-    :}
-    | CONTINUE : a
-    {:
-    :}
-    | IF : a
-    {:
-    :}
-    | SWITCH : a
-    {:
-    :}
-    | WHILE : a
-    {:
-    :}
-    | RepeatDef : a
-    {:
-    :}
-    | FOR : a
-    {:
-    :}
-    | ASIGNACION : a puntocoma
-    {:
-    :}
-    | LLAMADA : a
-    {:
-    :}
-    | VARIABLE : a
-    {:
-    :}
-    | SENTENCIA : a
-    {:
-    :}
-    | InputOutputDef : a
+    | SENTENCIA:a
     {:
     :}
 ;
 
-RETURN ::= res_return E : a puntocoma
+LISTA_INSTRUCCIONES ::= LISTA_INSTRUCCIONES:a INSTRUCCION:b
     {:
     :}
-    | res_return : a puntocoma
-    {:
-    :}
-;
-
-BREAK ::= res_break : a puntocoma
+    | INSTRUCCION:a
     {:
     :}
 ;
 
-CONTINUE ::= res_continue : a puntocoma
+SENTENCIA ::= IF:a
+    {:
+    :}
+    | SWITCH:a
+    {:
+    :}
+    | WHILE:a
+    {:
+    :}
+    | FOR:a
+    {:
+    :}
+
+INSTRUCCION ::= res_return:a
+    {:
+    :}
+    | res_break:a
+    {:
+    :}
+    | res_continue:a
+    {:
+    :}
+    
+    | ASIGNACION:a puntocoma
+    {:
+    :}
+    | LLAMADA:a
+    {:
+    :}
+    | VARIABLE:a
+    {:
+    :}
+    | SENTENCIA:a
+    {:
+    :}
+    | InputOutputDef:a
     {:
     :}
 ;
 
-IF ::= res_if l_parent E : a r_parent l_llave INSTRUCCIONES : b r_llave
+res_return ::= res_return E:a puntocoma
     {:
     :}
-    | res_if l_parent E : a r_parent l_llave INSTRUCCIONES : b r_llave ELSE : c
-    {:
-    :}
-;
-
-ELSE ::= res_else IF : a
-    {:
-    :}
-    | res_else : a l_llave INSTRUCCIONES : b r_llave
+    | res_return:a puntocoma
     {:
     :}
 ;
 
-WHILE ::= res_while l_parent E : a r_parent l_llave INSTRUCCIONES : b r_llave
+res_break ::= res_break:a puntocoma
     {:
     :}
 ;
 
-RepeatDef ::= REPEATR l_llave INSTRUCCIONES : a r_llave res_when l_parent E : b r_parent puntocoma
+res_continue ::= res_continue:a puntocoma
     {:
     :}
 ;
 
-FOR ::= res_for l_parent VARIABLE : a E : b puntocoma ASIGNACION : c r_parent l_llave INSTRUCCIONES : d r_llave
+IF ::= res_if l_parent E:a r_parent l_llave BLOQUES:b r_llave
     {:
     :}
-    | res_for l_parent ASIGNACION : a puntocoma E : b puntocoma ASIGNACION : c r_parent l_llave INSTRUCCIONES : d r_llave
-    {:
-    :}
-;
-
-SWITCH ::= res_switch l_parent E : a r_parent l_llave LISTA_CASOS : b DEFAULT : c r_llave
+    | res_if l_parent E:a r_parent l_llave BLOQUES:b r_llave ELSE:c
     {:
     :}
 ;
 
-LISTA_CASOS ::= LISTA_CASOS : a res_case E : b dospuntos INSTRUCCIONES : c
+ELSE ::= res_else IF:a
     {:
     :}
-    | res_case E : a dospuntos INSTRUCCIONES : b
+    | res_else:a l_llave BLOQUES:b r_llave
     {:
     :}
 ;
 
-DEFAULT ::= res_default : a dospuntos INSTRUCCIONES : b
+WHILE ::= res_while l_parent E:a r_parent l_llave BLOQUES:b r_llave
+    {:
+    :}
+;
+
+RepeatDef ::= REPEATR l_llave BLOQUES:a r_llave res_when l_parent E:b r_parent puntocoma
+    {:
+    :}
+;
+
+FOR ::= res_for l_parent VARIABLE:a E:b puntocoma ASIGNACION:c r_parent l_llave BLOQUES:d r_llave
+    {:
+    :}
+    | res_for l_parent ASIGNACION:a puntocoma E:b puntocoma ASIGNACION:c r_parent l_llave BLOQUES:d r_llave
+    {:
+    :}
+;
+
+SWITCH ::= res_switch l_parent E:a r_parent l_llave LISTA_CASOS:b DEFAULT:c r_llave
+    {:
+    :}
+;
+
+LISTA_CASOS ::= LISTA_CASOS:a res_case E:b dospuntos BLOQUES:c
+    {:
+    :}
+    | res_case E:a dospuntos BLOQUES:b
+    {:
+    :}
+;
+
+DEFAULT ::= res_default:a dospuntos BLOQUES:b
     {:
     :}
     | /*empty*/
@@ -405,208 +264,141 @@ DEFAULT ::= res_default : a dospuntos INSTRUCCIONES : b
     :}
 ;
 
-SENTENCIA ::= l_llave INSTRUCCIONES : a r_llave
+LISTA_E ::= LISTA_E:a coma E:b
+    {:
+    :}
+    | E:a
     {:
     :}
 ;
 
-LLAMADA ::= ACCESO : a puntocoma
+E ::= CONSTANTE:a    
+    {:
+    :}
+    | BINARIA:a
+    {:
+    :}
+    | UNARIA:a
+    {:
+    :}
+    | ACCESO:a
+    {:
+    :}
+    | l_parent E:a r_parent
+    {:
+    :}
+    | DECLARACION_ARREGLO:a
     {:
     :}
 ;
 
-ASIGNACION ::= ACCESO : a ASIG E : b
+CONSTANTE ::= numero:a
     {:
     :}
-    | ACCESO : a ASIG por ACCESO : b
+    | res_true
     {:
     :}
-    | ACCESO : a masmas
+    | res_false
     {:
     :}
-    | ACCESO : a menosmenos
+    | doble:a
     {:
     :}
-;
-
-InputOutputDef ::= RIMP : a l_parent LISTA_E : b r_parent puntocoma
+    | res_null:a
     {:
     :}
-    | RWRITE : a l_parent E : b r_parent puntocoma
-    {:
-    :}
-    | RAPEND : a l_parent E : b r_parent puntocoma
-    {:
-    :}
-    | RWF : a l_parent LISTA_E : b r_parent puntocoma
-    {:
-    :}
-    | RCLOSE : a l_parent r_parent puntocoma
-    {:
-    :}
-    | RREAD : a l_parent E : b coma E : c r_parent puntocoma
-    {:
-    :}
-    | RMENSAGE : a l_parent LISTA_E : b r_parent puntocoma
+    | cadena:a
     {:
     :}
 ;
 
-LISTA_E ::= LISTA_E : a coma E : b
+BINARIA ::= ARITMETICA:a
     {:
     :}
-    | E : a
+    | LOGICA:a
     {:
     :}
-;
-
-E ::= CONSTANTE : a    
+    | RELACIONAL:a
     {:
     :}
-    | BINARIA : a
-    {:
-    :}
-    | UNARIA : a
-    {:
-    :}
-    | ACCESO : a
-    {:
-    :}
-    | l_parent E : a r_parent
-    {:
-    :}
-    | DECLARACION_ARREGLO : a
+    | POST_E:a
     {:
     :}
 ;
 
-CONSTANTE ::= numero : a
-    {:
-    :}
-    | caracter : a
-    {:
-    :}
-    | BOOL_LIT : a
-    {:
-    :}
-    | doble : a
-    {:
-    :}
-    | res_null : a
-    {:
-    :}
-    | cadena : a
-    {:
-    :}
-;
-
-BINARIA ::= ARITMETICA : a
-    {:
-    :}
-    | LOGICA : a
-    {:
-    :}
-    | RELACIONAL : a
-    {:
-    :}
-    | POST_E : a
-    {:
-    :}
-;
-
-UNARIA::= menos E : a
+UNARIA::= menos E:a
     {:
     :}
     %prec UMINUS
-    | not E : a
+    | not E:a
     {:
     :}
-    | mas E : a
+    | mas E:a
     {:
     :}
     %prec UPLUS
 ;
 
-POST_E ::= E : a masmas
+POST_E ::= E:a masmas
     {:
     :}
-    | E : a menosmenos
-    {:
-    :}
-;
-
-ARITMETICA ::= E : a mas E : b
-    {:
-    :}
-    | E : a menos E : b
-    {:
-    :}
-    | E : a por E : b
-    {:
-    :}
-    | E : a div E : b
-    {:
-    :}
-    | E : a potencia E : b
-    {:
-    :}
-    | E : a modular E : b
+    | E:a menosmenos
     {:
     :}
 ;
 
-LOGICA ::= E : a or E : b
+ARITMETICA ::= E:a mas E:b
     {:
     :}
-    | E : a and E : b
+    | E:a menos E:b
     {:
     :}
-;
-
-RELACIONAL ::= E : a menor E : b
+    | E:a por E:b
     {:
     :}
-    | E : a menorigual E : b
+    | E:a div E:b
     {:
     :}
-    | E : a mayor E : b
+    | E:a potencia E:b
     {:
     :}
-    | E : a mayorigual E : b
-    {:
-    :}
-    | E : a igualigual E : b
-    {:
-    :}
-    | E : a diferente E : b
+    | E:a modular E:b
     {:
     :}
 ;
 
-ACCESO ::= id : a
+LOGICA ::= E:a or E:b
     {:
     :}
-    | id : a l_parent LISTA_E : b r_parent
-    {:
-    :}
-    | id : a l_parent r_parent
-    {:
-    :}
-    | ACCESO : a punto id : b
-    {:
-    :}
-    | ACCESO : a l_corchete E : b r_corchete
-    {:
-    :}
-    | ACCESO : a punto id : b l_parent LISTA_E : c r_parent
-    {:
-    :}
-    | ACCESO : a punto id : b l_parent r_parent
+    | E:a and E:b
     {:
     :}
 ;
 
-DECLARACION_ARREGLO ::= l_llave : a LISTA_E : b r_llave
+RELACIONAL ::= E:a menor E:b
+    {:
+    :}
+    | E:a menorigual E:b
+    {:
+    :}
+    | E:a mayor E:b
+    {:
+    :}
+    | E:a mayorigual E:b
+    {:
+    :}
+    | E:a igualigual E:b
+    {:
+    :}
+    | E:a diferente E:b
+    {:
+    :}
+;
+
+LISTA_ID ::= LISTA_ID:a coma id:b
+    {:
+    :}
+    | id:a
     {:
     :}
 ;
