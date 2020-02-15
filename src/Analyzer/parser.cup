@@ -123,7 +123,10 @@ LISTA_PARAMETROS ::= LISTA_PARAMETROS:a coma PARAMETRO:b
     :}
 ;
 
-PARAMETRO ::= id:b
+PARAMETRO ::= id:a
+    {:
+    :}
+    | id:a igual E:b
     {:
     :}
     | res_default
