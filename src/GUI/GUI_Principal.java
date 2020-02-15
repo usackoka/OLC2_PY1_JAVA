@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
+import Analyzer.*;
 
 public class GUI_Principal extends javax.swing.JFrame{
 
@@ -130,7 +131,6 @@ public class GUI_Principal extends javax.swing.JFrame{
         txtReemplazar = new javax.swing.JTextField();
         btnReemplazar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
-        txtDebugger = new javax.swing.JTextField();
         jTree2 = new javax.swing.JTree();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -221,11 +221,6 @@ public class GUI_Principal extends javax.swing.JFrame{
                 btnBuscarActionPerformed(evt);
             }
         });
-
-        txtDebugger.setEditable(false);
-        txtDebugger.setBackground(new java.awt.Color(0, 19, 44));
-        txtDebugger.setFont(new java.awt.Font("Consolas", 1, 18)); // NOI18N
-        txtDebugger.setForeground(new java.awt.Color(255, 255, 255));
 
         jTree2.addTreeExpansionListener(new javax.swing.event.TreeExpansionListener() {
             public void treeCollapsed(javax.swing.event.TreeExpansionEvent evt) {
@@ -367,11 +362,11 @@ public class GUI_Principal extends javax.swing.JFrame{
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnReemplazar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(txtDebugger, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
-                    .addComponent(txtConsola2)
-                    .addComponent(tabPaneTablas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(tabPaneTablas, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE))
+                    .addComponent(txtConsola2, javax.swing.GroupLayout.PREFERRED_SIZE, 763, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -388,13 +383,12 @@ public class GUI_Principal extends javax.swing.JFrame{
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
                 .addGap(8, 8, 8))
             .addGroup(layout.createSequentialGroup()
+                .addGap(67, 67, 67)
                 .addComponent(tabPaneTablas, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtConsola2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtDebugger)
+                .addComponent(txtConsola2, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jTree2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -637,7 +631,6 @@ public class GUI_Principal extends javax.swing.JFrame{
     public static javax.swing.JTextField txtBuscar;
     public static javax.swing.JTextArea txtConsola;
     public static javax.swing.JTextField txtConsola2;
-    public static javax.swing.JTextField txtDebugger;
     public static javax.swing.JTextField txtLineas;
     public static javax.swing.JTextField txtReemplazar;
     // End of variables declaration//GEN-END:variables
@@ -681,22 +674,12 @@ public class GUI_Principal extends javax.swing.JFrame{
         dtmErrores.setRowCount(0);
         String cadena = paginaActual.txtEntrada.getText();
         Lexer lex = new Lexer(new BufferedReader(new StringReader(cadena)));
-        Singleton.getInstance().setTxtConsola(txtConsola);
-        Singleton.getInstance().clearErrorList();
        
 
         try {
             parser parse = new parser(lex);
-            
             parse.parse();
-            Principal p = parse.GetAst();
-            Singleton.getInstance().setModelError(dtmErrores);
-            Singleton.getInstance().crearHTMLErrores();
-            if(p != null){
-                     p.ejecutar(paginaActual.ruta_relativa);
-                     Singleton.getInstance().setModelError(dtmErrores);
-                     Singleton.getInstance().crearHTMLErrores();
-            }
+            //Principal p = parse.GetAst();
                 
             
         } catch (Exception ex) {

@@ -653,15 +653,17 @@ public class parser extends java_cup.runtime.lr_parser {
     /**
     *   Metodo que retorna la raiz del arbol
     **/
+    /*
     public Principal GetAst(){
-       // return p;
+        return p;
     }
+    */
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/
     public void syntax_error(Symbol s){
             System.out.println("Error sintactico en la linea: " + (s.left) +" Columna: " +s.right+ ". No se esperaba este componente: " + s.value+"."); 
-            Singleton.getInstance().addError(s.left,s.right,"Sintactico : No se esperaba este componente: " + s.value+".");
+            
            
  }
     /**
@@ -669,7 +671,6 @@ public class parser extends java_cup.runtime.lr_parser {
      **/
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
             System.out.println("Error Sintactico irrecuperable en la Lienea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.");
-            Singleton.getInstance().addError(s.left,s.right,"Sintactico : No se esperaba este componente: " + s.value+".");
            
  }
 

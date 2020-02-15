@@ -1,9 +1,9 @@
 package Analyzer;
 import java_cup.runtime.Symbol;
-import Principal.Singleton;
 %%
 %class Lexer
-%cupsym Simbolos
+%public
+%cupsym sym
 %cup
 %char
 %column
@@ -91,4 +91,6 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
 {comentario_linea} {/*se ignoran*/}
 {comentario_multilinea} {/*se ignoran*/}
 [ \t\r\n\f]+                       {/* Espacios en blanco se ingnoran */}
-.   { TablaErrores.add(new Token(yytext(),"Lexico","Caracter no pertenece al lenguaje",yycolumn+1,yyline+1)); }
+.   { 
+    //TablaErrores.add(new Token(yytext(),"Lexico","Caracter no pertenece al lenguaje",yycolumn+1,yyline+1)); 
+    }
