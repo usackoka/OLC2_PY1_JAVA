@@ -40,10 +40,17 @@ public class Primitivo extends Expresion{
     }
     
     public void addValue(Object value, Object TIPO, Entorno entorno){
-        if(!this.TIPO.equals(TIPO)){
-            entorno.addError(new Token(value.toString(), "No se puede agregar el tipo: "+TIPO+" a un vector de tipo: "+this.TIPO, fila, columna));
-        }else{
-            this.values.add(value);
+        this.values.add(value);
+    }
+    
+    //castear el vector
+    public boolean castearA(Object TIPO){
+        if(TIPO.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
+            LinkedList<Object> values = new LinkedList<>();
+            
         }
+        
+        this.TIPO = TIPO;
+        return true;
     }
 }

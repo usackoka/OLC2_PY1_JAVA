@@ -9,6 +9,8 @@ package AST.Sentencias.Nativas;
 import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Primitivo;
+import AST.Expresiones.TipoList;
+import Analyzer.Token;
 import java.util.LinkedList;
 
 public class C extends Expresion{
@@ -31,12 +33,45 @@ public class C extends Expresion{
             }
             primitivo.addValue(expresion.getValor(entorno), expresion.getTipo(entorno), entorno);
         }
+        primitivo.castearA(getMAX(entorno));
         return primitivo;
     }
 
     @Override
     public Object getTipo(Entorno entorno) {
-        return this.expresiones.get(0).getTipo(entorno);
+        return this.getMAX(entorno);
+    }
+    
+    //PRIORIDADES
+    public Object getMAX(Entorno entorno){
+        Object TIPOMAX = null;
+        for (Expresion expresion : expresiones) {
+            Object TIPO = expresion.getTipo(entorno);
+            
+            if(TIPOMAX==null){
+                TIPOMAX=TIPO;
+            }else{
+                if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN)){
+                    if(TIPO.equals(Expresion.TIPO_PRIMITIVO.INTEGER) | TIPO.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)|TIPO instanceof TipoList){
+                        TIPOMAX = TIPO;
+                    }
+                }
+                else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
+                    if(TIPO.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)|TIPO instanceof TipoList){
+                        TIPOMAX = TIPO;
+                    }
+                }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
+                    if(TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)|TIPO instanceof TipoList){
+                        TIPOMAX = TIPO;
+                    }
+                }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.STRING)){
+                    if(TIPO instanceof TipoList){
+                        TIPOMAX = TIPO;
+                    }
+                }
+            }
+        }
+        return TIPOMAX;
     }
 
 }
