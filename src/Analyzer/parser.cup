@@ -308,6 +308,7 @@ LLAMADA ::= id:a l_parent LISTA_E:b r_parent
 
 CONSTANTE ::= numero:a
     {:
+        RESULT = new Primitivo(Integer.parseInt(a),Expresion.TIPO_PRIMITIVO.INTEGER,arigth+1,aleft+1);
     :}
     | res_true
     {:
