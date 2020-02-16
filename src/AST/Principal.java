@@ -6,6 +6,7 @@
 package AST;
 
 import Analyzer.Token;
+import java.util.LinkedList;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
@@ -16,15 +17,30 @@ public class Principal {
     DefaultTableModel dtmErrores, dtmDebugger;
     JTable tablaErrores, tablaDebugger;
     JTextArea txtConsola;
+    Entorno entorno;
+    
+    LinkedList<Nodo> nodos;
     
     public Principal(JTable tablaErrores, JTable tablaDebugger, JTextArea txtConsola){
         this.tablaErrores = tablaErrores;
         this.tablaDebugger = tablaDebugger;
         this.txtConsola = txtConsola;
+        this.entorno = new Entorno(this);
+        this.nodos = new LinkedList<>();
         inicializarTablas();
     }
     
     public void ejecutar(){
+        //guardo las funciones encontradas
+        
+        //por cada uno de los nodos que encontré, los ejecuto
+        this.nodos.forEach((nodo)->{
+            if(nodo instanceof Expresion){
+                ((Expresion)nodo).getValor(entorno);
+            }else{
+                ((Sentencia)nodo).ejecutar(entorno);
+            }
+        });
     }
     
     public void print(String cadena){
@@ -69,4 +85,7 @@ public class Principal {
         tablaErrores.setShowGrid(true);
     }
     
+    public void setNodos(LinkedList<Nodo> nodos){
+        this.nodos = nodos;
+    }
 }

@@ -2,7 +2,9 @@ package Analyzer;
 
 import java_cup.runtime.*;
 import java.util.LinkedList;
-import AST.Principal;
+import AST.*;
+import AST.Expresiones.*;
+import AST.Sentencias.*;
 
 parser code
 {:
@@ -66,12 +68,16 @@ UMINUS,UPLUS
 non terminal S
 ;
 
-non terminal DECLARACIONES, DECLARACION, VARIABLE, FUNCION, PARAMETROS,
-LISTA_PARAMETROS, PARAMETRO, BLOQUES, LISTA_BLOQUES, SENTENCIA, INSTRUCCION,
-RETURN, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, LISTA_CASOS, DEFAULT,
-LISTA_E, E, LLAMADA, CONSTANTE, BINARIA, UNARIA, ARITMETICA, LOGICA,
-RELACIONAL, PUEDE_SEMICOLON, TERNARIA
+non terminal VARIABLE, PARAMETROS,
+LISTA_PARAMETROS, PARAMETRO,
+RETURN, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, LISTA_CASOS, DEFAULT, PUEDE_SEMICOLON
 ;
+
+non terminal LinkedList<Expresion> LISTA_E;
+non terminal LinkedList<Nodo> LISTA_BLOQUES, BLOQUES, DECLARACIONES;
+non terminal Nodo DECLARACION, INSTRUCCION;
+non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA;
+non terminal Sentencia SENTENCIA, FUNCION;
 
 precedence left ternario;
 precedence left or;
@@ -88,25 +94,33 @@ start with S;
 
 S ::= DECLARACIONES:a
     {:
+        principal.setNodos(a);
     :}
 ;
 
 DECLARACIONES::= DECLARACIONES:a DECLARACION:b
     {:
+        RESULT = a;
+        a.add(b);
     :}
     | DECLARACION:a
     {:
+        RESULT = new LinkedList<Nodo>();
+        RESULT.add(a);
     :}
 ;
 
 DECLARACION ::= FUNCION:a
     {:
+        RESULT = a;
     :}
     | SENTENCIA:a
     {:
+        RESULT = a;
     :}
     | INSTRUCCION:a PUEDE_SEMICOLON
     {:
+        RESULT = a;
     :}
 ;
 
@@ -149,23 +163,33 @@ PARAMETRO ::= E:a
 
 BLOQUES ::= LISTA_BLOQUES:a
     {:
+        RESULT = a;
     :}
     | /* empty */
     {:
+        RESULT = new LinkedList<Nodo>();
     :}
 ;
 
 LISTA_BLOQUES ::= LISTA_BLOQUES:a INSTRUCCION:b PUEDE_SEMICOLON
     {:
+        RESULT = a;
+        RESULT.add(b);
     :}
     | LISTA_BLOQUES:a SENTENCIA:b
     {:
+        RESULT = a;
+        RESULT.add(b);
     :}
     | SENTENCIA:a 
     {:
+        RESULT = new LinkedList<Nodo>();
+        RESULT.add(a);
     :}
     | INSTRUCCION:a PUEDE_SEMICOLON
     {:
+        RESULT = new LinkedList<Nodo>();
+        RESULT.add(a);
     :}
 ;
 
@@ -194,12 +218,15 @@ INSTRUCCION ::= res_break:a
     :}
     | LLAMADA:a
     {:
+        RESULT = a;
     :}
     | VARIABLE:a
     {:
+        //RESULT = a;
     :}
     | RETURN:a
     {:
+        //RESULT = a;
     :}
 ;
 
@@ -303,33 +330,41 @@ TERNARIA ::= E:a ternario E:b dospuntos E:c
 
 LLAMADA ::= id:a l_parent LISTA_E:b r_parent
     {:
+        RESULT = new Llamada(a,b,aright+1,aleft+1);
     :}
 ;
 
 CONSTANTE ::= numero:a
     {:
-        RESULT = new Primitivo(Integer.parseInt(a),Expresion.TIPO_PRIMITIVO.INTEGER,arigth+1,aleft+1);
+        RESULT = new Primitivo(Integer.parseInt(a),Expresion.TIPO_PRIMITIVO.INTEGER,aright+1,aleft+1);
     :}
-    | res_true
+    | res_true:a
     {:
+        RESULT = new Primitivo(true,Expresion.TIPO_PRIMITIVO.BOOLEAN,aright+1,aleft+1);
     :}
-    | res_false
+    | res_false:a
     {:
+        RESULT = new Primitivo(false,Expresion.TIPO_PRIMITIVO.BOOLEAN,aright+1,aleft+1);
     :}
     | doble:a
     {:
+        RESULT = new Primitivo(Double.parseDouble(a),Expresion.TIPO_PRIMITIVO.DOUBLE,aright+1,aleft+1);
     :}
     | res_null:a
     {:
+        RESULT = new Primitivo("",Expresion.TIPO_PRIMITIVO.STRING,aright+1,aleft+1);
     :}
     | cadena:a
     {:
+        RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.STRING,aright+1,aleft+1);
     :}
     | id:a
     {:
+        RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aright+1,aleft+1);
     :}
-    | res_default
+    | res_default:a
     {:
+        RESULT = new Primitivo("",Expresion.TIPO_PRIMITIVO.DEFAULT,aright+1,aleft+1);
     :}
 ;
 

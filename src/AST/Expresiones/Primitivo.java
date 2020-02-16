@@ -21,7 +21,7 @@ public class Primitivo extends Expresion{
         this.values.add(value);
         this.fila = fila;
         this.columna = columna;
-        this.TIPO = new TipoVector(TIPO);
+        this.TIPO = TIPO;
     }
 
     @Override
@@ -31,6 +31,6 @@ public class Primitivo extends Expresion{
 
     @Override
     public Object getTipo(Entorno entorno) {
-        return TIPO;
+        return this.TIPO;
     }
 }

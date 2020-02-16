@@ -7,5 +7,32 @@
 package AST;
 
 public class Entorno {
-
+    
+    Entorno padre;
+    Principal principal;
+    
+    public Entorno(Entorno padre){
+        this.padre = padre;
+    }
+    
+    public Entorno(Principal principal){
+        this.padre = null;
+        this.principal = principal;
+    }
+    
+    public void print(String cadena){
+        if(this.padre==null){
+            this.principal.print(cadena);
+        }else{
+            getEntornoGlobal().print(cadena);
+        }
+    }
+    
+    public Entorno getEntornoGlobal(){
+        Entorno aux = this;
+        while(aux.padre!=null){
+            aux = aux.padre;
+        }
+        return aux;
+    }
 }
