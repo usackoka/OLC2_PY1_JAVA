@@ -408,23 +408,29 @@ UNARIA::= menos E:a
     %prec UPLUS
 ;
 
-ARITMETICA ::= E:a mas E:b
+ARITMETICA ::= E:a mas:c E:b
     {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.MAS,cleft+1,cright+1);
     :}
-    | E:a menos E:b
+    | E:a menos:c E:b
     {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.MENOS,cleft+1,cright+1);
     :}
-    | E:a por E:b
+    | E:a por:c E:b
     {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.POR,cleft+1,cright+1);
     :}
-    | E:a div E:b
+    | E:a div:c E:b
     {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.DIV,cleft+1,cright+1);
     :}
-    | E:a potencia E:b
+    | E:a potencia:c E:b
     {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.POT,cleft+1,cright+1);
     :}
-    | E:a modular E:b
+    | E:a modular:c E:b
     {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.MOD,cleft+1,cright+1);
     :}
 ;
 
