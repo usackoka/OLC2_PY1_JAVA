@@ -11,15 +11,14 @@ public class Token {
     
     public Token(){
     }
-
-    public Token(String lexema, String componenteLexico, String descripcion, String fila, String columna) {
+    
+    public Token(String lexema, String descripcion, int fila, int columna) {
         this.lexema = lexema;
-        this.componenteLexico = componenteLexico;
+        this.componenteLexico = "Semántico";
         this.descripcion = descripcion;
-        this.columna = columna;
-        this.fila = fila;
+        this.columna = columna+"";
+        this.fila = fila+"";
         this.archivo = "";
     }
-    
     
 }

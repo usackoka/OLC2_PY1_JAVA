@@ -8,6 +8,7 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Sentencias.Nativas.*;
 import AST.Sentencias.Print;
 import Analyzer.Token;
 import java.util.LinkedList;
@@ -27,16 +28,21 @@ public class Llamada extends Expresion{
     @Override
     public Object getValor(Entorno entorno) {
         String match = this.id.toLowerCase();
-        int PARAMETROS = 0;
+        int PARAMETROS = 1;
         switch(match){
             //hago el match de las nativas
             case "print":
-                PARAMETROS = 1;
                 if(parametros.size()==PARAMETROS){
                     return new Print(parametros.get(0)).ejecutar(entorno);
                 }
-                entorno.addError(new Token(this.id, "Semántico", "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila+"", columna+""));
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
                 return null;
+            case "c":
+                if(parametros.size()>=PARAMETROS){
+                    return new C(this.parametros, fila, columna).getValor(entorno);
+                }
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametro al menos", fila, columna));
+                return new Primitivo("", TIPO_PRIMITIVO.STRING, fila, columna);
             //busco entre las declaradas en el archivo
             default:
                 return null;
