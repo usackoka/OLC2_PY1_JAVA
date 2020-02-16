@@ -434,31 +434,39 @@ ARITMETICA ::= E:a mas:c E:b
     :}
 ;
 
-LOGICA ::= E:a or E:b
+LOGICA ::= E:a or:c E:b
     {:
+        RESULT = new Logica(a,b,Logica.TIPO_OPERACION.OR,cleft+1,cright+1);
     :}
-    | E:a and E:b
+    | E:a and:c E:b
     {:
+        RESULT = new Logica(a,b,Logica.TIPO_OPERACION.AND,cleft+1,cright+1);
     :}
 ;
 
-RELACIONAL ::= E:a menor E:b
+RELACIONAL ::= E:a menor:c E:b
     {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.MENOR,cleft+1,cright+1);
     :}
-    | E:a menorigual E:b
+    | E:a menorigual:c E:b
     {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.MENORIGUAL,cleft+1,cright+1);
     :}
-    | E:a mayor E:b
+    | E:a mayor:c E:b
     {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.MAYOR,cleft+1,cright+1);
     :}
-    | E:a mayorigual E:b
+    | E:a mayorigual:c E:b
     {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.MAYORIGUAL,cleft+1,cright+1);
     :}
-    | E:a igualigual E:b
+    | E:a igualigual:c E:b
     {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.IGUALIGUAL,cleft+1,cright+1);
     :}
-    | E:a diferente E:b
+    | E:a diferente:c E:b
     {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.DIFERENTE,cleft+1,cright+1);
     :}
 ;
 
