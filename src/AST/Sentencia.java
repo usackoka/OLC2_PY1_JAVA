@@ -6,6 +6,6 @@
 
 package AST;
 
-public abstract class Sentencia implements Nodo{
+public abstract class Sentencia extends Nodo{
     public abstract Object ejecutar(Entorno entorno);
 }

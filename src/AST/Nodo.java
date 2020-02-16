@@ -6,7 +6,7 @@
 
 package AST;
 
-public interface Nodo {
-    public int fila = 0;
-    public int columna = 0;
+public abstract class Nodo {
+    public int fila;
+    public int columna;
 }

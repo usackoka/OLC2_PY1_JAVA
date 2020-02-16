@@ -6,7 +6,7 @@
 
 package AST;
 
-public abstract class Expresion implements Nodo{
+public abstract class Expresion extends Nodo{
     
     public enum TIPO_PRIMITIVO{
         INTEGER, STRING, DOUBLE, BOOLEAN
