@@ -667,7 +667,7 @@ public class GUI_Principal extends javax.swing.JFrame{
         dtmErrores.setRowCount(0);
         String cadena = paginaActual.txtEntrada.getText();
         
-        Lexer lex = new Lexer(new BufferedReader(new StringReader(cadena)));
+        Lexer lex = new Lexer(new BufferedReader(new StringReader(cadena+"\n\n")));
         lex.setPrincipal(new Principal(tablaErrores, tablaDebugger,txtConsola));
 
         try {

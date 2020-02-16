@@ -19,7 +19,7 @@ public class Print extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
-        entorno.print(this.expresion.getValor(entorno).toString());
+        entorno.print(this.expresion.getValor(entorno).toString()+"\n");
         return null;
     }
 

@@ -33,7 +33,7 @@ public class Llamada extends Expresion{
             //hago el match de las nativas
             case "print":
                 if(parametros.size()==PARAMETROS){
-                    return new Print(parametros.get(0)).ejecutar(entorno);
+                    return new Print(this.parametros.get(0)).ejecutar(entorno);
                 }
                 entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
                 return null;
@@ -43,15 +43,31 @@ public class Llamada extends Expresion{
                 }
                 entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametro al menos", fila, columna));
                 return new Primitivo("", TIPO_PRIMITIVO.STRING, fila, columna);
+            case "typeof":
+                if(parametros.size()==PARAMETROS){
+                    return new TypeOf(this.parametros.get(0), fila, columna).getValor(entorno);
+                }
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
+                return new Primitivo("", TIPO_PRIMITIVO.STRING, fila, columna);
             //busco entre las declaradas en el archivo
             default:
-                return null;
+                entorno.addError(new Token(this.id, "la función "+this.id+" no existe :c", fila, columna));
+                return new Primitivo("", TIPO_PRIMITIVO.STRING, fila, columna);
         }
     }
 
     @Override
     public Object getTipo(Entorno entorno) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String match = this.id.toLowerCase();
+        switch(match){
+            case "c":
+                return new C(this.parametros, fila, columna).getTipo(entorno);
+            case "typeof":
+                return Expresion.TIPO_PRIMITIVO.STRING;
+            default:
+                entorno.addError(new Token(this.id, "la función "+this.id+" no existe o no retorna un valor", fila, columna));
+                return Expresion.TIPO_PRIMITIVO.STRING;
+        }
     }
 
 }
