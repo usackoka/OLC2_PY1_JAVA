@@ -6,8 +6,8 @@
 package AST;
 
 import Analyzer.Token;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
@@ -15,11 +15,20 @@ public class Principal {
     
     DefaultTableModel dtmErrores, dtmDebugger;
     JTable tablaErrores, tablaDebugger;
+    JTextArea txtConsola;
     
-    public Principal(JTable tablaErrores, JTable tablaDebugger){
+    public Principal(JTable tablaErrores, JTable tablaDebugger, JTextArea txtConsola){
         this.tablaErrores = tablaErrores;
         this.tablaDebugger = tablaDebugger;
+        this.txtConsola = txtConsola;
         inicializarTablas();
+    }
+    
+    public void ejecutar(){
+    }
+    
+    public void print(String cadena){
+        this.txtConsola.append(cadena);
     }
     
     public void addError(Token te){
@@ -49,15 +58,6 @@ public class Principal {
         dtmErrores = new DefaultTableModel(data2,columnNames);
         tablaErrores.setModel(dtmErrores);
         
-        /*
-        //=================modificar el alto =========================
-        MultiLineTableCellRenderer renderer = new MultiLineTableCellRenderer();
-        //set TableCellRenderer into a specified JTable column class
-        tablaErrores.setDefaultRenderer(String[].class, renderer);
-        //or, set TableCellRenderer into a specified JTable column
-        tablaErrores.getColumnModel().getColumn(2).setCellRenderer(renderer);
-        */
-        
         //================== modificar el ancho ===========================
         TableColumnModel columnModel = tablaErrores.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(150);
@@ -68,20 +68,5 @@ public class Principal {
         columnModel.getColumn(5).setPreferredWidth(30);
         tablaErrores.setShowGrid(true);
     }
-    
-    /*
-    public static void MostrarErrores(ArrayList<Token> TablaErrores, String nombreArchivo){
-        tabPaneTablas.setSelectedIndex(0);
-            for (int i = dtmErrores.getRowCount()-1;i>-1; i--) {
-                dtmErrores.removeRow(i);
-            }
-            for (int i = 0; i < TablaErrores.size(); i++) {
-                Token te = TablaErrores.get(i);
-                Object[] newRow={te.lexema, te.componenteLexico,te.descripcion,
-                    te.columna,te.fila,nombreArchivo};
-                dtmErrores.addRow(newRow);
-            }
-    }
-    */
     
 }

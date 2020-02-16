@@ -25,6 +25,7 @@ public class GUI_Principal extends javax.swing.JFrame{
     ArrayList<Pagina> paginas;
     public static String ventanaAbierta;
     public static DefaultTableModel dtmDebugger,dtmErrores;
+    public Principal principal;
 
     public GUI_Principal() {
         initComponents();
@@ -87,27 +88,15 @@ public class GUI_Principal extends javax.swing.JFrame{
         //Object[][] data2 = {{null,null,null,null,null,null}};
         Object[][] data2 = {{null,null,null}};
        // String[] columnNames = {"Lexema","Tipo","Descripcion","Columna","Fila","Archivo"};
-       String[] columnNames = {"Descripcion","Fila","Columna"};
+        String[] columnNames = {"Descripcion","Fila","Columna"};
         dtmErrores = new DefaultTableModel(data2,columnNames);
         tablaErrores.setModel(dtmErrores);
-        
-        /*
-        //=================modificar el alto =========================
-        MultiLineTableCellRenderer renderer = new MultiLineTableCellRenderer();
-        //set TableCellRenderer into a specified JTable column class
-        tablaErrores.setDefaultRenderer(String[].class, renderer);
-        //or, set TableCellRenderer into a specified JTable column
-        tablaErrores.getColumnModel().getColumn(2).setCellRenderer(renderer);
-        */
         
         //================== modificar el ancho ===========================
         TableColumnModel columnModel = tablaErrores.getColumnModel();
         columnModel.getColumn(0).setPreferredWidth(20);
         columnModel.getColumn(1).setPreferredWidth(20);
         columnModel.getColumn(2).setPreferredWidth(20);
-//        columnModel.getColumn(3).setPreferredWidth(30);
-//        columnModel.getColumn(4).setPreferredWidth(30);
-//        columnModel.getColumn(5).setPreferredWidth(30);
         tablaErrores.setShowGrid(true);
     }
     
@@ -679,13 +668,14 @@ public class GUI_Principal extends javax.swing.JFrame{
         String cadena = paginaActual.txtEntrada.getText();
         
         Lexer lex = new Lexer(new BufferedReader(new StringReader(cadena)));
-        lex.setPrincipal(new Principal(tablaErrores, tablaDebugger));
+        lex.setPrincipal(new Principal(tablaErrores, tablaDebugger,txtConsola));
 
         try {
             parser parse = new parser(lex);
             parse.setPrincipal(lex.getPrincipal());
             parse.parse();
-            //Principal p = parse.GetAst();
+            principal = parse.getPrincipal();
+            principal.ejecutar();
             
         } catch (Exception ex) {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
