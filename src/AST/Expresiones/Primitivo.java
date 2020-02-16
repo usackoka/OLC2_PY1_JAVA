@@ -26,7 +26,11 @@ public class Primitivo extends Expresion{
 
     @Override
     public Object getValor(Entorno entorno) {
-        return this.values;
+        if(values.size()==1){
+            return values.get(0);
+        }else{
+            return this.values;
+        }
     }
 
     @Override

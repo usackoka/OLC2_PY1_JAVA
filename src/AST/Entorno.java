@@ -6,6 +6,8 @@
 
 package AST;
 
+import Analyzer.Token;
+
 public class Entorno {
     
     Entorno padre;
@@ -18,6 +20,14 @@ public class Entorno {
     public Entorno(Principal principal){
         this.padre = null;
         this.principal = principal;
+    }
+    
+    public void addError(Token token){
+        if(this.padre==null){
+            this.principal.addError(token);
+        }else{
+            getEntornoGlobal().addError(token);
+        }
     }
     
     public void print(String cadena){

@@ -292,29 +292,39 @@ DEFAULT ::= res_default:a dospuntos BLOQUES:b
 
 LISTA_E ::= LISTA_E:a coma E:b
     {:
+        RESULT = a;
+        RESULT.add(b);
     :}
     | E:a
     {:
+        RESULT = new LinkedList<Expresion>();
+        RESULT.add(a);
     :}
 ;
 
 E ::= CONSTANTE:a    
     {:
+        RESULT = a;
     :}
     | BINARIA:a
     {:
+        RESULT = a;
     :}
     | UNARIA:a
     {:
+        RESULT = a;
     :}
     | TERNARIA:a 
     {:
+        RESULT = a;
     :}
     | LLAMADA:a
     {:
+        RESULT = a;
     :}
     | l_parent E:a r_parent
     {:
+        RESULT = a;
     :}
     /*
     | DECLARACION_ARREGLO:a
@@ -356,7 +366,7 @@ CONSTANTE ::= numero:a
     :}
     | cadena:a
     {:
-        RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.STRING,aright+1,aleft+1);
+        RESULT = new Primitivo(a.replace("\"",""),Expresion.TIPO_PRIMITIVO.STRING,aright+1,aleft+1);
     :}
     | id:a
     {:
@@ -370,12 +380,15 @@ CONSTANTE ::= numero:a
 
 BINARIA ::= ARITMETICA:a
     {:
+        RESULT = a;
     :}
     | LOGICA:a
     {:
+        RESULT = a;
     :}
     | RELACIONAL:a
     {:
+        RESULT = a;
     :}
 ;
 
