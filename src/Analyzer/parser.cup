@@ -366,7 +366,9 @@ CONSTANTE ::= numero:a
     :}
     | cadena:a
     {:
-        RESULT = new Primitivo(a.replace("\"",""),Expresion.TIPO_PRIMITIVO.STRING,aright+1,aleft+1);
+        String cad = a.substring(1,a.length());
+        cad = cad.substring(0,cad.length()-1);
+        RESULT = new Primitivo(cad,Expresion.TIPO_PRIMITIVO.STRING,aright+1,aleft+1);
     :}
     | id:a
     {:

@@ -1664,7 +1664,9 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-        RESULT = new Primitivo(a.replace("\"",""),Expresion.TIPO_PRIMITIVO.STRING,aright+1,aleft+1);
+        String cad = a.substring(1,a.length());
+        cad = cad.substring(0,cad.length()-1);
+        RESULT = new Primitivo(cad,Expresion.TIPO_PRIMITIVO.STRING,aright+1,aleft+1);
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CONSTANTE",21, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

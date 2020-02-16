@@ -33,8 +33,7 @@ public class C extends Expresion{
             }
             primitivo.addValue(expresion.getValor(entorno), expresion.getTipo(entorno), entorno);
         }
-        primitivo.castearA(getMAX(entorno));
-        return primitivo;
+        return primitivo.castearA(getMAX(entorno));
     }
 
     @Override

@@ -18,11 +18,14 @@ public class Primitivo extends Expresion{
     LinkedList<Object> values;
     
     public Primitivo(Object value, Object TIPO, int fila, int columna){
+        this.TIPO = TIPO;
+        if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
+            value = getEscapes(value.toString());
+        }
         this.values = new LinkedList<>();
         this.values.add(value);
         this.fila = fila;
         this.columna = columna;
-        this.TIPO = TIPO;
     }
 
     @Override
@@ -44,13 +47,44 @@ public class Primitivo extends Expresion{
     }
     
     //castear el vector
-    public boolean castearA(Object TIPO){
-        if(TIPO.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
-            LinkedList<Object> values = new LinkedList<>();
-            
+    public Object castearA(Object TIPO){
+        LinkedList<Object> values = new LinkedList<>();
+        if(TIPO.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN)){
+            values = this.values;
+        }
+        else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
+            for(Object element : this.values){
+                int value = 0;
+                try {
+                    value = Integer.parseInt(String.valueOf(element));
+                } catch (Exception e) {
+                    value = element.toString().toLowerCase().equals("true")?1:0;
+                }
+                values.add(value);
+            }
+        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
+            for(Object element : this.values){
+                double value = 0.0;
+                try {
+                    value = Double.parseDouble(String.valueOf(element));
+                } catch (Exception e) {
+                    value = element.toString().toLowerCase().equals("true")?1.0:0.0;
+                }
+                values.add(value);
+            }
+        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
+            for(Object element : this.values){
+                values.add(element.toString());
+            }
+        }else if(TIPO instanceof TipoList){
         }
         
+        this.values = values;
         this.TIPO = TIPO;
-        return true;
+        return this.values;
+    }
+    
+    public String getEscapes(String cadena){
+        return cadena.replace("\\n", "\n").replace("\\\\", "\\").replace("\\\"","\"").replace("\\t", "\t").replace("\\r", "\r");
     }
 }

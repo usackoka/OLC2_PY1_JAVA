@@ -50,8 +50,8 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
     
     //valores
     "null"              {return new Symbol(sym.res_null,yyline,yychar,yytext());}
-    "true"              {return new Symbol(sym.res_false,yyline,yychar,yytext());}
-    "false"             {return new Symbol(sym.res_true,yyline,yychar,yytext());}
+    "false"              {return new Symbol(sym.res_false,yyline,yychar,yytext());}
+    "true"             {return new Symbol(sym.res_true,yyline,yychar,yytext());}
 
     "function"          {return new Symbol(sym.res_function,yyline,yychar,yytext());}
     "in"          {return new Symbol(sym.res_in,yyline,yychar,yytext());}
