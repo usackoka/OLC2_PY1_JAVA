@@ -682,12 +682,9 @@ public class GUI_Principal extends javax.swing.JFrame{
             parser parse = new parser(lex);
             parse.parse();
             //Principal p = parse.GetAst();
-                
             
         } catch (Exception ex) {
-
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-           
             System.err.println(ex.toString());
         }
     }

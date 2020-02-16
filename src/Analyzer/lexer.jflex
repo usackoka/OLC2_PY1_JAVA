@@ -18,7 +18,7 @@ doble = [0-9]+"."[0-9]+
 comentario_linea = "#"~"\n"
 comentario_multilinea = "#*"~"*#"
 //id = [a-zA-Z]([a-zA-Z]|"_"|[0-9])*
-id = ([a-zA-Z]|"."([a-zA-Z]|"_"))([a-zA-Z]|"_"|[0-9]|".")*
+id = ([a-zA-Z]|"."([a-zA-Z]|"_")|".")([a-zA-Z]|"_"|[0-9]|".")*
 //caracter = "'"([^\"\n])?"'"
 cadena = ([\"]([^\"\n]|(\\\"))*[\"])
 
