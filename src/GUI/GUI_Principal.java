@@ -16,6 +16,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
 import Analyzer.*;
+import java.awt.Font;
 
 public class GUI_Principal extends javax.swing.JFrame{
 
@@ -593,6 +594,9 @@ public class GUI_Principal extends javax.swing.JFrame{
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                try {
+                } catch (Exception e) {
+                }
                 new GUI_Principal().setVisible(true);
             }
         });

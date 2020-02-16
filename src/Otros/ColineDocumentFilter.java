@@ -316,7 +316,7 @@ public final class ColineDocumentFilter extends DocumentFilter {
                     styledDocument.setCharacterAttributes(i, 1, this.orangeAttributeSet, false);
                     apostrofe = true;
                 }
-            } else if (caracteres[i] == '/') {
+            } else if (caracteres[i] == '#') {
                 if (i + 1 < caracteres.length) {
                     if (caracteres[i + 1] == '*') {
                         styledDocument.setCharacterAttributes(i, 1, this.grayAttributeSet, false);
@@ -328,7 +328,7 @@ public final class ColineDocumentFilter extends DocumentFilter {
                     styledDocument.setCharacterAttributes(i, 1, this.grayAttributeSet, false);
                 }
                 if (i + 1 < caracteres.length) {
-                    if (caracteres[i + 1] == '/') {
+                    if (caracteres[i + 1] == '#') {
                         styledDocument.setCharacterAttributes(i + 1, 1, this.grayAttributeSet, false);
                         multilinea = false;
                     }
@@ -347,12 +347,12 @@ public final class ColineDocumentFilter extends DocumentFilter {
         char[] caracteres_saltos = myTextPane.getText().toCharArray();
         int saltos = 0;
         for (int i = 0; i < caracteres_saltos.length; i++) {
-            if (caracteres_saltos[i] == '/') {
+            if (caracteres_saltos[i] == '#') {
                 if (i + 1 < caracteres_saltos.length) {
-                    if (caracteres_saltos[i + 1] == '/') {
+                    //if (caracteres_saltos[i + 1] == '/') {
                         styledDocument.setCharacterAttributes(i, 2, this.grayAttributeSet, false);
                         unilinea = true;
-                    }
+                    //}
                 }
             } else if (caracteres_saltos[i] == '\n') {
                 unilinea = false;
