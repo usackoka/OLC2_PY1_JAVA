@@ -27,6 +27,11 @@ import AST.Principal;
 %line
 %unicode
 
+%init{
+    yyline = 0;
+    yycolumn = 0;
+%init}
+
 //---> Expresiones Regulares
 numero = (\d)+ //[0-9]+
 doble = [0-9]+"."[0-9]+
@@ -42,64 +47,64 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
 %%
 <YYINITIAL>{
     //tipos de dato
-    /*"integer"           {return new Symbol(sym.res_int,yyline,yychar,yytext());}
-    "numeric"           {return new Symbol(sym.res_double,yyline,yychar,yytext());}
-    "boolean"           {return new Symbol(sym.res_boolean,yyline,yychar,yytext());}
-    "String"            {return new Symbol(sym.res_string,yyline,yychar,yytext());}
+    /*"integer"           {return new Symbol(sym.res_int,yyline,yycolumn,yytext());}
+    "numeric"           {return new Symbol(sym.res_double,yyline,yycolumn,yytext());}
+    "boolean"           {return new Symbol(sym.res_boolean,yyline,yycolumn,yytext());}
+    "String"            {return new Symbol(sym.res_string,yyline,yycolumn,yytext());}
     */
     
     //valores
-    "null"              {return new Symbol(sym.res_null,yyline,yychar,yytext());}
-    "false"              {return new Symbol(sym.res_false,yyline,yychar,yytext());}
-    "true"             {return new Symbol(sym.res_true,yyline,yychar,yytext());}
+    "null"                          {return new Symbol(sym.res_null,yyline,yycolumn,yytext());}
+    "false"                         {return new Symbol(sym.res_false,yyline,yycolumn,yytext());}
+    "true"                          {return new Symbol(sym.res_true,yyline,yycolumn,yytext());}
 
-    "function"          {return new Symbol(sym.res_function,yyline,yychar,yytext());}
-    "in"          {return new Symbol(sym.res_in,yyline,yychar,yytext());}
+    "function"                      {return new Symbol(sym.res_function,yyline,yycolumn,yytext());}
+    "in"                            {return new Symbol(sym.res_in,yyline,yycolumn,yytext());}
 
-    "if"                {return new Symbol(sym.res_if,yyline,yychar,yytext());}
-    "else"              {return new Symbol(sym.res_else,yyline,yychar,yytext());}
-    "while"             {return new Symbol(sym.res_while,yyline,yychar,yytext());}
-    "for"               {return new Symbol(sym.res_for,yyline,yychar,yytext());}
-    "switch"            {return new Symbol(sym.res_switch,yyline,yychar,yytext());}
-    "case"              {return new Symbol(sym.res_case,yyline,yychar,yytext());}
-    "default"           {return new Symbol(sym.res_default,yyline,yychar,yytext());}
-    "break"             {return new Symbol(sym.res_break,yyline,yychar,yytext());}
-    "continue"          {return new Symbol(sym.res_continue,yyline,yychar,yytext());}
-    "return"            {return new Symbol(sym.res_return,yyline,yychar,yytext());}
-    "do"                {return new Symbol(sym.res_do,yyline,yychar,yytext());}
+    "if"                            {return new Symbol(sym.res_if,yyline,yycolumn,yytext());}
+    "else"                          {return new Symbol(sym.res_else,yyline,yycolumn,yytext());}
+    "while"                         {return new Symbol(sym.res_while,yyline,yycolumn,yytext());}
+    "for"                           {return new Symbol(sym.res_for,yyline,yycolumn,yytext());}
+    "switch"                        {return new Symbol(sym.res_switch,yyline,yycolumn,yytext());}
+    "case"                          {return new Symbol(sym.res_case,yyline,yycolumn,yytext());}
+    "default"                       {return new Symbol(sym.res_default,yyline,yycolumn,yytext());}
+    "break"                         {return new Symbol(sym.res_break,yyline,yycolumn,yytext());}
+    "continue"                      {return new Symbol(sym.res_continue,yyline,yycolumn,yytext());}
+    "return"                        {return new Symbol(sym.res_return,yyline,yycolumn,yytext());}
+    "do"                            {return new Symbol(sym.res_do,yyline,yycolumn,yytext());}
 
-    "["             {return new Symbol(sym.l_corchete,yyline,yychar, yytext());}
-    "]"             {return new Symbol(sym.r_corchete,yyline,yychar, yytext());}
-    "{"             {return new Symbol(sym.l_llave,yyline,yychar, yytext());}
-    "}"             {return new Symbol(sym.r_llave,yyline,yychar, yytext());}
-    "("             {return new Symbol(sym.l_parent,yyline,yychar, yytext());}
-    ")"             {return new Symbol(sym.r_parent,yyline,yychar, yytext());}
-    ","             {return new Symbol(sym.coma,yyline,yychar, yytext());}
-    ";"             {return new Symbol(sym.puntocoma,yyline,yychar, yytext());}
-    "=="            {return new Symbol(sym.igualigual,yyline,yychar, yytext());}
-    "="             {return new Symbol(sym.igual,yyline,yychar, yytext());}
-    "+"             {return new Symbol(sym.mas,yyline,yychar, yytext());}
-    "-"             {return new Symbol(sym.menos,yyline,yychar, yytext());}
-    "*"             {return new Symbol(sym.por,yyline,yychar, yytext());}
-    "^"             {return new Symbol(sym.potencia,yyline,yychar, yytext());}
-    "%%"             {return new Symbol(sym.modular,yyline,yychar, yytext());}
-    "/"             {return new Symbol(sym.div,yyline,yychar, yytext());}
-    "?"             {return new Symbol(sym.ternario,yyline,yychar, yytext());}
-    ">="            {return new Symbol(sym.mayorigual,yyline,yychar, yytext());}
-    ">"             {return new Symbol(sym.mayor,yyline,yychar, yytext());}
-    "<="            {return new Symbol(sym.menorigual,yyline,yychar, yytext());}
-    "<"             {return new Symbol(sym.menor,yyline,yychar, yytext());}
-    "!="            {return new Symbol(sym.diferente,yyline,yychar, yytext());}
-    "&"            {return new Symbol(sym.and,yyline,yychar, yytext());}
-    "|"            {return new Symbol(sym.or,yyline,yychar, yytext());}
-    "!"             {return new Symbol(sym.not,yyline,yychar, yytext());}
-    ":"             {return new Symbol(sym.dospuntos,yyline,yychar, yytext());}
+    "["                             {return new Symbol(sym.l_corchete,yyline,yycolumn, yytext());}
+    "]"                             {return new Symbol(sym.r_corchete,yyline,yycolumn, yytext());}
+    "{"                             {return new Symbol(sym.l_llave,yyline,yycolumn, yytext());}
+    "}"                             {return new Symbol(sym.r_llave,yyline,yycolumn, yytext());}
+    "("                             {return new Symbol(sym.l_parent,yyline,yycolumn, yytext());}
+    ")"                             {return new Symbol(sym.r_parent,yyline,yycolumn, yytext());}
+    ","                             {return new Symbol(sym.coma,yyline,yycolumn, yytext());}
+    ";"                             {return new Symbol(sym.puntocoma,yyline,yycolumn, yytext());}
+    "=="                            {return new Symbol(sym.igualigual,yyline,yycolumn, yytext());}
+    "="                             {return new Symbol(sym.igual,yyline,yycolumn, yytext());}
+    "+"                             {return new Symbol(sym.mas,yyline,yycolumn, yytext());}
+    "-"                             {return new Symbol(sym.menos,yyline,yycolumn, yytext());}
+    "*"                             {return new Symbol(sym.por,yyline,yycolumn, yytext());}
+    "^"                             {return new Symbol(sym.potencia,yyline,yycolumn, yytext());}
+    "%%"                            {return new Symbol(sym.modular,yyline,yycolumn, yytext());}
+    "/"                             {return new Symbol(sym.div,yyline,yycolumn, yytext());}
+    "?"                             {return new Symbol(sym.ternario,yyline,yycolumn, yytext());}
+    ">="                            {return new Symbol(sym.mayorigual,yyline,yycolumn, yytext());}
+    ">"                             {return new Symbol(sym.mayor,yyline,yycolumn, yytext());}
+    "<="                            {return new Symbol(sym.menorigual,yyline,yycolumn, yytext());}
+    "<"                             {return new Symbol(sym.menor,yyline,yycolumn, yytext());}
+    "!="                            {return new Symbol(sym.diferente,yyline,yycolumn, yytext());}
+    "&"                             {return new Symbol(sym.and,yyline,yycolumn, yytext());}
+    "|"                             {return new Symbol(sym.or,yyline,yycolumn, yytext());}
+    "!"                             {return new Symbol(sym.not,yyline,yycolumn, yytext());}
+    ":"                             {return new Symbol(sym.dospuntos,yyline,yycolumn, yytext());}
 
-    {numero}            {return new Symbol(sym.numero,yyline,yychar,yytext());}
-    {doble}             {return new Symbol(sym.doble,yyline,yychar,yytext());}
-    {id}                {return new Symbol(sym.id,yyline,yychar,yytext());}
-    //{caracter}          {return new Symbol(sym.caracter,yyline,yychar,yytext());}
-    {cadena}            {return new Symbol(sym.cadena,yyline,yychar,yytext());}
+    {numero}                        {return new Symbol(sym.numero,yyline,yycolumn,yytext());}
+    {doble}                         {return new Symbol(sym.doble,yyline,yycolumn,yytext());}
+    {id}                            {return new Symbol(sym.id,yyline,yycolumn,yytext());}
+    //{caracter}          {return new Symbol(sym.caracter,yyline,yycolumn,yytext());}
+    {cadena}                        {return new Symbol(sym.cadena,yyline,yycolumn,yytext());}
 }
 
 //------> INGORAR ESPACIOS EN BLANCO

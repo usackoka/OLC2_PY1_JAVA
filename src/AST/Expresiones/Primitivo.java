@@ -31,6 +31,10 @@ public class Primitivo extends Expresion{
     @Override
     public Object getValor(Entorno entorno) {
         if(values.size()==1){
+            //pregunto si es una variable
+            if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.VARIABLE)){
+                return entorno.getValorVariable(this.values.get(0).toString().toLowerCase(), fila, columna);
+            }
             return values.get(0);
         }else{
             return this.values;
@@ -39,6 +43,9 @@ public class Primitivo extends Expresion{
 
     @Override
     public Object getTipo(Entorno entorno) {
+        if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.VARIABLE)){
+            return entorno.getTipoVariable(this.values.get(0).toString().toLowerCase(), fila, columna);
+        }
         return this.TIPO;
     }
     

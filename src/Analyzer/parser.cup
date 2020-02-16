@@ -68,7 +68,7 @@ UMINUS,UPLUS
 non terminal S
 ;
 
-non terminal VARIABLE, PARAMETROS,
+non terminal PARAMETROS,
 LISTA_PARAMETROS, PARAMETRO,
 RETURN, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, LISTA_CASOS, DEFAULT, PUEDE_SEMICOLON
 ;
@@ -77,7 +77,7 @@ non terminal LinkedList<Expresion> LISTA_E;
 non terminal LinkedList<Nodo> LISTA_BLOQUES, BLOQUES, DECLARACIONES;
 non terminal Nodo DECLARACION, INSTRUCCION;
 non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA;
-non terminal Sentencia SENTENCIA, FUNCION;
+non terminal Sentencia SENTENCIA, FUNCION, VARIABLE;
 
 precedence left ternario;
 precedence left or;
@@ -126,6 +126,7 @@ DECLARACION ::= FUNCION:a
 
 VARIABLE ::= id:a igual E:b 
     {:
+        RESULT = new Declaracion(a,b,aleft+1,aright+1);
     :}
 ;
 
@@ -222,7 +223,7 @@ INSTRUCCION ::= res_break:a
     :}
     | VARIABLE:a
     {:
-        //RESULT = a;
+        RESULT = a;
     :}
     | RETURN:a
     {:
@@ -340,43 +341,43 @@ TERNARIA ::= E:a ternario E:b dospuntos E:c
 
 LLAMADA ::= id:a l_parent LISTA_E:b r_parent
     {:
-        RESULT = new Llamada(a,b,aright+1,aleft+1);
+        RESULT = new Llamada(a,b,aleft+1,aright+1);
     :}
 ;
 
 CONSTANTE ::= numero:a
     {:
-        RESULT = new Primitivo(Integer.parseInt(a),Expresion.TIPO_PRIMITIVO.INTEGER,aright+1,aleft+1);
+        RESULT = new Primitivo(Integer.parseInt(a),Expresion.TIPO_PRIMITIVO.INTEGER,aleft+1,aright+1);
     :}
     | res_true:a
     {:
-        RESULT = new Primitivo(true,Expresion.TIPO_PRIMITIVO.BOOLEAN,aright+1,aleft+1);
+        RESULT = new Primitivo(true,Expresion.TIPO_PRIMITIVO.BOOLEAN,aleft+1,aright+1);
     :}
     | res_false:a
     {:
-        RESULT = new Primitivo(false,Expresion.TIPO_PRIMITIVO.BOOLEAN,aright+1,aleft+1);
+        RESULT = new Primitivo(false,Expresion.TIPO_PRIMITIVO.BOOLEAN,aleft+1,aright+1);
     :}
     | doble:a
     {:
-        RESULT = new Primitivo(Double.parseDouble(a),Expresion.TIPO_PRIMITIVO.DOUBLE,aright+1,aleft+1);
+        RESULT = new Primitivo(Double.parseDouble(a),Expresion.TIPO_PRIMITIVO.DOUBLE,aleft+1,aright+1);
     :}
     | res_null:a
     {:
-        RESULT = new Primitivo("",Expresion.TIPO_PRIMITIVO.STRING,aright+1,aleft+1);
+        RESULT = new Primitivo("",Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
     :}
     | cadena:a
     {:
         String cad = a.substring(1,a.length());
         cad = cad.substring(0,cad.length()-1);
-        RESULT = new Primitivo(cad,Expresion.TIPO_PRIMITIVO.STRING,aright+1,aleft+1);
+        RESULT = new Primitivo(cad,Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
     :}
     | id:a
     {:
-        RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aright+1,aleft+1);
+        RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
     :}
     | res_default:a
     {:
-        RESULT = new Primitivo("",Expresion.TIPO_PRIMITIVO.DEFAULT,aright+1,aleft+1);
+        RESULT = new Primitivo("",Expresion.TIPO_PRIMITIVO.DEFAULT,aleft+1,aright+1);
     :}
 ;
 
