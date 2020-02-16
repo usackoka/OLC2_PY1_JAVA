@@ -1,5 +1,6 @@
 package GUI;
 
+import AST.Principal;
 import Analyzer.*;
 import java.awt.Desktop;
 import java.awt.FileDialog;
@@ -493,7 +494,7 @@ public class GUI_Principal extends javax.swing.JFrame{
                     value += elements[i].toString() + "\\";
                 }
                 value = value.substring(0, value.length() - 1);
-                System.out.println("You selected " + value);
+                //System.out.println("You selected " + value);
                 
                 File file1 = new File(value);
                 Abrir2(file1.getName(),value,file1.getParent()+"\\");
@@ -529,12 +530,12 @@ public class GUI_Principal extends javax.swing.JFrame{
             if (jFileFolder.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) { 
 //              System.out.println("getCurrentDirectory(): " 
 //                 +  jFileFolder.getCurrentDirectory());
-              System.out.println("getSelectedFile() : " 
-                 +  jFileFolder.getSelectedFile());
+              /*System.out.println("getSelectedFile() : " 
+                 +  jFileFolder.getSelectedFile());*/
                iniciarArbol(jFileFolder.getSelectedFile());
               }
             else {
-              System.out.println("No Selection ");
+              //System.out.println("No Selection ");
               }
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
@@ -562,7 +563,7 @@ public class GUI_Principal extends javax.swing.JFrame{
             // TODO add your handling code here:
             Desktop.getDesktop().open(new File("Manuales\\mu.pdf"));
         } catch (IOException ex) {
-            System.out.println("catch abrir manual");
+            //System.out.println("catch abrir manual");
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem10ActionPerformed
@@ -657,7 +658,7 @@ public class GUI_Principal extends javax.swing.JFrame{
            // asegurarnos que se cierra el fichero.
            if (null != fichero)
               fichero.close();
-               System.out.println("ruta_g "+pag.rutaArchivo);
+               //System.out.println("ruta_g "+pag.rutaArchivo);
            JOptionPane.showMessageDialog(null, "Guardado con éxito");
            } catch (IOException e2) {
               e2.printStackTrace();
@@ -676,10 +677,13 @@ public class GUI_Principal extends javax.swing.JFrame{
         txtConsola.setText("");
         dtmErrores.setRowCount(0);
         String cadena = paginaActual.txtEntrada.getText();
+        
         Lexer lex = new Lexer(new BufferedReader(new StringReader(cadena)));
+        lex.setPrincipal(new Principal(tablaErrores, tablaDebugger));
 
         try {
             parser parse = new parser(lex);
+            parse.setPrincipal(lex.getPrincipal());
             parse.parse();
             //Principal p = parse.GetAst();
             
@@ -744,7 +748,7 @@ public class GUI_Principal extends javax.swing.JFrame{
            // asegurarnos que se cierra el fichero.
            if (null != fichero)
               fichero.close();
-               System.out.println("ruta_g "+paginaActual.rutaArchivo);
+               //System.out.println("ruta_g "+paginaActual.rutaArchivo);
            JOptionPane.showMessageDialog(null, "Guardado con éxito");
            } catch (IOException e2) {
               e2.printStackTrace();
@@ -811,10 +815,10 @@ public class GUI_Principal extends javax.swing.JFrame{
            rutatotal = directorio + nombreArchivo;
         }
         else{
-           System.out.println("No Seleccionó Archivo");
+           //System.out.println("No Seleccionó Archivo");
            return;
         }
-        System.out.println("-------------"+directorio);
+        //System.out.println("-------------"+directorio);
         Abrir2(nombreArchivo,rutatotal,directorio);
     }
 

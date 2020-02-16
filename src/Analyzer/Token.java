@@ -8,4 +8,7 @@ package Analyzer;
 
 public class Token {
     public String lexema, componenteLexico, descripcion, columna, fila, archivo;
+    
+    public Token(){
+    }
 }

@@ -1,6 +1,21 @@
 package Analyzer;
 import java_cup.runtime.Symbol;
+import AST.Principal;
+
 %%
+
+%{
+    Principal principal;
+
+    public void setPrincipal(Principal principal){
+        this.principal = principal;
+    }
+
+    public Principal getPrincipal(){
+        return this.principal;
+    }
+%}
+
 %class Lexer
 %public
 %cupsym sym
@@ -91,6 +106,12 @@ cadena = ([\"]([^\"\n]|(\\\"))*[\"])
 {comentario_linea} {/*se ignoran*/}
 {comentario_multilinea} {/*se ignoran*/}
 [ \t\r\n\f]+                       {/* Espacios en blanco se ingnoran */}
-.   { 
-    //TablaErrores.add(new Token(yytext(),"Lexico","Caracter no pertenece al lenguaje",yycolumn+1,yyline+1)); 
+.   {
+        Token token = new Token();
+        token.lexema = yytext();
+        token.componenteLexico = "Léxico";
+        token.descripcion = "El caracter no pertenece al lenguaje";
+        token.columna = yycolumn+1+"";
+        token.fila = yyline+1+"";
+        this.principal.addError(token);
     }

@@ -13,17 +13,16 @@ import javax.swing.table.TableColumnModel;
 
 public class Principal {
     
-    JTabbedPane tabPaneTablas;
     DefaultTableModel dtmErrores, dtmDebugger;
     JTable tablaErrores, tablaDebugger;
     
-    public Principal(JTabbedPane tabPaneTablas){
-        this.tabPaneTablas = tabPaneTablas;
+    public Principal(JTable tablaErrores, JTable tablaDebugger){
+        this.tablaErrores = tablaErrores;
+        this.tablaDebugger = tablaDebugger;
         inicializarTablas();
     }
     
     public void addError(Token te){
-        tabPaneTablas.setSelectedIndex(0);
         Object[] newRow={te.lexema, te.componenteLexico,te.descripcion,
             te.columna,te.fila,te.archivo};
         dtmErrores.addRow(newRow);

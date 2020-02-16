@@ -2,34 +2,50 @@ package Analyzer;
 
 import java_cup.runtime.*;
 import java.util.LinkedList;
+import AST.Principal;
 
 parser code
 {:
     /* RAIZ */
+    Principal principal;
+
+    public void setPrincipal(Principal principal){
+        this.principal = principal;
+    }
 
     /**
     *   Metodo que retorna la raiz del arbol
     **/
-    /*
-    public Principal GetAst(){
-        return p;
+    public Principal getPrincipal(){
+        return this.principal;
     }
-    */
+    
     /**
      * Método al que se llama automáticamente ante algún error sintactico.
      **/
     public void syntax_error(Symbol s){
-            System.out.println("Error sintactico en la linea: " + (s.left) +" Columna: " +s.right+ ". No se esperaba este componente: " + s.value+"."); 
-            
-           
- }
+        System.out.println("Error sintactico en la linea: " + (s.left) +" Columna: " +s.right+ ". No se esperaba este componente: " + s.value+"."); 
+        Token token = new Token();
+        token.lexema = s.value+"";
+        token.componenteLexico = "Sintáctico";
+        token.descripcion = "No se esperaba: "+s.value;
+        token.columna = s.right+1+"";
+        token.fila = s.left+1+"";
+        this.principal.addError(token);
+    }
     /**
      * Método al que se llama en el momento en que ya no es posible una recuperación de errores.
      **/
     public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{
-            System.out.println("Error Sintactico irrecuperable en la Lienea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido.");
-           
- }
+        System.out.println("Error Sintactico irrecuperable en la Lienea " + (s.left)+ " Columna "+s.right+". Componente " + s.value + " no reconocido."); 
+        Token token = new Token();
+        token.lexema = s.value+"";
+        token.componenteLexico = "Sintáctico inrecuperable";
+        token.descripcion = "No se esperaba: "+s.value;
+        token.columna = s.right+1+"";
+        token.fila = s.left+1+"";
+        this.principal.addError(token);
+    }
 :}
 
 terminal String res_null, res_false, res_true,
@@ -123,13 +139,10 @@ LISTA_PARAMETROS ::= LISTA_PARAMETROS:a coma PARAMETRO:b
     :}
 ;
 
-PARAMETRO ::= id:a
+PARAMETRO ::= E:a 
     {:
     :}
     | id:a igual E:b
-    {:
-    :}
-    | res_default
     {:
     :}
 ;
@@ -309,6 +322,12 @@ CONSTANTE ::= numero:a
     {:
     :}
     | cadena:a
+    {:
+    :}
+    | id:a
+    {:
+    :}
+    | res_default
     {:
     :}
 ;
