@@ -334,8 +334,9 @@ E ::= CONSTANTE:a
     */
 ;
 
-TERNARIA ::= E:a ternario E:b dospuntos E:c 
+TERNARIA ::= E:a ternario:d E:b dospuntos E:c 
 {:
+    RESULT = new Ternaria(a,b,c,dleft+1,dright+1);
 :}
 ;
 
@@ -395,15 +396,18 @@ BINARIA ::= ARITMETICA:a
     :}
 ;
 
-UNARIA::= menos E:a
+UNARIA::= menos:b E:a
     {:
+        RESULT = new Unaria(a,Unaria.TIPO_OPERACION.MENOS,bleft+1,bright+1);
     :}
     %prec UMINUS
-    | not E:a
+    | not:b E:a
     {:
+        RESULT = new Unaria(a,Unaria.TIPO_OPERACION.NOT,bleft+1,bright+1);
     :}
-    | mas E:a
+    | mas:b E:a
     {:
+        RESULT = a;
     :}
     %prec UPLUS
 ;
