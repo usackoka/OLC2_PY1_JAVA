@@ -49,7 +49,7 @@ public class While extends Sentencia{
                 }
                 else
                 {
-                    return ((Expresion)nodo).getValor(entorno);
+                    ((Expresion)nodo).getValor(entorno);
                 }
             }
         }

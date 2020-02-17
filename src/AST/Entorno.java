@@ -14,7 +14,7 @@ public class Entorno {
     
     Entorno padre;
     Principal principal;
-    Hashtable<String, Object> tbs;
+    Hashtable<String, Variable> tbs;
     
     public Entorno(Entorno padre){
         this.padre = padre;
@@ -52,10 +52,9 @@ public class Entorno {
     }
     
     public Object addVariable(String key, Variable value) {
-        if (this.tbs.containsKey(key)) {
+        if (existeVariable(key)) {
             //si ya la contiene se reemplaza
-            ((Variable)this.tbs.get(key)).setValue(value);
-            //addError(new Token("ObjectAlreadyExists", "Ya existe la variable con id:"+key+" declarada en este ámbito",fila,columna));
+            getVariable(key, 0, 0).setValue(value.getValor(this));
             return false;
         }
         this.tbs.put(key, value);
@@ -85,7 +84,7 @@ public class Entorno {
     public Object getValorVariable(String id, int fila, int columna) {
         if (this.tbs.containsKey(id))
         {
-            return ((Variable)this.tbs.get(id)).getValor(this);
+            return this.tbs.get(id).getValor(this);
         }
         else {
             if (this.padre == null)
@@ -99,11 +98,11 @@ public class Entorno {
         }
     }
 
-    public Object getVariable(String id, int fila, int columna)
+    public Variable getVariable(String id, int fila, int columna)
     {
         if (this.tbs.containsKey(id))
         {
-            return (this.tbs.get(id));
+            return this.tbs.get(id);
         }
         else
         {
@@ -115,6 +114,24 @@ public class Entorno {
             else
             {
                 return this.padre.getVariable(id, fila, columna);
+            }
+        }
+    }
+    
+    public boolean existeVariable(String id){
+        if (this.tbs.containsKey(id))
+        {
+            return true;
+        }
+        else
+        {
+            if (this.padre == null)
+            {
+                return false;
+            }
+            else
+            {
+                return this.padre.existeVariable(id);
             }
         }
     }

@@ -675,7 +675,7 @@ public class GUI_Principal extends javax.swing.JFrame{
             parse.setPrincipal(lex.getPrincipal());
             parse.parse();
             principal = parse.getPrincipal();
-            principal.ejecutar();
+            principal.start();
             
         } catch (Exception ex) {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);

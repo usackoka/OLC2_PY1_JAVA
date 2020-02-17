@@ -12,7 +12,7 @@ import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-public class Principal {
+public class Principal extends Thread{
     
     DefaultTableModel dtmErrores, dtmDebugger;
     JTable tablaErrores, tablaDebugger;
@@ -22,6 +22,7 @@ public class Principal {
     LinkedList<Nodo> nodos;
     
     public Principal(JTable tablaErrores, JTable tablaDebugger, JTextArea txtConsola){
+        super("Hilo ejecución");
         this.tablaErrores = tablaErrores;
         this.tablaDebugger = tablaDebugger;
         this.txtConsola = txtConsola;
@@ -30,7 +31,8 @@ public class Principal {
         inicializarTablas();
     }
     
-    public void ejecutar(){
+    @Override
+    public void run(){
         //guardo las funciones encontradas
         
         //por cada uno de los nodos que encontré, los ejecuto
@@ -41,6 +43,7 @@ public class Principal {
                 ((Sentencia)nodo).ejecutar(entorno);
             }
         });
+        System.out.println("Ejecutado con éxito!!");
     }
     
     public void print(String cadena){

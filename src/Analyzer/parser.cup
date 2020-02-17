@@ -70,14 +70,14 @@ non terminal S
 
 non terminal PARAMETROS,
 LISTA_PARAMETROS, PARAMETRO,
-RETURN, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, LISTA_CASOS, DEFAULT, PUEDE_SEMICOLON
+RETURN, LISTA_CASOS, DEFAULT, PUEDE_SEMICOLON
 ;
 
 non terminal LinkedList<Expresion> LISTA_E;
 non terminal LinkedList<Nodo> LISTA_BLOQUES, BLOQUES, DECLARACIONES;
 non terminal Nodo DECLARACION, INSTRUCCION;
 non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA;
-non terminal Sentencia SENTENCIA, FUNCION, VARIABLE;
+non terminal Sentencia SENTENCIA, FUNCION, VARIABLE, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH;
 
 precedence left ternario;
 precedence left or;
@@ -196,18 +196,23 @@ LISTA_BLOQUES ::= LISTA_BLOQUES:a INSTRUCCION:b PUEDE_SEMICOLON
 
 SENTENCIA ::= IF:a
     {:
+        RESULT = a;
     :}
     | SWITCH:a
     {:
+        RESULT = a;
     :}
     | WHILE:a
     {:
+        RESULT = a;
     :}
     | DOWHILE:a
     {:
+        RESULT = a;
     :}
     | FOR:a
     {:
+        RESULT = a;
     :}
 ;
 
@@ -233,7 +238,7 @@ INSTRUCCION ::= res_break:a
     :}
 ;
 
-RETURN ::= res_return l_parent E:a r_parent
+RETURN ::= res_return E:a
     {:
     :}
     | res_return
@@ -263,8 +268,9 @@ WHILE ::= res_while:c l_parent E:a r_parent l_llave BLOQUES:b r_llave
     :}
 ;
 
-DOWHILE ::= res_do l_llave BLOQUES:a r_llave res_while l_parent E:b r_parent puntocoma
+DOWHILE ::= res_do:c l_llave BLOQUES:b r_llave res_while l_parent E:a r_parent puntocoma
     {:
+        RESULT = new DoWhile(a,b,cleft+1,cright+1);
     :}
 ;
 
