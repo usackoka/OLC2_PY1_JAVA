@@ -49,6 +49,19 @@ public class Llamada extends Expresion{
                 }
                 entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
                 return new Primitivo("", TIPO_PRIMITIVO.STRING, fila, columna);
+            case "stringlength":
+                if(parametros.size()==PARAMETROS){
+                    return new StringLength(this.parametros.get(0), fila, columna).getValor(entorno);
+                }
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
+                return new Primitivo("", TIPO_PRIMITIVO.STRING, fila, columna);
+            case "remove":
+                PARAMETROS = 2;
+                if(parametros.size()==PARAMETROS){
+                    return new Remove(this.parametros, fila, columna).getValor(entorno);
+                }
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
+                return new Primitivo("", TIPO_PRIMITIVO.STRING, fila, columna);
             //busco entre las declaradas en el archivo
             default:
                 entorno.addError(new Token(this.id, "la función "+this.id+" no existe :c", fila, columna));
@@ -62,6 +75,11 @@ public class Llamada extends Expresion{
         switch(match){
             case "c":
                 return new C(this.parametros, fila, columna).getTipo(entorno);
+            case "stringlength":
+                return Expresion.TIPO_PRIMITIVO.INTEGER;
+            case "remove":
+            case "tolowercase":
+            case "touppercase":
             case "typeof":
                 return Expresion.TIPO_PRIMITIVO.STRING;
             default:
