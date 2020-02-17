@@ -213,9 +213,11 @@ SENTENCIA ::= IF:a
 
 INSTRUCCION ::= res_break:a
     {:
+        RESULT = new Corte(Corte.TIPO_CORTE.BREAK,aleft+1,aright+1);
     :}
     | res_continue:a
     {:
+        RESULT = new Corte(Corte.TIPO_CORTE.CONTINUE,aleft+1,aright+1);
     :}
     | LLAMADA:a
     {:
@@ -255,8 +257,9 @@ ELSE ::= res_else IF:a
     :}
 ;
 
-WHILE ::= res_while l_parent E:a r_parent l_llave BLOQUES:b r_llave
+WHILE ::= res_while:c l_parent E:a r_parent l_llave BLOQUES:b r_llave
     {:
+        RESULT = new While(a,b,cleft+1,cright+1);
     :}
 ;
 
