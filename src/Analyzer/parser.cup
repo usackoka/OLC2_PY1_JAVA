@@ -246,19 +246,23 @@ RETURN ::= res_return l_parent E:a r_parent
     :}
 ;
 
-IF ::= res_if l_parent E:a r_parent l_llave BLOQUES:b r_llave
+IF ::= res_if:c l_parent E:a r_parent l_llave BLOQUES:b r_llave
     {:
+        RESULT = new If(a,b,null,cleft+1,cright+1);
     :}
-    | res_if l_parent E:a r_parent l_llave BLOQUES:b r_llave ELSE:c
+    | res_if:c l_parent E:a r_parent l_llave BLOQUES:b r_llave ELSE:d
     {:
+        RESULT = new If(a,b,d,cleft+1,cright+1);
     :}
 ;
 
-ELSE ::= res_else IF:a
+ELSE ::= res_else:c IF:a
     {:
+        RESULT = a;
     :}
-    | res_else:a l_llave BLOQUES:b r_llave
+    | res_else:c l_llave BLOQUES:a r_llave
     {:
+        RESULT = new Else(a,cleft+1,cright+1);
     :}
 ;
 
