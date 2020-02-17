@@ -73,7 +73,7 @@ LISTA_PARAMETROS, PARAMETRO,
 RETURN, LISTA_CASOS, DEFAULT, PUEDE_SEMICOLON
 ;
 
-non terminal LinkedList<Expresion> LISTA_E;
+non terminal LinkedList<Expresion> LISTA_E, LISTA_LLAMADA;
 non terminal LinkedList<Nodo> LISTA_BLOQUES, BLOQUES, DECLARACIONES;
 non terminal Nodo DECLARACION, INSTRUCCION;
 non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA;
@@ -238,7 +238,7 @@ INSTRUCCION ::= res_break:a
     :}
 ;
 
-RETURN ::= res_return E:a
+RETURN ::= res_return l_parent E:a r_parent
     {:
     :}
     | res_return
@@ -276,6 +276,7 @@ DOWHILE ::= res_do:c l_llave BLOQUES:b r_llave res_while l_parent E:a r_parent p
 
 FOR ::= res_for l_parent id:a res_in E:b r_parent l_llave BLOQUES:c r_llave
     {:
+        RESULT = new For(a,b,c,aleft+1,aright+1);
     :}
 ;
 
@@ -297,6 +298,28 @@ DEFAULT ::= res_default:a dospuntos BLOQUES:b
     :}
     | /*empty*/
     {:
+    :}
+;
+
+LISTA_LLAMADA ::= LISTA_LLAMADA:a coma E:b
+    {:
+        RESULT = a;
+        RESULT.add(b);
+    :}
+    | LISTA_LLAMADA:a coma res_default:b
+    {:
+        RESULT = a;
+        RESULT.add(new Primitivo("",Expresion.TIPO_PRIMITIVO.DEFAULT,bleft+1,bright+1));
+    :}
+    | res_default:a
+    {:
+        RESULT = new LinkedList<Expresion>();
+        RESULT.add(new Primitivo("",Expresion.TIPO_PRIMITIVO.DEFAULT,aleft+1,aright+1));
+    :}
+    | E:a
+    {:
+        RESULT = new LinkedList<Expresion>();
+        RESULT.add(a);
     :}
 ;
 
@@ -349,7 +372,7 @@ TERNARIA ::= E:a ternario:d E:b dospuntos E:c
 :}
 ;
 
-LLAMADA ::= id:a l_parent LISTA_E:b r_parent
+LLAMADA ::= id:a l_parent LISTA_LLAMADA:b r_parent
     {:
         RESULT = new Llamada(a,b,aleft+1,aright+1);
     :}
@@ -385,10 +408,11 @@ CONSTANTE ::= numero:a
     {:
         RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
     :}
-    | res_default:a
+    /*| res_default:a
     {:
         RESULT = new Primitivo("",Expresion.TIPO_PRIMITIVO.DEFAULT,aleft+1,aright+1);
     :}
+    */
 ;
 
 BINARIA ::= ARITMETICA:a

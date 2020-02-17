@@ -20,11 +20,23 @@ public class Declaracion extends Sentencia{
         this.value = value;
         this.fila = fila;
         this.columna = columna;
+        this.valorDirecto = null;
+    }
+    
+    //declaracion especial para cuando la creo desde código 
+    Object valorDirecto, tipoDirecto;
+    public Declaracion(String id, Object value, Object tipoDirecto, int fila, int columna){
+        this.id = id;
+        this.valorDirecto = value;
+        this.tipoDirecto = tipoDirecto;
+        this.fila = fila;
+        this.columna = columna;
     }
     
     @Override
     public Object ejecutar(Entorno entorno) {
-        Variable var = new Variable(value.getValor(entorno), value.getTipo(entorno),fila,columna);
+        Variable var = new Variable(this.valorDirecto==null?value.getValor(entorno):this.valorDirecto, 
+                this.valorDirecto==null?value.getTipo(entorno):this.tipoDirecto,fila,columna);
         entorno.addVariable(id.toLowerCase(), var);
         return null;
     }
