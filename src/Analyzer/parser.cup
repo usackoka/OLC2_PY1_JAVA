@@ -238,11 +238,13 @@ INSTRUCCION ::= res_break:a
     :}
 ;
 
-RETURN ::= res_return l_parent E:a r_parent
+RETURN ::= res_return:b l_parent E:a r_parent
     {:
+        RESULT = new Return(a,bleft+1,bright+1);
     :}
-    | res_return
+    | res_return:b
     {:
+        RESULT = new Return(null,bleft+1,bright+1);
     :}
 ;
 
