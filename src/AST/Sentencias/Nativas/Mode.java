@@ -64,12 +64,13 @@ public class Mode extends Expresion{
         int resultado = 0;
         for(int numero : numeros){
             //si hay un index, pregunto si ese index es mayor o igual al numero que estoy comparando, si no hay, lo dejo pasar
-            if(valor2!=null?index>=numero:true){
+            if(valor2!=null?numero>=index:true){
                 if(anterior == numero){
                     moda++;
                 }else{
                     if(moda>maxModa){
-                        resultado = numero;
+                        resultado = anterior;
+                        maxModa = moda;
                     }else{
                         moda = 0;
                     }

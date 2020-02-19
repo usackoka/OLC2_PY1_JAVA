@@ -58,27 +58,15 @@ public class Median extends Expresion{
         int index = valor2!=null?(int)valor2:0;
         
         //calculando moda
-        int maxModa = 0;
-        int anterior = 0;
-        int moda = 0;
-        int resultado = 0;
+        LinkedList<Integer> temp = new LinkedList<>();
         for(int numero : numeros){
             //si hay un index, pregunto si ese index es mayor o igual al numero que estoy comparando, si no hay, lo dejo pasar
-            if(valor2!=null?index>=numero:true){
-                if(anterior == numero){
-                    moda++;
-                }else{
-                    if(moda>maxModa){
-                        resultado = numero;
-                    }else{
-                        moda = 0;
-                    }
-                }
-                anterior = numero;
+            if(valor2!=null?numero>=index:true){
+                temp.add(numero);
             }
         }
         
-        return resultado;
+        return temp.size()%2==0?temp.get((int)(temp.size()/2))-0.5:temp.get((int)(temp.size()/2));
     }
 
     @Override

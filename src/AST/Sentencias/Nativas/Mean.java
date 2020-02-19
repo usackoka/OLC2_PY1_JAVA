@@ -61,13 +61,13 @@ public class Mean extends Expresion{
         int totalSumados = 0;
         for(int numero : numeros){
             //si hay un index, pregunto si ese index es mayor o igual al numero que estoy comparando, si no hay, lo dejo pasar
-            if(valor2!=null?index>=numero:true){
+            if(valor2!=null?numero>=index:true){
                 resultado += numero;
                 totalSumados++;
             }
         }
         
-        return resultado/totalSumados;
+        return ((double)resultado/totalSumados);
     }
 
     @Override
