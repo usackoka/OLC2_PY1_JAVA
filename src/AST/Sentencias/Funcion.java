@@ -17,7 +17,7 @@ import java.util.LinkedList;
 
 public class Funcion extends Sentencia{
 
-    String id;
+    public String id;
     LinkedList<Parametro> parametros;
     LinkedList<Nodo> instrucciones;
     public LinkedList<Object> valoresParametros;

@@ -6,25 +6,51 @@
 
 package AST;
 
+import AST.Expresiones.Parametro;
 import AST.Expresiones.Variable;
+import AST.Sentencias.Funcion;
 import Analyzer.Token;
 import java.util.Hashtable;
+import java.util.LinkedList;
 
 public class Entorno {
     
     Entorno padre;
     Principal principal;
     Hashtable<String, Variable> tbs;
+    Hashtable<String, Funcion> funciones;
     
     public Entorno(Entorno padre){
         this.padre = padre;
         this.tbs = new Hashtable<>();
+        this.funciones = new Hashtable<>();
     }
     
     public Entorno(Principal principal){
         this.padre = null;
         this.tbs = new Hashtable<>();
+        this.funciones = new Hashtable<>();
         this.principal = principal;
+    }
+    
+    public Object ejecutarFuncion(String id, LinkedList<Expresion> parametros, int fila, int columna){
+        if(funciones.containsKey(id.toLowerCase())){
+            LinkedList<Object> tipos = new LinkedList<>();
+            LinkedList<Object> valoresParametros = new LinkedList<>();
+            
+            for(Expresion parametro : parametros){
+                valoresParametros.add(parametro.getValor(this));
+                tipos.add(parametro.getTipo(this));
+            }
+            
+            Funcion f = funciones.get(id);
+            f.tiposParametros = tipos;
+            f.valoresParametros = valoresParametros;
+            return f.ejecutar(this);
+        }else{
+            addError(new Token("Error llamada a: "+id,"No existe la función",fila,columna));
+            return null;
+        }
     }
     
     public void addError(Token token){

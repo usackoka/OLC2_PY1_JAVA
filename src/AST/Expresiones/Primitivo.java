@@ -49,6 +49,21 @@ public class Primitivo extends Expresion{
         return this.TIPO;
     }
     
+    public static Object getTipoDato(Object obj, Entorno entorno, int fila, int columna){
+        if(obj instanceof String){
+            return Expresion.TIPO_PRIMITIVO.STRING;
+        }else if(obj instanceof Double){
+            return Expresion.TIPO_PRIMITIVO.DOUBLE;
+        }else if(obj instanceof Boolean){
+            return Expresion.TIPO_PRIMITIVO.BOOLEAN;
+        }else if(obj instanceof Integer){
+            return Expresion.TIPO_PRIMITIVO.INTEGER;
+        }else{
+            entorno.addError(new Token(obj.toString(),"No se encuentra el tipo para este objeto",fila,columna));
+            return Expresion.TIPO_PRIMITIVO.STRING;
+        }
+    }
+    
     public void addValue(Object value, Object TIPO, Entorno entorno){
         this.values.add(value);
     }

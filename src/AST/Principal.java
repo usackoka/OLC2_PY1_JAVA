@@ -5,6 +5,7 @@
  */
 package AST;
 
+import AST.Sentencias.Funcion;
 import Analyzer.Token;
 import java.util.LinkedList;
 import javax.swing.JTable;
@@ -34,15 +35,23 @@ public class Principal extends Thread{
     @Override
     public void run(){
         //guardo las funciones encontradas
+        this.nodos.forEach((nodo)->{
+            if(nodo instanceof Funcion){
+                entorno.funciones.put(((Funcion)nodo).id.toLowerCase(), (Funcion)nodo);
+            }
+        });
         
         //por cada uno de los nodos que encontré, los ejecuto
         this.nodos.forEach((nodo)->{
             if(nodo instanceof Expresion){
                 ((Expresion)nodo).getValor(entorno);
             }else{
-                ((Sentencia)nodo).ejecutar(entorno);
+                if(!(nodo instanceof Funcion)){
+                    ((Sentencia)nodo).ejecutar(entorno);
+                }
             }
         });
+        
         System.out.println("Ejecutado con éxito!!");
     }
     

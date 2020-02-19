@@ -17,6 +17,7 @@ public class Llamada extends Expresion{
 
     String id;
     LinkedList<Expresion> parametros;
+    Object valorEjecutado;
     
     public Llamada(String id, LinkedList<Expresion> parametros, int fila, int columna){
         this.id = id;
@@ -106,8 +107,7 @@ public class Llamada extends Expresion{
                 return 0;
             //busco entre las declaradas en el archivo
             default:
-                entorno.addError(new Token(this.id, "la función "+this.id+" no existe :c", fila, columna));
-                return new Primitivo("", TIPO_PRIMITIVO.STRING, fila, columna);
+                return valorEjecutado;
         }
     }
 
@@ -124,8 +124,8 @@ public class Llamada extends Expresion{
             case "median": case "mode": case "mean":
                 return Expresion.TIPO_PRIMITIVO.DOUBLE;
             default:
-                entorno.addError(new Token(this.id, "la función "+this.id+" no existe o no retorna un valor", fila, columna));
-                return Expresion.TIPO_PRIMITIVO.STRING;
+                valorEjecutado = entorno.ejecutarFuncion(match, parametros, fila, columna);
+                return Primitivo.getTipoDato(valorEjecutado, entorno, fila, columna);
         }
     }
 
