@@ -21,7 +21,7 @@ public class TypeOf extends Expresion{
     
     @Override
     public Object getValor(Entorno entorno) {
-        return this.expresion.getTipo(entorno);
+        return this.expresion.getTipo(entorno).toString();
     }
 
     @Override

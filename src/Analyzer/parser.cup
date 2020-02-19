@@ -154,11 +154,12 @@ LISTA_PARAMETROS ::= LISTA_PARAMETROS:a coma PARAMETRO:b
     :}
 ;
 
-PARAMETRO ::= E:a 
+PARAMETRO ::= id:a 
     {:
     :}
-    | id:a igual E:b
+    | VARIABLE:a
     {:
+        RESULT = a;
     :}
 ;
 
@@ -234,7 +235,7 @@ INSTRUCCION ::= res_break:a
     :}
     | RETURN:a
     {:
-        //RESULT = a;
+        RESULT = a;
     :}
 ;
 
