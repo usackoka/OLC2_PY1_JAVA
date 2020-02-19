@@ -53,6 +53,15 @@ public class Primitivo extends Expresion{
         this.values.add(value);
     }
     
+    public String getID(Entorno entorno){
+        if(TIPO.equals(Expresion.TIPO_PRIMITIVO.VARIABLE)){
+            return this.values.get(0).toString();
+        }else{
+            entorno.addError(new Token(TIPO.toString(), "Se esperaba un ID", fila, columna));
+            return "--errorID";
+        }
+    }
+    
     //castear el vector
     public Object castearA(Object TIPO){
         LinkedList<Object> values = new LinkedList<>();

@@ -68,16 +68,16 @@ UMINUS,UPLUS
 non terminal S
 ;
 
-non terminal PARAMETROS,
-LISTA_PARAMETROS, PARAMETRO,
-RETURN, LISTA_CASOS, DEFAULT, PUEDE_SEMICOLON
+non terminal PUEDE_SEMICOLON
 ;
 
 non terminal LinkedList<Expresion> LISTA_E, LISTA_LLAMADA;
 non terminal LinkedList<Nodo> LISTA_BLOQUES, BLOQUES, DECLARACIONES;
 non terminal Nodo DECLARACION, INSTRUCCION;
 non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA;
-non terminal Sentencia SENTENCIA, FUNCION, VARIABLE, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH;
+non terminal Sentencia SENTENCIA, FUNCION, VARIABLE, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, RETURN, LISTA_CASOS, DEFAULT;
+non terminal Parametro PARAMETRO;
+non terminal LinkedList<Parametro> LISTA_PARAMETROS, PARAMETROS;
 
 precedence left ternario;
 precedence left or;
@@ -132,34 +132,43 @@ VARIABLE ::= id:a igual E:b
 
 FUNCION ::= id:a igual res_function l_parent PARAMETROS:b r_parent l_llave BLOQUES:c r_llave
     {:
+        RESULT = new Funcion(a,b,c,aleft+1,aright+1);
     :}
     | id:a igual l_parent PARAMETROS:b r_parent igual mayor l_llave BLOQUES:c r_llave
     {:
+        RESULT = new Funcion(a,b,c,aleft+1,aright+1);
     :}
 ;
 
 PARAMETROS ::= LISTA_PARAMETROS:a
     {:
+        RESULT = a;
     :}
     | /* empty */
     {:
+        RESULT = new LinkedList<Parametro>();
     :}
 ;
 
 LISTA_PARAMETROS ::= LISTA_PARAMETROS:a coma PARAMETRO:b
     {:
+        RESULT = a;
+        RESULT.add(b);
     :}
     | PARAMETRO:a
     {:
+        RESULT = new LinkedList<Parametro>();
+        RESULT.add(a);
     :}
 ;
 
-PARAMETRO ::= id:a 
+PARAMETRO ::= E:a 
     {:
+        RESULT = new Parametro(null,a,a.fila,a.columna);
     :}
-    | VARIABLE:a
+    | id:a igual E:b
     {:
-        RESULT = a;
+        RESULT = new Parametro(a,b,aleft+1,aright+1);
     :}
 ;
 
@@ -316,12 +325,12 @@ LISTA_LLAMADA ::= LISTA_LLAMADA:a coma E:b
     | LISTA_LLAMADA:a coma res_default:b
     {:
         RESULT = a;
-        RESULT.add(new Primitivo("",Expresion.TIPO_PRIMITIVO.DEFAULT,bleft+1,bright+1));
+        RESULT.add(new Primitivo(Expresion.TIPO_PRIMITIVO.DEFAULT,Expresion.TIPO_PRIMITIVO.DEFAULT,bleft+1,bright+1));
     :}
     | res_default:a
     {:
         RESULT = new LinkedList<Expresion>();
-        RESULT.add(new Primitivo("",Expresion.TIPO_PRIMITIVO.DEFAULT,aleft+1,aright+1));
+        RESULT.add(new Primitivo(Expresion.TIPO_PRIMITIVO.DEFAULT,Expresion.TIPO_PRIMITIVO.DEFAULT,aleft+1,aright+1));
     :}
     | E:a
     {:
@@ -415,11 +424,6 @@ CONSTANTE ::= numero:a
     {:
         RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
     :}
-    /*| res_default:a
-    {:
-        RESULT = new Primitivo("",Expresion.TIPO_PRIMITIVO.DEFAULT,aleft+1,aright+1);
-    :}
-    */
 ;
 
 BINARIA ::= ARITMETICA:a
