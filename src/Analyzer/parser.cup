@@ -75,8 +75,9 @@ non terminal LinkedList<Expresion> LISTA_E, LISTA_LLAMADA, PARAMETROS_LLAMADA;
 non terminal LinkedList<Nodo> LISTA_BLOQUES, BLOQUES, DECLARACIONES;
 non terminal Nodo DECLARACION, INSTRUCCION;
 non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA;
-non terminal Sentencia SENTENCIA, FUNCION, VARIABLE, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, RETURN, LISTA_CASOS, DEFAULT;
+non terminal Sentencia SENTENCIA, FUNCION, VARIABLE, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, RETURN, DEFAULT;
 non terminal Parametro PARAMETRO;
+non terminal LinkedList<Caso> LISTA_CASOS;
 non terminal LinkedList<Parametro> LISTA_PARAMETROS, PARAMETROS;
 
 precedence left ternario;
@@ -296,24 +297,31 @@ FOR ::= res_for l_parent id:a res_in E:b r_parent l_llave BLOQUES:c r_llave
     :}
 ;
 
-SWITCH ::= res_switch l_parent E:a r_parent l_llave LISTA_CASOS:b DEFAULT:c r_llave
+SWITCH ::= res_switch:d l_parent E:a r_parent l_llave LISTA_CASOS:b DEFAULT:c r_llave
     {:
+        RESULT = new Switch(a,b,c,dleft+1,dright+1);
     :}
 ;
 
-LISTA_CASOS ::= LISTA_CASOS:a res_case E:b dospuntos BLOQUES:c
+LISTA_CASOS ::= LISTA_CASOS:a res_case:d E:b dospuntos BLOQUES:c
     {:
+        RESULT = a;
+        RESULT.add(new Caso(b,c,dleft+1,dright+1));
     :}
-    | res_case E:a dospuntos BLOQUES:b
+    | res_case:c E:a dospuntos BLOQUES:b
     {:
+        RESULT = new LinkedList<Caso>();
+        RESULT.add(new Caso(a,b,cleft+1,cright+1););
     :}
 ;
 
 DEFAULT ::= res_default:a dospuntos BLOQUES:b
     {:
+        RESULT = new Default(b,aleft+1,aright+1);
     :}
     | /*empty*/
     {:
+        RESULT = null;
     :}
 ;
 

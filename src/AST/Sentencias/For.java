@@ -74,7 +74,6 @@ public class For extends Sentencia{
     
     public Object getTipoValores(Entorno entorno){
         //obtengo el valor
-        Object ret = Expresion.TIPO_PRIMITIVO.STRING;
         Object val = expresion.getValor(entorno);
         if(val instanceof LinkedList){
             return expresion.getTipo(entorno);
