@@ -34,7 +34,7 @@ public class For extends Sentencia{
         for (Object value : valores)
         {
             //declaro la variable
-            (new Declaracion(id, value, Primitivo.getTipoDato(value), fila, columna)).ejecutar(entorno);
+            (new Declaracion(id, value, fila, columna)).ejecutar(entorno);
             for (Nodo nodo : this.instrucciones)
             {
                 if (nodo instanceof Sentencia)

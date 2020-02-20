@@ -25,11 +25,10 @@ public class Declaracion extends Sentencia{
     }
     
     //declaracion especial para cuando la creo desde código 
-    Object valorDirecto, tipoDirecto;
-    public Declaracion(String id, Object value, Object tipoDirecto, int fila, int columna){
+    Object valorDirecto;
+    public Declaracion(String id, Object value, int fila, int columna){
         this.id = id;
         this.valorDirecto = value;
-        this.tipoDirecto = tipoDirecto;
         this.fila = fila;
         this.columna = columna;
     }
@@ -37,7 +36,7 @@ public class Declaracion extends Sentencia{
     @Override
     public Object ejecutar(Entorno entorno) {
         Object valor = this.valorDirecto==null?value.getValor(entorno):this.valorDirecto;
-        Object tipo = this.valorDirecto==null?Primitivo.getTipoDato(valor):this.tipoDirecto;
+        Object tipo = Primitivo.getTipoDato(valor);
         Variable var = new Variable(valor,tipo,fila,columna);
         entorno.addVariable(id.toLowerCase(), var);
         return null;

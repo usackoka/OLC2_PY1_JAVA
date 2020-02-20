@@ -15,7 +15,7 @@ import java.util.LinkedList;
 
 public class Entorno {
     
-    Entorno padre;
+    public Entorno padre;
     Principal principal;
     Hashtable<String, Variable> tbs;
     Hashtable<String, Funcion> funciones;
@@ -104,9 +104,12 @@ public class Entorno {
     }
 
     public Object getValorVariable(String id, int fila, int columna) {
-        if (this.tbs.containsKey(id))
+        if(id.equals("db4")){
+            System.out.println("");
+        }
+        if (this.tbs.containsKey(id.toLowerCase()))
         {
-            return this.tbs.get(id).getValor(this);
+            return this.tbs.get(id.toLowerCase()).getValor(this);
         }
         else {
             if (this.padre == null)

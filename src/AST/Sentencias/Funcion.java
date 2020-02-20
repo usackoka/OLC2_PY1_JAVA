@@ -33,16 +33,28 @@ public class Funcion extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
+        
+        Entorno temp = entorno;
+
+        //para cuando hago una llamada global que no se pierda el padre
+        if (entorno.padre != null) {
+            entorno = new Entorno(entorno.padre);
+        }
+        else {
+            entorno = new Entorno(entorno);
+        }
+        
         //creo los parametros
         crearParametros(entorno);
-        
+            
         for (Nodo nodo : this.instrucciones)
         {
             if (nodo instanceof Sentencia)
             {
-                Object val = ((Sentencia)nodo).ejecutar(new Entorno(entorno));
+                Object val = ((Sentencia)nodo).ejecutar(entorno);
                 if (val != null)
                 {
+                    entorno = temp;
                     return val;
                 }
             }
@@ -51,6 +63,7 @@ public class Funcion extends Sentencia{
                 ((Expresion)nodo).getValor(entorno);
             }
         }
+        entorno = temp;
         return null;
     }
     
@@ -58,18 +71,17 @@ public class Funcion extends Sentencia{
         int i = 0;
         for(Parametro parametro : parametros){
             Object value = valoresParametros.get(i++);
-            Object tipo = Primitivo.getTipoDato(value);
             //si mandan un default
             if(value.equals(Expresion.TIPO_PRIMITIVO.DEFAULT)){
                 //preegunto si hay un valor por defecto
                 if(parametro.id != null){
                     //si el id es null es porque viene un id
-                    (new Declaracion(parametro.id, value, tipo, fila, columna)).ejecutar(entorno);
+                    (new Declaracion(parametro.id, value, fila, columna)).ejecutar(entorno);
                 }else{
                     entorno.addError(new Token("Parametro-Default-Funcion("+this.id+")", "No se puede enviar un valor default en este parámetro: "+i, fila, columna));
                 }
             }else{
-                (new Declaracion(((Primitivo)parametro.expresion).getID(entorno), value, tipo, fila, columna)).ejecutar(entorno);
+                (new Declaracion(((Primitivo)parametro.expresion).getID(entorno), value, fila, columna)).ejecutar(entorno);
             }
         }
     }
