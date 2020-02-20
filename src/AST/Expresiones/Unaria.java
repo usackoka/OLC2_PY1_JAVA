@@ -29,21 +29,22 @@ public class Unaria extends Expresion{
     @Override
     public Object getValor(Entorno entorno) {
         Object def = 0;
-        Object tipo = unaria.getTipo(entorno);
+        Object val = unaria.getValor(entorno);
+        Object tipo = Primitivo.getTipoDato(val);
         switch (tipoOperacion) {
             case MENOS:
                 if (tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                 {
-                    return - Integer.parseInt(unaria.getValor(entorno).toString());
+                    return - Integer.parseInt(val.toString());
                 }
                 else if (tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                 {
-                    return - Double.parseDouble(unaria.getValor(entorno).toString());
+                    return - Double.parseDouble(val.toString());
                 }
             case NOT:
                 if (tipo.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN))
                 {
-                    return !Boolean.parseBoolean(unaria.getValor(entorno).toString());
+                    return !Boolean.parseBoolean(val.toString());
                 }
                 def = false;
         }
@@ -51,29 +52,4 @@ public class Unaria extends Expresion{
         entorno.addError(new Token("Unaria", "No soportado" + tipoOperacion + " con: "+tipo, fila, columna));
         return def;
     }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        Object tipo = unaria.getTipo(entorno);
-        switch (tipoOperacion) {
-            case MENOS:
-                if (tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
-                {
-                    return Expresion.TIPO_PRIMITIVO.INTEGER;
-                }
-                else if (tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
-                {
-                    return Expresion.TIPO_PRIMITIVO.DOUBLE;
-                }
-            case NOT:
-                if (tipo.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN))
-                {
-                    return Expresion.TIPO_PRIMITIVO.BOOLEAN;
-                }
-        }
-        
-        entorno.addError(new Token("Unaria-getTipo", "No soportado" + tipoOperacion + " con: "+tipo, fila, columna));
-        return Expresion.TIPO_PRIMITIVO.STRING;
-    }
-
 }

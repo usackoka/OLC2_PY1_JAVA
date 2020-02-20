@@ -40,7 +40,6 @@ public class Entorno {
             
             for(Expresion parametro : parametros){
                 valoresParametros.add(parametro.getValor(this));
-                tipos.add(parametro.getTipo(this));
             }
             
             Funcion f = funciones.get(id);

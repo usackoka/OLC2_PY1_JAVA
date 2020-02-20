@@ -14,5 +14,4 @@ public abstract class Expresion extends Nodo{
     
     public Object TIPO;
     public abstract Object getValor(Entorno entorno);
-    public abstract Object getTipo(Entorno entorno);
 }

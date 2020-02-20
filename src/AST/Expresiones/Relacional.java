@@ -29,63 +29,65 @@ public class Relacional extends Expresion{
     
     @Override
     public Object getValor(Entorno entorno) {
-        Object tipIzq = left.getTipo(entorno);
-        Object tipDer = right.getTipo(entorno);
+        Object valLeft = left.getValor(entorno);
+        Object valRight = right.getValor(entorno);
+        Object tipIzq = Primitivo.getTipoDato(valLeft);
+        Object tipDer = Primitivo.getTipoDato(valRight);
             
         try {
             switch (TipoOperacion)
             {
                 case IGUALIGUAL:
-                    return left.getValor(entorno).equals(right.getValor(entorno));
+                    return valLeft.equals(valRight);
                 case DIFERENTE:
-                    return !left.getValor(entorno).equals(right.getValor(entorno));
+                    return !valLeft.equals(valRight);
                 case MENOR:
                     if(tipIzq.equals(Expresion.TIPO_PRIMITIVO.STRING) && tipDer.equals(Expresion.TIPO_PRIMITIVO.STRING)){
-                        return left.getValor(entorno).toString().codePoints().sum() < right.getValor(entorno).toString().codePoints().sum();
+                        return valLeft.toString().codePoints().sum() < valRight.toString().codePoints().sum();
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                     {
-                        return Double.parseDouble(String.valueOf(left.getValor(entorno))) < Double.parseDouble(String.valueOf(right.getValor(entorno)));
+                        return Double.parseDouble(String.valueOf(valLeft)) < Double.parseDouble(String.valueOf(valRight));
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        return Integer.parseInt(String.valueOf(left.getValor(entorno))) < Integer.parseInt(String.valueOf(right.getValor(entorno)));
+                        return Integer.parseInt(String.valueOf(valLeft)) < Integer.parseInt(String.valueOf(valRight));
                     }
                 case MENORIGUAL:
                     if(tipIzq.equals(Expresion.TIPO_PRIMITIVO.STRING) && tipDer.equals(Expresion.TIPO_PRIMITIVO.STRING)){
-                        return left.getValor(entorno).toString().codePoints().sum() <= right.getValor(entorno).toString().codePoints().sum();
+                        return valLeft.toString().codePoints().sum() <= valRight.toString().codePoints().sum();
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                     {
-                        return Double.parseDouble(String.valueOf(left.getValor(entorno))) <= Double.parseDouble(String.valueOf(right.getValor(entorno)));
+                        return Double.parseDouble(String.valueOf(valLeft)) <= Double.parseDouble(String.valueOf(valRight));
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        return Integer.parseInt(String.valueOf(left.getValor(entorno))) <= Integer.parseInt(String.valueOf(right.getValor(entorno)));
+                        return Integer.parseInt(String.valueOf(valLeft)) <= Integer.parseInt(String.valueOf(valRight));
                     }
                 case MAYOR:
                     if(tipIzq.equals(Expresion.TIPO_PRIMITIVO.STRING) && tipDer.equals(Expresion.TIPO_PRIMITIVO.STRING)){
-                        return left.getValor(entorno).toString().codePoints().sum() > right.getValor(entorno).toString().codePoints().sum();
+                        return valLeft.toString().codePoints().sum() > valRight.toString().codePoints().sum();
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                     {
-                        return Double.parseDouble(String.valueOf(left.getValor(entorno))) > Double.parseDouble(String.valueOf(right.getValor(entorno)));
+                        return Double.parseDouble(String.valueOf(valLeft)) > Double.parseDouble(String.valueOf(valRight));
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        return Integer.parseInt(String.valueOf(left.getValor(entorno))) > Integer.parseInt(String.valueOf(right.getValor(entorno)));
+                        return Integer.parseInt(String.valueOf(valLeft)) > Integer.parseInt(String.valueOf(valRight));
                     }
                 case MAYORIGUAL:
                     if(tipIzq.equals(Expresion.TIPO_PRIMITIVO.STRING) && tipDer.equals(Expresion.TIPO_PRIMITIVO.STRING)){
-                        return left.getValor(entorno).toString().codePoints().sum() >= right.getValor(entorno).toString().codePoints().sum();
+                        return valLeft.toString().codePoints().sum() >= valRight.toString().codePoints().sum();
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                     {
-                        return Double.parseDouble(String.valueOf(left.getValor(entorno))) >= Double.parseDouble(String.valueOf(right.getValor(entorno)));
+                        return Double.parseDouble(String.valueOf(valLeft)) >= Double.parseDouble(String.valueOf(valRight));
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        return Integer.parseInt(String.valueOf(left.getValor(entorno))) >= Integer.parseInt(String.valueOf(right.getValor(entorno)));
+                        return Integer.parseInt(String.valueOf(valLeft)) >= Integer.parseInt(String.valueOf(valRight));
                     }
             }
         } catch (Exception e) {
@@ -95,10 +97,4 @@ public class Relacional extends Expresion{
         entorno.addError(new Token("Relacional", "No soportado: "+TipoOperacion+" tipos:" + tipIzq + " y " + tipDer, fila, columna));
         return false;
     }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        return Expresion.TIPO_PRIMITIVO.BOOLEAN;
-    }
-
 }

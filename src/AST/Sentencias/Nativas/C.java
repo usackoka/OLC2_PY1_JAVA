@@ -27,18 +27,14 @@ public class C extends Expresion{
         Primitivo primitivo = null;
         for (int i = 0; i < this.expresiones.size(); i++) {
             Expresion expresion = this.expresiones.get(i);
+            Object value = expresion.getValor(entorno);
             if(primitivo==null){
-                primitivo = new Primitivo(expresion.getValor(entorno), expresion.getTipo(entorno), fila, columna);
+                primitivo = new Primitivo(value, Primitivo.getTipoDato(value), fila, columna);
                 continue;
             }
-            primitivo.addValue(expresion.getValor(entorno), expresion.getTipo(entorno), entorno);
+            primitivo.addValue(value, Primitivo.getTipoDato(value), entorno);
         }
         return primitivo.castearA(getMAX(entorno));
-    }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        return this.getMAX(entorno);
     }
     
     //PRIORIDADES

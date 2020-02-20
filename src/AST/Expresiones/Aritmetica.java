@@ -29,8 +29,10 @@ public class Aritmetica extends Expresion{
     
     @Override
     public Object getValor(Entorno entorno) {
-        Object tipIzq = left.getTipo(entorno);
-        Object tipDer = right.getTipo(entorno);
+        Object valLeft = left.getValor(entorno);
+        Object valRight = right.getValor(entorno);
+        Object tipIzq = Primitivo.getTipoDato(valLeft);
+        Object tipDer = Primitivo.getTipoDato(valRight);
             
         try {
             switch (TipoOperacion)
@@ -38,63 +40,63 @@ public class Aritmetica extends Expresion{
                 case MAS:
                     if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.STRING) || tipDer.equals(Expresion.TIPO_PRIMITIVO.STRING))
                     {
-                        return left.getValor(entorno) + "" + right.getValor(entorno);
+                        return valLeft + "" + valRight;
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                     {
-                        Object value = Double.parseDouble(String.valueOf(left.getValor(entorno))) + Double.parseDouble(String.valueOf(right.getValor(entorno)));
+                        Object value = Double.parseDouble(String.valueOf(valLeft)) + Double.parseDouble(String.valueOf(valRight));
                         return value;
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        return Integer.parseInt(String.valueOf(left.getValor(entorno))) + Integer.parseInt(String.valueOf(right.getValor(entorno)));
+                        return Integer.parseInt(String.valueOf(valLeft)) + Integer.parseInt(String.valueOf(valRight));
                     }
                 case MENOS:
                     if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                     {
-                        Object value = Double.parseDouble(String.valueOf(left.getValor(entorno))) - Double.parseDouble(String.valueOf(right.getValor(entorno)));
+                        Object value = Double.parseDouble(String.valueOf(valLeft)) - Double.parseDouble(String.valueOf(valRight));
                         return value;
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        Object value = Integer.parseInt(String.valueOf(left.getValor(entorno))) - Integer.parseInt(String.valueOf(right.getValor(entorno)));
+                        Object value = Integer.parseInt(String.valueOf(valLeft)) - Integer.parseInt(String.valueOf(valRight));
                         return value;
                     }
                 case POR:
                     if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                     {
-                        return Double.parseDouble(String.valueOf(left.getValor(entorno))) * Double.parseDouble(String.valueOf(right.getValor(entorno)));
+                        return Double.parseDouble(String.valueOf(valLeft)) * Double.parseDouble(String.valueOf(valRight));
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        return Integer.parseInt(String.valueOf(left.getValor(entorno))) * Integer.parseInt(String.valueOf(right.getValor(entorno)));
+                        return Integer.parseInt(String.valueOf(valLeft)) * Integer.parseInt(String.valueOf(valRight));
                     }
                 case MOD:
                     if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                     {
-                        return Double.parseDouble(String.valueOf(left.getValor(entorno))) % Double.parseDouble(String.valueOf(right.getValor(entorno)));
+                        return Double.parseDouble(String.valueOf(valLeft)) % Double.parseDouble(String.valueOf(valRight));
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        return Integer.parseInt(String.valueOf(left.getValor(entorno))) % Integer.parseInt(String.valueOf(right.getValor(entorno)));
+                        return Integer.parseInt(String.valueOf(valLeft)) % Integer.parseInt(String.valueOf(valRight));
                     }
                 case DIV:
                     if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                     {
-                        return Double.parseDouble(String.valueOf(left.getValor(entorno))) / Double.parseDouble(String.valueOf(right.getValor(entorno)));
+                        return Double.parseDouble(String.valueOf(valLeft)) / Double.parseDouble(String.valueOf(valRight));
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        return Integer.parseInt(String.valueOf(left.getValor(entorno))) / Integer.parseInt(String.valueOf(right.getValor(entorno)));
+                        return Integer.parseInt(String.valueOf(valLeft)) / Integer.parseInt(String.valueOf(valRight));
                     }
                 case POT:
                     if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
                     {
-                        return Math.pow(Double.parseDouble(String.valueOf(left.getValor(entorno))), Double.parseDouble(String.valueOf(right.getValor(entorno))));
+                        return Math.pow(Double.parseDouble(String.valueOf(valLeft)), Double.parseDouble(String.valueOf(valRight)));
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        return Math.pow(Double.parseDouble(String.valueOf(left.getValor(entorno))), Double.parseDouble(String.valueOf(right.getValor(entorno))));
+                        return Math.pow(Double.parseDouble(String.valueOf(valLeft)), Double.parseDouble(String.valueOf(valRight)));
                     }
             }
         } catch (Exception e) {
@@ -104,55 +106,4 @@ public class Aritmetica extends Expresion{
         entorno.addError(new Token("Aritmetica", "No soportado: "+TipoOperacion+" tipos:" + tipIzq + " y " + tipDer, fila, columna));
         return "";
     }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        Object izq = left.getTipo(entorno);
-        Object der = right.getTipo(entorno);
-        
-        try {
-            switch (TipoOperacion) {
-                case MAS:
-                    if (izq.equals(Expresion.TIPO_PRIMITIVO.STRING) || der.equals(Expresion.TIPO_PRIMITIVO.STRING))
-                    {
-                        return Expresion.TIPO_PRIMITIVO.STRING;
-                    }
-                    else if (izq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || der.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
-                    {
-                        return Expresion.TIPO_PRIMITIVO.DOUBLE;
-                    }
-                    else if (izq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && der.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
-                    {
-                        return Expresion.TIPO_PRIMITIVO.INTEGER;
-                    }
-                case MENOS:
-                case POR:
-                case MOD:
-                case DIV:
-                    if (izq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || der.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
-                    {
-                        return Expresion.TIPO_PRIMITIVO.DOUBLE;
-                    }
-                    else if (izq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && der.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
-                    {
-                        return Expresion.TIPO_PRIMITIVO.INTEGER;
-                    }
-                case POT:
-                    if (izq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || der.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
-                    {
-                        return Expresion.TIPO_PRIMITIVO.DOUBLE;
-                    }
-                    else if (izq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || der.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
-                    {
-                        return Expresion.TIPO_PRIMITIVO.DOUBLE;
-                    }
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        
-        entorno.addError(new Token("Aritmetica-getTipo", "No soportado: "+TipoOperacion+" tipos: " + izq + " y " + der, fila, columna));
-        return Expresion.TIPO_PRIMITIVO.STRING;
-    }
-
 }

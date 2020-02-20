@@ -24,14 +24,13 @@ public class Variable extends Expresion{
     public Object getValor(Entorno entorno) {
         return this.value;
     }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        return this.TIPO;
-    }
     
     public void setValue(Object value){
         this.value = value;
+    }
+    
+    public Object getTipo(Entorno entorno){
+        return this.TIPO;
     }
 
 }

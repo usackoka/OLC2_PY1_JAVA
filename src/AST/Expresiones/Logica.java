@@ -28,8 +28,10 @@ public class Logica extends Expresion{
     
     @Override
     public Object getValor(Entorno entorno) {
-        Object tipIzq = left.getTipo(entorno);
-        Object tipDer = right.getTipo(entorno);
+        Object valLeft = left.getValor(entorno);
+        Object valRight = right.getValor(entorno);
+        Object tipIzq = Primitivo.getTipoDato(valLeft);
+        Object tipDer = Primitivo.getTipoDato(valRight);
             
         try {
             switch (TipoOperacion)
@@ -37,12 +39,12 @@ public class Logica extends Expresion{
                 case AND:
                     if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN) && tipDer.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN))
                     {
-                        return Boolean.parseBoolean(String.valueOf(left.getValor(entorno))) && Boolean.parseBoolean(String.valueOf(right.getValor(entorno)));
+                        return Boolean.parseBoolean(String.valueOf(valLeft)) && Boolean.parseBoolean(String.valueOf(valRight));
                     }
                 case OR:
                     if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN) && tipDer.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN))
                     {
-                        return Boolean.parseBoolean(String.valueOf(left.getValor(entorno))) || Boolean.parseBoolean(String.valueOf(right.getValor(entorno)));
+                        return Boolean.parseBoolean(String.valueOf(valLeft)) || Boolean.parseBoolean(String.valueOf(valRight));
                     }
             }
         } catch (Exception e) {
@@ -52,10 +54,4 @@ public class Logica extends Expresion{
         entorno.addError(new Token("Logica", "No soportado: "+TipoOperacion+" tipos:" + tipIzq + " y " + tipDer, fila, columna));
         return false;
     }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        return Expresion.TIPO_PRIMITIVO.BOOLEAN;
-    }
-
 }

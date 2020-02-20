@@ -40,16 +40,8 @@ public class Primitivo extends Expresion{
             return this.values;
         }
     }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.VARIABLE)){
-            return entorno.getTipoVariable(this.values.get(0).toString().toLowerCase(), fila, columna);
-        }
-        return this.TIPO;
-    }
     
-    public static Object getTipoDato(Object obj, Entorno entorno, int fila, int columna){
+    public static Object getTipoDato(Object obj){
         if(obj instanceof String){
             return Expresion.TIPO_PRIMITIVO.STRING;
         }else if(obj instanceof Double){
@@ -59,8 +51,7 @@ public class Primitivo extends Expresion{
         }else if(obj instanceof Integer){
             return Expresion.TIPO_PRIMITIVO.INTEGER;
         }else{
-            entorno.addError(new Token(obj.toString(),"No se encuentra el tipo para este objeto",fila,columna));
-            return Expresion.TIPO_PRIMITIVO.STRING;
+            return obj;
         }
     }
     

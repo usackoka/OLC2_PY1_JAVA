@@ -61,7 +61,7 @@ public class Llamada extends Expresion{
                     return new Remove(this.parametros, fila, columna).getValor(entorno);
                 }
                 entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
-                return new Primitivo("", TIPO_PRIMITIVO.STRING, fila, columna);
+                return "";
             case "tolowercase":
                 if(parametros.size()==PARAMETROS){
                     return new ToLowerCase(this.parametros.get(0), fila, columna).getValor(entorno);
@@ -79,7 +79,7 @@ public class Llamada extends Expresion{
                     return new Trunk(this.parametros.get(0), fila, columna).getValor(entorno);
                 }
                 entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
-                return new Primitivo("", TIPO_PRIMITIVO.STRING, fila, columna);
+                return "";
             case "round":
                 if(parametros.size()==PARAMETROS){
                     return new Round(this.parametros.get(0), fila, columna).getValor(entorno);
@@ -107,23 +107,6 @@ public class Llamada extends Expresion{
             //busco entre las declaradas en el archivo
             default:
                 return entorno.ejecutarFuncion(match, parametros, fila, columna);
-        }
-    }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        String match = this.id.toLowerCase();
-        switch(match){
-            case "c":
-                return new C(this.parametros, fila, columna).getTipo(entorno);
-            case "stringlength": case "trunk": case "round":
-                return Expresion.TIPO_PRIMITIVO.INTEGER;
-            case "remove": case "tolowercase": case "touppercase": case "typeof":
-                return Expresion.TIPO_PRIMITIVO.STRING;
-            case "median": case "mode": case "mean":
-                return Expresion.TIPO_PRIMITIVO.DOUBLE;
-            default:
-                return Primitivo.getTipoDato(valorEjecutado, entorno, fila, columna);
         }
     }
 

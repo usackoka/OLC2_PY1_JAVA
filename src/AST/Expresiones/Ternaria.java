@@ -8,7 +8,6 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
-import Analyzer.Token;
 
 public class Ternaria extends Expresion{
 
@@ -29,17 +28,4 @@ public class Ternaria extends Expresion{
         }
         return falsa.getValor(entorno);
     }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        if ((verdadera.getTipo(entorno) != falsa.getTipo(entorno))) {
-            entorno.addError(new Token("Ternaria","Los tipos de la ternaria no son iguales ("+
-                falsa.getTipo(entorno)+","+verdadera.getTipo(entorno)+")",fila,columna));
-            return Expresion.TIPO_PRIMITIVO.STRING;
-        }
-        else {
-            return verdadera.getTipo(entorno);
-        }
-    }
-
 }

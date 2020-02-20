@@ -25,10 +25,4 @@ public class Parametro extends Expresion{
     public Object getValor(Entorno entorno) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }
