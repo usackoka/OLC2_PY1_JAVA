@@ -71,7 +71,7 @@ non terminal S
 non terminal PUEDE_SEMICOLON
 ;
 
-non terminal LinkedList<Expresion> LISTA_E, LISTA_LLAMADA;
+non terminal LinkedList<Expresion> LISTA_E, LISTA_LLAMADA, PARAMETROS_LLAMADA;
 non terminal LinkedList<Nodo> LISTA_BLOQUES, BLOQUES, DECLARACIONES;
 non terminal Nodo DECLARACION, INSTRUCCION;
 non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA;
@@ -317,6 +317,16 @@ DEFAULT ::= res_default:a dospuntos BLOQUES:b
     :}
 ;
 
+PARAMETROS_LLAMADA ::= LISTA_LLAMADA:a
+    {:
+        RESULT = a;
+    :}
+    | /* empty */
+    {:
+        RESULT = new LinkedList<Expresion>();
+    :}
+;
+
 LISTA_LLAMADA ::= LISTA_LLAMADA:a coma E:b
     {:
         RESULT = a;
@@ -388,7 +398,7 @@ TERNARIA ::= E:a ternario:d E:b dospuntos E:c
 :}
 ;
 
-LLAMADA ::= id:a l_parent LISTA_LLAMADA:b r_parent
+LLAMADA ::= id:a l_parent PARAMETROS_LLAMADA:b r_parent
     {:
         RESULT = new Llamada(a,b,aleft+1,aright+1);
     :}
