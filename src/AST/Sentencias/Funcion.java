@@ -21,7 +21,6 @@ public class Funcion extends Sentencia{
     LinkedList<Parametro> parametros;
     LinkedList<Nodo> instrucciones;
     public LinkedList<Object> valoresParametros;
-    public LinkedList<Object> tiposParametros;
     
     public Funcion(String id, LinkedList<Parametro> parametros, LinkedList<Nodo> instrucciones, int fila, int columna){
         this.id = id;
@@ -30,7 +29,6 @@ public class Funcion extends Sentencia{
         this.fila = fila;
         this.columna = columna;
         this.valoresParametros = new LinkedList<>();
-        this.tiposParametros = new LinkedList<>();
     }
     
     @Override
@@ -60,7 +58,7 @@ public class Funcion extends Sentencia{
         int i = 0;
         for(Parametro parametro : parametros){
             Object value = valoresParametros.get(i);
-            Object tipo = tiposParametros.get(i++);
+            Object tipo = Primitivo.getTipoDato(value);
             //si mandan un default
             if(value.equals(Expresion.TIPO_PRIMITIVO.DEFAULT)){
                 //preegunto si hay un valor por defecto

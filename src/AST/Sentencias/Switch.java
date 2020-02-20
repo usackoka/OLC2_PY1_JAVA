@@ -27,7 +27,18 @@ public class Switch extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Object value = this.match.getValor(entorno);
+        for(Caso caso : this.listaCasos){
+            if(caso.match(value, entorno)){
+                Object res = caso.ejecutar(entorno);
+                if(res!=null){
+                    if(res.equals(Corte.TIPO_CORTE.BREAK))
+                        return null;
+                    return res;
+                }
+            }
+        }
+        return default_!=null?default_.ejecutar(entorno):null;
     }
 
 }

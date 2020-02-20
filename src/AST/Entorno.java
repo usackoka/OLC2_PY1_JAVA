@@ -34,8 +34,7 @@ public class Entorno {
     }
     
     public Object ejecutarFuncion(String id, LinkedList<Expresion> parametros, int fila, int columna){
-        if(funciones.containsKey(id.toLowerCase())){
-            LinkedList<Object> tipos = new LinkedList<>();
+        if(getEntornoGlobal().funciones.containsKey(id.toLowerCase())){
             LinkedList<Object> valoresParametros = new LinkedList<>();
             
             for(Expresion parametro : parametros){
@@ -43,7 +42,6 @@ public class Entorno {
             }
             
             Funcion f = funciones.get(id);
-            f.tiposParametros = tipos;
             f.valoresParametros = valoresParametros;
             return f.ejecutar(this);
         }else{
