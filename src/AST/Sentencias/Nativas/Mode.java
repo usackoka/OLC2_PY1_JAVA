@@ -8,6 +8,7 @@ package AST.Sentencias.Nativas;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.Primitivo;
 import Analyzer.Token;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -26,9 +27,9 @@ public class Mode extends Expresion{
     public Object getValor(Entorno entorno) {
         Object defecto = 0;
         Object valor = expresiones.get(0).getValor(entorno);
-        Object tipo = expresiones.get(0).getTipo(entorno);
+        Object tipo = Primitivo.getTipoDato(valor);
         Object valor2 = expresiones.size()==2?expresiones.get(1).getValor(entorno):null;
-        Object tipo2 = expresiones.size()==2?expresiones.get(1).getTipo(entorno):null;
+        Object tipo2 = expresiones.size()==2?Primitivo.getTipoDato(valor2):null;
         
         //hago las validaciones de tipos en los parametros para estar seguro de las conversiones luego :p
         if(!tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
@@ -80,10 +81,5 @@ public class Mode extends Expresion{
         }
         
         return resultado;
-    }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        return Expresion.TIPO_PRIMITIVO.DOUBLE;
     }
 }

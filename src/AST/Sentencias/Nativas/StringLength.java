@@ -8,6 +8,7 @@ package AST.Sentencias.Nativas;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.Primitivo;
 import Analyzer.Token;
 import java.util.LinkedList;
 
@@ -25,7 +26,7 @@ public class StringLength extends Expresion{
     public Object getValor(Entorno entorno) {
         Object defecto = 0;
         Object valor = expresion.getValor(entorno);
-        Object tipo = expresion.getTipo(entorno);
+        Object tipo = Primitivo.getTipoDato(valor);
         
         if(valor instanceof LinkedList){
             entorno.addError(new Token("Vector["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede afectar el vector con mas de un valor", fila, columna));
@@ -34,10 +35,4 @@ public class StringLength extends Expresion{
         
         return valor.toString().length();
     }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        return Expresion.TIPO_PRIMITIVO.INTEGER;
-    }
-
 }

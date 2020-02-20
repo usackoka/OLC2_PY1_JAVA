@@ -8,6 +8,7 @@ package AST.Sentencias;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.Primitivo;
 import AST.Expresiones.Variable;
 import AST.Sentencia;
 
@@ -35,9 +36,9 @@ public class Declaracion extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
-        
-        Variable var = new Variable(this.valorDirecto==null?value.getValor(entorno):this.valorDirecto, 
-                this.valorDirecto==null?value.getTipo(entorno):this.tipoDirecto,fila,columna);
+        Object valor = this.valorDirecto==null?value.getValor(entorno):this.valorDirecto;
+        Object tipo = this.valorDirecto==null?Primitivo.getTipoDato(valor):this.tipoDirecto;
+        Variable var = new Variable(valor,tipo,fila,columna);
         entorno.addVariable(id.toLowerCase(), var);
         return null;
     }

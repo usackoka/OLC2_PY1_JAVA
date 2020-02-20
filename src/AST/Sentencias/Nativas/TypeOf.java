@@ -8,6 +8,7 @@ package AST.Sentencias.Nativas;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.Primitivo;
 
 public class TypeOf extends Expresion{
 
@@ -21,12 +22,7 @@ public class TypeOf extends Expresion{
     
     @Override
     public Object getValor(Entorno entorno) {
-        return this.expresion.getTipo(entorno).toString();
+        Object valor = expresion.getValor(entorno);
+        return Primitivo.getTipoDato(valor).toString();
     }
-
-    @Override
-    public Object getTipo(Entorno entorno) {
-        return Expresion.TIPO_PRIMITIVO.STRING;
-    }
-
 }
