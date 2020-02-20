@@ -34,16 +34,15 @@ public class Entorno {
     }
     
     public Object ejecutarFuncion(String id, LinkedList<Expresion> parametros, int fila, int columna){
-        if(getEntornoGlobal().funciones.containsKey(id.toLowerCase())){
+        Entorno global = getEntornoGlobal();
+        if(global.funciones.containsKey(id.toLowerCase())){
+            Funcion f = global.funciones.get(id.toLowerCase());
             LinkedList<Object> valoresParametros = new LinkedList<>();
-            
             for(Expresion parametro : parametros){
                 valoresParametros.add(parametro.getValor(this));
             }
-            
-            Funcion f = funciones.get(id);
             f.valoresParametros = valoresParametros;
-            return f.ejecutar(this);
+            return f.ejecutar(new Entorno(this));
         }else{
             addError(new Token("Error llamada a: "+id,"No existe la función",fila,columna));
             return null;

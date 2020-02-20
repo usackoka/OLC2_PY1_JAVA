@@ -57,7 +57,7 @@ public class Funcion extends Sentencia{
     public void crearParametros(Entorno entorno){
         int i = 0;
         for(Parametro parametro : parametros){
-            Object value = valoresParametros.get(i);
+            Object value = valoresParametros.get(i++);
             Object tipo = Primitivo.getTipoDato(value);
             //si mandan un default
             if(value.equals(Expresion.TIPO_PRIMITIVO.DEFAULT)){

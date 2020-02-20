@@ -55,9 +55,9 @@ public class If extends Sentencia{
                 }
             }
         }else{
-            //si no se cumple pregunto si hay elseif o else
+            //si no se cumple pregunto si hay else
             if(elseif!=null){
-                elseif.ejecutar(new Entorno(entorno));
+                return elseif.ejecutar(new Entorno(entorno));
             }
         }
         return null;
