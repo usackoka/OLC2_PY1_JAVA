@@ -17,7 +17,6 @@ public class Llamada extends Expresion{
 
     String id;
     LinkedList<Expresion> parametros;
-    Object valorEjecutado;
     
     public Llamada(String id, LinkedList<Expresion> parametros, int fila, int columna){
         this.id = id;
@@ -107,7 +106,7 @@ public class Llamada extends Expresion{
                 return 0;
             //busco entre las declaradas en el archivo
             default:
-                return valorEjecutado;
+                return entorno.ejecutarFuncion(match, parametros, fila, columna);
         }
     }
 
@@ -124,7 +123,6 @@ public class Llamada extends Expresion{
             case "median": case "mode": case "mean":
                 return Expresion.TIPO_PRIMITIVO.DOUBLE;
             default:
-                valorEjecutado = entorno.ejecutarFuncion(match, parametros, fila, columna);
                 return Primitivo.getTipoDato(valorEjecutado, entorno, fila, columna);
         }
     }
