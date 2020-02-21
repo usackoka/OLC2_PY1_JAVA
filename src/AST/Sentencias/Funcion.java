@@ -33,16 +33,9 @@ public class Funcion extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
-        
-        Entorno temp = entorno;
 
         //para cuando hago una llamada global que no se pierda el padre
-        if (entorno.padre != null) {
-            entorno = new Entorno(entorno.padre);
-        }
-        else {
-            entorno = new Entorno(entorno);
-        }
+        entorno = new Entorno(entorno.getEntornoGlobal());
         
         //creo los parametros
         crearParametros(entorno);
@@ -54,7 +47,6 @@ public class Funcion extends Sentencia{
                 Object val = ((Sentencia)nodo).ejecutar(entorno);
                 if (val != null)
                 {
-                    entorno = temp;
                     return val;
                 }
             }
@@ -63,7 +55,6 @@ public class Funcion extends Sentencia{
                 ((Expresion)nodo).getValor(entorno);
             }
         }
-        entorno = temp;
         return null;
     }
     
