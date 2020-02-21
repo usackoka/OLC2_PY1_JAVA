@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package AST.Sentencias.Nativas;
+package AST.Expresiones.Nativas;
 
 import AST.Entorno;
 import AST.Expresion;
@@ -12,10 +12,11 @@ import AST.Expresiones.Primitivo;
 import Analyzer.Token;
 import java.util.LinkedList;
 
-public class ToUpperCase extends Expresion{
+public class Trunk extends Expresion{
 
-    Expresion expresion;
-    public ToUpperCase(Expresion expresion, int fila, int columna){
+    public Expresion expresion;
+    
+    public Trunk(Expresion expresion, int fila, int columna){
         this.expresion = expresion;
         this.fila = fila;
         this.columna = columna;
@@ -23,16 +24,20 @@ public class ToUpperCase extends Expresion{
     
     @Override
     public Object getValor(Entorno entorno) {
-        Object defecto = "";
+        
+        Object defecto = 0;
         Object valor = expresion.getValor(entorno);
         Object tipo = Primitivo.getTipoDato(valor);
         
         if(valor instanceof LinkedList){
-            entorno.addError(new Token("Vector["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede afectar el vector con mas de un valor", fila, columna));
+            entorno.addError(new Token("Vector["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede truncar un vector con mas de un valor", fila, columna));
+            return defecto;
+        }
+        if(!tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
+            entorno.addError(new Token("Vector["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede realizar Trunk de este tipo de vector", fila, columna));
             return defecto;
         }
         
-        return valor.toString().toUpperCase();
+        return (int)valor;
     }
-    
 }

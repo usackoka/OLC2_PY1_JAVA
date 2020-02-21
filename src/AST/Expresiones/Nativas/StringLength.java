@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package AST.Sentencias.Nativas;
+package AST.Expresiones.Nativas;
 
 import AST.Entorno;
 import AST.Expresion;
@@ -12,10 +12,11 @@ import AST.Expresiones.Primitivo;
 import Analyzer.Token;
 import java.util.LinkedList;
 
-public class ToLowerCase extends Expresion{
+public class StringLength extends Expresion{
 
     Expresion expresion;
-    public ToLowerCase(Expresion expresion, int fila, int columna){
+    
+    public StringLength(Expresion expresion, int fila, int columna){
         this.expresion = expresion;
         this.fila = fila;
         this.columna = columna;
@@ -23,7 +24,7 @@ public class ToLowerCase extends Expresion{
     
     @Override
     public Object getValor(Entorno entorno) {
-        Object defecto = "";
+        Object defecto = 0;
         Object valor = expresion.getValor(entorno);
         Object tipo = Primitivo.getTipoDato(valor);
         
@@ -32,7 +33,6 @@ public class ToLowerCase extends Expresion{
             return defecto;
         }
         
-        return valor.toString().toLowerCase();
+        return valor.toString().length();
     }
-    
 }

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package AST.Sentencias.Nativas;
+package AST.Expresiones.Nativas;
 
 import AST.Entorno;
 import AST.Expresion;

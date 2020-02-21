@@ -4,19 +4,20 @@
  * and open the template in the editor.
  */
 
-package AST.Sentencias.Nativas;
+package AST.Expresiones.Nativas;
 
 import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Primitivo;
 import Analyzer.Token;
+import java.util.Comparator;
 import java.util.LinkedList;
 
-public class Mean extends Expresion{
-    
+public class Median extends Expresion{
+
     LinkedList<Expresion> expresiones;
     
-    public Mean(LinkedList<Expresion> expresiones, int fila, int columna){
+    public Median(LinkedList<Expresion> expresiones, int fila, int columna){
         this.expresiones = expresiones;
         this.fila = fila;
         this.columna = columna;
@@ -52,22 +53,20 @@ public class Mean extends Expresion{
         }
         
         //ordeno los numeros
-        //numeros.sort(Comparator.naturalOrder());
+        numeros.sort(Comparator.naturalOrder());
         
         //saco el index si es que hay
         int index = valor2!=null?(int)valor2:0;
         
-        //calculando promedio
-        int resultado = 0;
-        int totalSumados = 0;
+        //calculando moda
+        LinkedList<Integer> temp = new LinkedList<>();
         for(int numero : numeros){
             //si hay un index, pregunto si ese index es mayor o igual al numero que estoy comparando, si no hay, lo dejo pasar
             if(valor2!=null?numero>=index:true){
-                resultado += numero;
-                totalSumados++;
+                temp.add(numero);
             }
         }
         
-        return ((double)resultado/totalSumados);
+        return temp.size()%2==0?temp.get((int)(temp.size()/2))-0.5:temp.get((int)(temp.size()/2));
     }
 }

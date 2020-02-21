@@ -41,7 +41,7 @@ public class Caso extends Sentencia{
                     }
                     else if (val.equals(Corte.TIPO_CORTE.BREAK))
                     {
-                        return null;
+                        return Corte.TIPO_CORTE.BREAK;
                     }
                     return val;
                 }

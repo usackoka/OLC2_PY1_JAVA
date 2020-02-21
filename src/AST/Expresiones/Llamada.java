@@ -8,7 +8,7 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
-import AST.Sentencias.Nativas.*;
+import AST.Expresiones.Nativas.*;
 import AST.Sentencias.Print;
 import Analyzer.Token;
 import java.util.LinkedList;
