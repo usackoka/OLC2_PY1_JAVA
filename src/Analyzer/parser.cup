@@ -75,12 +75,12 @@ non terminal LinkedList<Expresion> LISTA_E, LISTA_LLAMADA, PARAMETROS_LLAMADA;
 non terminal LinkedList<Nodo> LISTA_BLOQUES, BLOQUES, DECLARACIONES;
 non terminal Nodo DECLARACION, INSTRUCCION;
 non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA;
-non terminal Sentencia SENTENCIA, FUNCION, VARIABLE, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, RETURN, DEFAULT;
+non terminal Sentencia SENTENCIA, FUNCION, VARIABLE, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, RETURN;
+non terminal Default DEFAULT;
 non terminal Parametro PARAMETRO;
 non terminal LinkedList<Caso> LISTA_CASOS;
 non terminal LinkedList<Parametro> LISTA_PARAMETROS, PARAMETROS;
 
-precedence left ternario;
 precedence left or;
 precedence left and;
 precedence left diferente,igualigual;
@@ -89,6 +89,7 @@ precedence left mas,menos;
 precedence left por,div,modular;
 precedence left potencia;
 precedence right not,UMINUS,UPLUS;
+precedence left ternario;
 precedence left l_parent,r_parent,l_corchete,r_corchete;
 
 start with S;
@@ -311,7 +312,7 @@ LISTA_CASOS ::= LISTA_CASOS:a res_case:d E:b dospuntos BLOQUES:c
     | res_case:c E:a dospuntos BLOQUES:b
     {:
         RESULT = new LinkedList<Caso>();
-        RESULT.add(new Caso(a,b,cleft+1,cright+1););
+        RESULT.add(new Caso(a,b,cleft+1,cright+1));
     :}
 ;
 

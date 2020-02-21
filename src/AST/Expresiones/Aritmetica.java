@@ -96,7 +96,7 @@ public class Aritmetica extends Expresion{
                     }
                     else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
                     {
-                        return Math.pow(Double.parseDouble(String.valueOf(valLeft)), Double.parseDouble(String.valueOf(valRight)));
+                        return (int)Math.pow(Integer.parseInt(String.valueOf(valLeft)), Integer.parseInt(String.valueOf(valRight)));
                     }
             }
         } catch (Exception e) {
