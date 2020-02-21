@@ -26,13 +26,14 @@ public class While extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
+        entorno = new Entorno(entorno);
         while (Boolean.parseBoolean(this.condicion.getValor(entorno).toString()))
         {
             for (Nodo nodo : this.instrucciones)
             {
                 if (nodo instanceof Sentencia)
                 {
-                    Object val = ((Sentencia)nodo).ejecutar(new Entorno(entorno));
+                    Object val = ((Sentencia)nodo).ejecutar(entorno);
                     if (val != null)
                     {
                         //pregunto si es un continue

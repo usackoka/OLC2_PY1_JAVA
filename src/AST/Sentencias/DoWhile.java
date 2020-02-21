@@ -26,12 +26,13 @@ public class DoWhile extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
+        entorno = new Entorno(entorno);
         do{
             for (Nodo nodo : this.instrucciones)
             {
                 if (nodo instanceof Sentencia)
                 {
-                    Object val = ((Sentencia)nodo).ejecutar(new Entorno(entorno));
+                    Object val = ((Sentencia)nodo).ejecutar(entorno);
                     if (val != null)
                     {
                         //pregunto si es un continue

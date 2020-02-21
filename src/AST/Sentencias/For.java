@@ -30,6 +30,7 @@ public class For extends Sentencia{
 
     @Override
     public Object ejecutar(Entorno entorno) {
+        entorno = new Entorno(entorno);
         LinkedList<Object> valores = getValores(entorno);
         for (Object value : valores)
         {
@@ -39,7 +40,7 @@ public class For extends Sentencia{
             {
                 if (nodo instanceof Sentencia)
                 {
-                    Object val = ((Sentencia)nodo).ejecutar(new Entorno(entorno));
+                    Object val = ((Sentencia)nodo).ejecutar(entorno);
                     if (val != null)
                     {
                         return val;

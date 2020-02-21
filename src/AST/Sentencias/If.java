@@ -30,11 +30,12 @@ public class If extends Sentencia{
     public Object ejecutar(Entorno entorno) {
         //si se cumple la condicion ejecuto las acciones
         if(Boolean.parseBoolean(this.condicion.getValor(entorno).toString())){
+        entorno = new Entorno(entorno);
             for (Nodo nodo : this.instrucciones)
             {
                 if (nodo instanceof Sentencia)
                 {
-                    Object val = ((Sentencia)nodo).ejecutar(new Entorno(entorno));
+                    Object val = ((Sentencia)nodo).ejecutar(entorno);
                     if (val != null)
                     {
                         //pregunto si es un continue
@@ -57,7 +58,8 @@ public class If extends Sentencia{
         }else{
             //si no se cumple pregunto si hay else
             if(elseif!=null){
-                return elseif.ejecutar(new Entorno(entorno));
+                entorno = new Entorno(entorno);
+                return elseif.ejecutar(entorno);
             }
         }
         return null;
