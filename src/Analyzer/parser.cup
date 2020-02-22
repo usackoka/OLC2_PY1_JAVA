@@ -426,20 +426,25 @@ ACCESO_ESTRUCTURA ::= id:a
     {:
         RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
     :}
-    | ACCESO_ESTRUCTURA l_corchete E r_corchete
+    | ACCESO_ESTRUCTURA:a l_corchete E:b r_corchete
     {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.SIMPLE);
     :}
-    | ACCESO_ESTRUCTURA  l_corchete l_corchete E r_corchete r_corchete
+    | ACCESO_ESTRUCTURA:a  l_corchete l_corchete E:b r_corchete r_corchete
     {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.DOBLE);
     :}
-    | ACCESO_ESTRUCTURA l_corchete E coma E r_corchete
+    | ACCESO_ESTRUCTURA:a l_corchete E:b coma E:c r_corchete
     {:
+        RESULT = new Acceso(a,b,c,Acceso.TIPO_ACCESO.XY);
     :}
-    | ACCESO_ESTRUCTURA l_corchete coma E r_corchete
+    | ACCESO_ESTRUCTURA:a l_corchete coma E:b r_corchete
     {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.Y);
     :}
-    | ACCESO_ESTRUCTURA l_corchete E coma r_corchete
+    | ACCESO_ESTRUCTURA:a l_corchete E:b coma r_corchete
     {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.X);
     :}
 ;
 

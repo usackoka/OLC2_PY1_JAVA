@@ -11,12 +11,27 @@ import AST.Expresion;
 
 public class Acceso extends Expresion{
 
-    public Acceso(){
+    Expresion subAcceso;
+    Expresion x,y;
+    TIPO_ACCESO tipoAcceso;
+    
+    public Acceso(Expresion subAcceso, Expresion x, Expresion y, TIPO_ACCESO tipoAcceso){
+        this.x = x;
+        this.y = y;
+        this.subAcceso = subAcceso;
+        this.tipoAcceso = tipoAcceso;
+        this.fila = x.fila;
+        this.columna = x.columna;
+    }
+    
+    public enum TIPO_ACCESO{
+        SIMPLE, DOBLE, XY, X, Y
     }
     
     @Override
     public Object getValor(Entorno entorno) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //empiezo a retornar el valor
+        return null;
     }
 
 }

@@ -37,6 +37,13 @@ public class Llamada extends Expresion{
                 }
                 entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametro al menos", fila, columna));
                 return "";
+            case "matrix":
+                PARAMETROS = 3;
+                if(parametros.size()==PARAMETROS){
+                    return new Matrix(this.parametros.get(0), this.parametros.get(1), this.parametros.get(2), entorno, fila, columna).getValor(entorno);
+                }
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
+                return "";
             case "print":
                 if(parametros.size()==PARAMETROS){
                     return new Print(this.parametros.get(0)).ejecutar(entorno);
@@ -52,6 +59,18 @@ public class Llamada extends Expresion{
             case "stringlength":
                 if(parametros.size()==PARAMETROS){
                     return new StringLength(this.parametros.get(0), fila, columna).getValor(entorno);
+                }
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
+                return 0;
+            case "nrow":
+                if(parametros.size()==PARAMETROS){
+                    return new nRow(this.parametros.get(0), fila, columna).getValor(entorno);
+                }
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
+                return 0;
+            case "ncol":
+                if(parametros.size()==PARAMETROS){
+                    return new nCol(this.parametros.get(0), fila, columna).getValor(entorno);
                 }
                 entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
                 return 0;

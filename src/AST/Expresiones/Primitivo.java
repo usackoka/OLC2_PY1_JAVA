@@ -8,6 +8,7 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.Nativas.Matrix;
 import Analyzer.Token;
 import java.util.LinkedList;
 
@@ -50,6 +51,8 @@ public class Primitivo extends Expresion{
             return Expresion.TIPO_PRIMITIVO.BOOLEAN;
         }else if(obj instanceof Integer){
             return Expresion.TIPO_PRIMITIVO.INTEGER;
+        }else if(obj instanceof Matrix){
+            return Expresion.TIPO_PRIMITIVO.MATRIX;
         }else{
             return obj;
         }
