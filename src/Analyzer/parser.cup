@@ -80,6 +80,7 @@ non terminal Default DEFAULT;
 non terminal Parametro PARAMETRO;
 non terminal LinkedList<Caso> LISTA_CASOS;
 non terminal LinkedList<Parametro> LISTA_PARAMETROS, PARAMETROS;
+non terminal Acceso ACCESO_ESTRUCTURA;
 
 precedence left or;
 precedence left and;
@@ -394,12 +395,18 @@ E ::= CONSTANTE:a
     {:
         RESULT = a;
     :}
-    /*
-    | DECLARACION_ARREGLO:a
+    | ACCESO_ESTRUCTURA:a
+    {:
+        RESULT = a;
+    :}
+;
+
+ACCESO_ESTRUCTURA ::= id:a ACCESO:b
     {:
     :}
-    */
 ;
+
+ACCESO ::= 
 
 TERNARIA ::= E:a ternario:d E:b dospuntos E:c 
 {:
