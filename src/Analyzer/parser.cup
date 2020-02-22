@@ -68,19 +68,18 @@ UMINUS,UPLUS
 non terminal S
 ;
 
-non terminal PUEDE_SEMICOLON
+non terminal PUEDE_SEMICOLON, ACCESO_ESTRUCTURA2
 ;
 
-non terminal LinkedList<Expresion> LISTA_E, LISTA_LLAMADA, PARAMETROS_LLAMADA;
+non terminal LinkedList<Expresion> LISTA_LLAMADA, PARAMETROS_LLAMADA;
 non terminal LinkedList<Nodo> LISTA_BLOQUES, BLOQUES, DECLARACIONES;
 non terminal Nodo DECLARACION, INSTRUCCION;
-non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA;
+non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA, ACCESO_ESTRUCTURA;
 non terminal Sentencia SENTENCIA, FUNCION, VARIABLE, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, RETURN;
 non terminal Default DEFAULT;
 non terminal Parametro PARAMETRO;
 non terminal LinkedList<Caso> LISTA_CASOS;
 non terminal LinkedList<Parametro> LISTA_PARAMETROS, PARAMETROS;
-non terminal Acceso ACCESO_ESTRUCTURA;
 
 precedence left or;
 precedence left and;
@@ -131,6 +130,7 @@ VARIABLE ::= id:a igual E:b
     {:
         RESULT = new Declaracion(a,b,aleft+1,aright+1);
     :}
+    | ACCESO_ESTRUCTURA2 igual E
 ;
 
 FUNCION ::= id:a igual res_function l_parent PARAMETROS:b r_parent l_llave BLOQUES:c r_llave
@@ -359,18 +359,6 @@ LISTA_LLAMADA ::= LISTA_LLAMADA:a coma E:b
     :}
 ;
 
-LISTA_E ::= LISTA_E:a coma E:b
-    {:
-        RESULT = a;
-        RESULT.add(b);
-    :}
-    | E:a
-    {:
-        RESULT = new LinkedList<Expresion>();
-        RESULT.add(a);
-    :}
-;
-
 E ::= CONSTANTE:a    
     {:
         RESULT = a;
@@ -401,12 +389,59 @@ E ::= CONSTANTE:a
     :}
 ;
 
-ACCESO_ESTRUCTURA ::= id:a ACCESO:b
+ACCESO_ESTRUCTURA2 ::= id l_corchete E r_corchete
+    {:
+    :}
+    | id l_corchete l_corchete E r_corchete r_corchete
+    {:
+    :}
+    | id l_corchete E coma E r_corchete
+    {:
+    :}
+    | id l_corchete coma E r_corchete
+    {:
+    :}
+    | id l_corchete E coma r_corchete
+    {:
+    :}
+    | ACCESO_ESTRUCTURA2 l_corchete E r_corchete
+    {:
+    :}
+    | ACCESO_ESTRUCTURA2  l_corchete l_corchete E r_corchete r_corchete
+    {:
+    :}
+    | ACCESO_ESTRUCTURA2 l_corchete E coma E r_corchete
+    {:
+    :}
+    | ACCESO_ESTRUCTURA2 l_corchete coma E r_corchete
+    {:
+    :}
+    | ACCESO_ESTRUCTURA2 l_corchete E coma r_corchete
     {:
     :}
 ;
 
-ACCESO ::= 
+
+ACCESO_ESTRUCTURA ::= id:a
+    {:
+        RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+    :}
+    | ACCESO_ESTRUCTURA l_corchete E r_corchete
+    {:
+    :}
+    | ACCESO_ESTRUCTURA  l_corchete l_corchete E r_corchete r_corchete
+    {:
+    :}
+    | ACCESO_ESTRUCTURA l_corchete E coma E r_corchete
+    {:
+    :}
+    | ACCESO_ESTRUCTURA l_corchete coma E r_corchete
+    {:
+    :}
+    | ACCESO_ESTRUCTURA l_corchete E coma r_corchete
+    {:
+    :}
+;
 
 TERNARIA ::= E:a ternario:d E:b dospuntos E:c 
 {:
@@ -445,10 +480,6 @@ CONSTANTE ::= numero:a
         String cad = a.substring(1,a.length());
         cad = cad.substring(0,cad.length()-1);
         RESULT = new Primitivo(cad,Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
-    :}
-    | id:a
-    {:
-        RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
     :}
 ;
 
