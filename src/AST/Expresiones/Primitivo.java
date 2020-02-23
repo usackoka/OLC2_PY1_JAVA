@@ -101,7 +101,7 @@ public class Primitivo extends Expresion{
             for(Object element : this.values){
                 values.add(element.toString());
             }
-        }else if(TIPO instanceof TipoList){
+        }else if(TIPO instanceof ListArit){
         }
         
         this.values = values;

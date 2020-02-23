@@ -9,7 +9,7 @@ package AST.Expresiones.Nativas;
 import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Primitivo;
-import AST.Expresiones.TipoList;
+import AST.Expresiones.ListArit;
 import Analyzer.Token;
 import java.util.LinkedList;
 
@@ -48,20 +48,20 @@ public class C extends Expresion{
                 TIPOMAX=tipo;
             }else{
                 if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) | tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo instanceof TipoList){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) | tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo instanceof ListArit){
                         TIPOMAX = tipo;
                     }
                 }
                 else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo instanceof TipoList){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo instanceof ListArit){
                         TIPOMAX = tipo;
                     }
                 }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo instanceof TipoList){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo instanceof ListArit){
                         TIPOMAX = tipo;
                     }
                 }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.STRING)){
-                    if(tipo instanceof TipoList){
+                    if(tipo instanceof ListArit){
                         TIPOMAX = tipo;
                     }
                 }

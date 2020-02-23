@@ -28,6 +28,10 @@ public class Matrix extends Expresion{
         instanciarData(entorno);
     }
     
+    public Matrix(){
+        this.data = new LinkedList<>();
+    }
+    
     @Override
     public Object getValor(Entorno entorno) {
         return this;
