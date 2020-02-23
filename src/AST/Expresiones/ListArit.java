@@ -19,7 +19,7 @@ public class ListArit extends Expresion{
         this.expresiones = expresiones;
         this.fila = fila;
         this.columna = columna;
-        
+        this.data = new LinkedList<>();
         instanciarData(entorno);
     }
     
@@ -37,4 +37,18 @@ public class ListArit extends Expresion{
     public Object getValor(Entorno entorno) {
         return this;
     }
+
+    @Override
+    public String toString() {
+        String ret = "";
+        ret += "[";
+        for(Object dato : data){
+            ret += dato+", ";
+        }
+        ret = ret.substring(0,ret.length()-2);
+        ret += "]";
+        return ret;
+    }
+    
+    
 }
