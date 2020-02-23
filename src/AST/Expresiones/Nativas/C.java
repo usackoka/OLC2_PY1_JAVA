@@ -75,30 +75,66 @@ public class C extends Expresion{
         }
         else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
             for(Object element : data){
-                int value = 0;
-                try {
-                    value = Integer.parseInt(String.valueOf(element));
-                } catch (Exception e) {
-                    value = element.toString().toLowerCase().equals("true")?1:0;
+                if(element instanceof LinkedList){
+                    LinkedList elementList = (LinkedList)element;
+                    for(Object obj : elementList){
+                        values.add(obj);
+                    }
+                }else{
+                    int value = 0;
+                    try {
+                        value = Integer.parseInt(String.valueOf(element));
+                    } catch (Exception e) {
+                        value = element.toString().toLowerCase().equals("true")?1:0;
+                    }
+                    values.add(value);
                 }
-                values.add(value);
             }
         }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
             for(Object element : data){
-                double value = 0.0;
-                try {
-                    value = Double.parseDouble(String.valueOf(element));
-                } catch (Exception e) {
-                    value = element.toString().toLowerCase().equals("true")?1.0:0.0;
+                if(element instanceof LinkedList){
+                    LinkedList elementList = (LinkedList)element;
+                    for(Object obj : elementList){
+                        values.add(obj);
+                    }
+                }else{
+                    double value = 0.0;
+                    try {
+                        value = Double.parseDouble(String.valueOf(element));
+                    } catch (Exception e) {
+                        value = element.toString().toLowerCase().equals("true")?1.0:0.0;
+                    }
+                    values.add(value);
                 }
-                values.add(value);
             }
         }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
             for(Object element : data){
-                values.add(element.toString());
+                if(element instanceof LinkedList){
+                    LinkedList elementList = (LinkedList)element;
+                    for(Object obj : elementList){
+                        values.add(obj);
+                    }
+                }else{
+                    values.add(element.toString());
+                }
             }
         }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.LIST)){
-            return new ListArit(data);
+            for(Object element : data){
+                if(element instanceof LinkedList){
+                    LinkedList elementList = (LinkedList)element;
+                    for(Object obj : elementList){
+                        values.add(obj);
+                    }
+                }else if(element instanceof ListArit){
+                    ListArit elementList = (ListArit)element;
+                    for(Object obj : elementList.getData()){
+                        values.add(obj);
+                    }
+                }else{
+                    values.add(element);
+                }
+            }
+            return new ListArit(values);
         }
         
         return values;

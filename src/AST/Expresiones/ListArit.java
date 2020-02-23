@@ -42,6 +42,10 @@ public class ListArit extends Expresion{
         return this;
     }
 
+    public LinkedList<Object> getData(){
+        return this.data;
+    }
+    
     @Override
     public String toString() {
         String ret = "";

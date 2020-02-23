@@ -478,7 +478,7 @@ CONSTANTE ::= numero:a
     :}
     | res_null:a
     {:
-        RESULT = new Primitivo("",Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
+        RESULT = new Primitivo("null",Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
     :}
     | cadena:a
     {:
