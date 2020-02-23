@@ -25,19 +25,15 @@ public class C extends Expresion{
     @Override
     public Object getValor(Entorno entorno) {
         LinkedList<Object> tipos = new LinkedList<>();
-        Primitivo primitivo = null;
+        LinkedList<Object> data = new LinkedList<>();
         for (int i = 0; i < this.expresiones.size(); i++) {
             Expresion expresion = this.expresiones.get(i);
             Object value = expresion.getValor(entorno);
             Object tipoDato = Primitivo.getTipoDato(value);
             tipos.add(tipoDato);
-            if(primitivo==null){
-                primitivo = new Primitivo(value, tipoDato, fila, columna);
-                continue;
-            }
-            primitivo.addValue(value, tipoDato, entorno);
+            data.add(value);
         }
-        return primitivo.castearA(getMAX(entorno,tipos));
+        return castearA(getMAX(entorno,tipos),data);
     }
     
     //PRIORIDADES
@@ -48,20 +44,20 @@ public class C extends Expresion{
                 TIPOMAX=tipo;
             }else{
                 if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) | tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo instanceof ListArit){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) | tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
                         TIPOMAX = tipo;
                     }
                 }
                 else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo instanceof ListArit){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
                         TIPOMAX = tipo;
                     }
                 }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo instanceof ListArit){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
                         TIPOMAX = tipo;
                     }
                 }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.STRING)){
-                    if(tipo instanceof ListArit){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
                         TIPOMAX = tipo;
                     }
                 }
@@ -69,5 +65,42 @@ public class C extends Expresion{
         }
         return TIPOMAX;
     }
-
+    
+    //castear el vector
+    public Object castearA(Object TIPO, LinkedList<Object> data){
+        LinkedList<Object> values = new LinkedList<>();
+        
+        if(TIPO.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN)){
+            values = data;
+        }
+        else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
+            for(Object element : data){
+                int value = 0;
+                try {
+                    value = Integer.parseInt(String.valueOf(element));
+                } catch (Exception e) {
+                    value = element.toString().toLowerCase().equals("true")?1:0;
+                }
+                values.add(value);
+            }
+        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
+            for(Object element : data){
+                double value = 0.0;
+                try {
+                    value = Double.parseDouble(String.valueOf(element));
+                } catch (Exception e) {
+                    value = element.toString().toLowerCase().equals("true")?1.0:0.0;
+                }
+                values.add(value);
+            }
+        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
+            for(Object element : data){
+                values.add(element.toString());
+            }
+        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.LIST)){
+            return new ListArit(data);
+        }
+        
+        return values;
+    }
 }

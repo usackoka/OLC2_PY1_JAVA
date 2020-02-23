@@ -53,13 +53,11 @@ public class Primitivo extends Expresion{
             return Expresion.TIPO_PRIMITIVO.INTEGER;
         }else if(obj instanceof Matrix){
             return Expresion.TIPO_PRIMITIVO.MATRIX;
+        }else if(obj instanceof ListArit){
+            return Expresion.TIPO_PRIMITIVO.LIST;
         }else{
             return obj;
         }
-    }
-    
-    public void addValue(Object value, Object TIPO, Entorno entorno){
-        this.values.add(value);
     }
     
     public String getID(Entorno entorno){
@@ -69,44 +67,6 @@ public class Primitivo extends Expresion{
             entorno.addError(new Token(TIPO.toString(), "Se esperaba un ID", fila, columna));
             return "--errorID";
         }
-    }
-    
-    //castear el vector
-    public Object castearA(Object TIPO){
-        LinkedList<Object> values = new LinkedList<>();
-        if(TIPO.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN)){
-            values = this.values;
-        }
-        else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
-            for(Object element : this.values){
-                int value = 0;
-                try {
-                    value = Integer.parseInt(String.valueOf(element));
-                } catch (Exception e) {
-                    value = element.toString().toLowerCase().equals("true")?1:0;
-                }
-                values.add(value);
-            }
-        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
-            for(Object element : this.values){
-                double value = 0.0;
-                try {
-                    value = Double.parseDouble(String.valueOf(element));
-                } catch (Exception e) {
-                    value = element.toString().toLowerCase().equals("true")?1.0:0.0;
-                }
-                values.add(value);
-            }
-        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
-            for(Object element : this.values){
-                values.add(element.toString());
-            }
-        }else if(TIPO instanceof ListArit){
-        }
-        
-        this.values = values;
-        this.TIPO = TIPO;
-        return this.values;
     }
     
     public String getEscapes(String cadena){

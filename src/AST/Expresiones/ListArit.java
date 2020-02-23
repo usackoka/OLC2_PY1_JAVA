@@ -27,6 +27,10 @@ public class ListArit extends Expresion{
         this.data = new LinkedList<>();
     }
     
+    public ListArit(LinkedList<Object> data){
+        this.data = data;
+    }
+    
     public void instanciarData(Entorno entorno){
         for(Expresion dato : this.expresiones){
             this.data.add(dato.getValor(entorno));
