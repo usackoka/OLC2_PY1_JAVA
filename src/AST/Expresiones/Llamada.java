@@ -50,6 +50,13 @@ public class Llamada extends Expresion{
                 }
                 entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametro al menos", fila, columna));
                 return new ListArit();
+            case "array":
+                PARAMETROS = 2;
+                if(parametros.size()==PARAMETROS){
+                    return new Array(this.parametros.get(0),this.parametros.get(1), entorno, fila, columna).getValor(entorno);
+                }
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
+                return new Array();
             case "print":
                 if(parametros.size()==PARAMETROS){
                     return new Print(this.parametros.get(0)).ejecutar(entorno);

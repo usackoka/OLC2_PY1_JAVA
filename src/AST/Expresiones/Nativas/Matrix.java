@@ -62,6 +62,7 @@ public class Matrix extends Expresion{
             this.data.add(new LinkedList<>());
         }
         
+        //hago el llenado por columnas
         int element = 0;
         if(valores instanceof LinkedList){
             LinkedList<Object> elements = (LinkedList)valores;
