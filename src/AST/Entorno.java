@@ -20,6 +20,12 @@ public class Entorno {
     Hashtable<String, Variable> tbs;
     Hashtable<String, Funcion> funciones;
     
+    public Entorno(){
+        this.padre = null;
+        this.tbs = new Hashtable<>();
+        this.funciones = new Hashtable<>();
+    }
+    
     public Entorno(Entorno padre){
         this.padre = padre;
         this.tbs = new Hashtable<>();

@@ -40,14 +40,14 @@ public abstract class GraficaArit {
     public static void saveToFile(JFreeChart chart, String aFileName, int width, int height,double quality) throws FileNotFoundException, IOException
     {
         BufferedImage img = draw( chart, width, height );
-        FileOutputStream fos = new FileOutputStream(aFileName);
+        FileOutputStream fos = new FileOutputStream("Graficas\\"+aFileName);
         JPEGImageEncoder encoder2 = JPEGCodec.createJPEGEncoder(fos);
         JPEGEncodeParam param2 = encoder2.getDefaultJPEGEncodeParam(img);
         param2.setQuality((float) quality, true);
         encoder2.encode(img,param2);
         fos.close();
         
-        Desktop.getDesktop().open(new File(aFileName));
+        Desktop.getDesktop().open(new File("Graficas\\"+aFileName));
     }    
 
     protected static BufferedImage draw(JFreeChart chart, int width, int height)

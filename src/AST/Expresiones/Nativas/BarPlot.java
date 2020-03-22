@@ -11,28 +11,27 @@ import AST.Expresion;
 import AST.Expresiones.Primitivo;
 import AST.Sentencia;
 import Analyzer.Token;
-import GraficasArit.Graf_Pie;
+import GraficasArit.Graf_Bar;
 import java.util.LinkedList;
-import org.jfree.chart.ChartPanel;
 
-public class Pie extends Sentencia{
+public class BarPlot extends Sentencia {
     
-    Expresion Ex,Elabels,Emain;
+    Expresion Eh, Exlab, Eylab, Emain, Enames;
     
-    public Pie(Expresion x, Expresion labels, Expresion main, int fila, int columna){
-        this.Ex = x;
-        this.Elabels = labels;
-        this.Emain = main;
+    public BarPlot(Expresion Eh, Expresion Exlab, Expresion Eylab, Expresion Emain, Expresion Enames, int fila, int columna){
+        this.Eh = Eh;
+        this.Eylab = Eylab;
+        this.Emain = Emain;
+        this.Enames = Enames;
         this.fila = fila;
         this.columna = columna;
     }
 
     @Override
     public Object ejecutar(Entorno entorno) {
-        
         //Obtengo el LinkedList<Double> para graficar los datos
         LinkedList<Double> datos = new LinkedList<>();
-        Object Odatos = Ex.getValor(entorno);
+        Object Odatos = Eh.getValor(entorno);
         //creo el linkedList de double
         if(Odatos instanceof LinkedList){
             LinkedList<Object> temp = (LinkedList)Odatos;
@@ -63,7 +62,7 @@ public class Pie extends Sentencia{
         
         //creo el linkedList<String> de labels
         LinkedList<String> labels = new LinkedList<>();
-        Object Olabels = Elabels.getValor(entorno);
+        Object Olabels = Enames.getValor(entorno);
         //creo el linkedList de string
         if(Olabels instanceof LinkedList){
             LinkedList<Object> temp = (LinkedList)Olabels;
@@ -74,9 +73,11 @@ public class Pie extends Sentencia{
             labels.add(Olabels.toString());
         }
         
-        Graf_Pie graf0 = new Graf_Pie(datos,labels,Emain.getValor(entorno).toString(),fila,columna); 
-        graf0.generarImagen(entorno);
+        
+       Graf_Bar graf01 = new Graf_Bar(datos,Exlab.getValor(entorno).toString(),Eylab.getValor(entorno).toString(),Emain.getValor(entorno).toString(),labels,fila,columna); 
+       graf01.generarImagen(entorno);
         
         return null;
     }
+    
 }

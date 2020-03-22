@@ -600,22 +600,16 @@ public class GUI_Principal extends javax.swing.JFrame{
 
      }
       
-       //--------------------------Ejemplo Pie-------------------------------
-       Graf_Pie graf0 = new Graf_Pie(datos,labels,titulo); 
-       ChartPanel p1 = graf0.CreatePane();
-       
        //--------------------------Ejemplo Barras-------------------------------
        LinkedList<LinkedList<Double>> l1=new LinkedList<>();
        l1.add(datos);
        l1.add(datos);
-       Graf_Bar graf01 = new Graf_Bar(l1,"Titulo eje X","Titulo Eje Y","Titulo",labels); 
-       p1 = graf01.CreatePane();
        
         //--------------------------Ejemplo histograma-------------------------------
        double limiteXS =13, limiteYS =-1000,limiteXI =10,limiteYI =-10;
        
        Graf_Hist graf02 = new Graf_Hist(l1, "Eje X","Titulo Grafica",limiteXS,limiteXI,limiteYS,limiteYI); 
-       p1 = graf02.CreatePane();
+       ChartPanel p1 = graf02.CreatePane();
         this.repaint();
         
        //--------------------------Ejemplo lineal-------------------------------

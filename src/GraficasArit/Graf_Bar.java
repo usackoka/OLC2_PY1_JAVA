@@ -5,63 +5,60 @@
  */
 package GraficasArit;
 
-import java.io.IOException;
-import java.text.DecimalFormat;
+import AST.Entorno;
+import Analyzer.Token;
 import java.util.LinkedList;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.labels.ItemLabelAnchor;
 import org.jfree.chart.labels.ItemLabelPosition;
-import org.jfree.chart.labels.PieSectionLabelGenerator;
 import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
-import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
-import org.jfree.chart.plot.PiePlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.renderer.category.CategoryItemRenderer;
-import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.TextAnchor;
 
 public class Graf_Bar extends GraficaArit{
-
 
     private final String titleX;
     private final String titleY;
     private final String title;
     private final LinkedList<String> labels;
-    private final LinkedList<LinkedList<Double>> data;
+    private final LinkedList<Double> data;
+    int fila, columna;
 
-    public Graf_Bar(LinkedList<LinkedList<Double>> data,String titleX,String titleY,String title,LinkedList<String> labels) { 
-    this.data =data;
-    this.titleX=titleX;
-    this.titleY=titleY;
-    this.title=title;
-    this.labels=labels;
+    public Graf_Bar(LinkedList<Double> data,String titleX,String titleY,String title,LinkedList<String> labels, int fila, int columna) { 
+        this.data =data;
+        this.titleX=titleX;
+        this.titleY=titleY;
+        this.title=title;
+        this.labels=labels;
+        this.fila = fila;
+        this.columna = columna;
     }
 
-    public DefaultCategoryDataset FillDataset() {     
+    public DefaultCategoryDataset FillDataset(Entorno entorno) {     
       DefaultCategoryDataset dataset =  new DefaultCategoryDataset( );  
       
 ////----------------datos y labels Iguales ------------------------------------------
 
         if(this.data.size()==this.labels.size()){
             for (int i = 0; i < this.data.size(); i++)
-                dataset.addValue( SumPosArreglo(this.data.get(i)) , "" , this.labels.get(i));    
+                dataset.addValue(this.data.get(i) , "" , this.labels.get(i));    
         }
 ////-----------------------mas datos que labels -------------------------------------------------
         else if(this.data.size()>this.labels.size()){
            //error
-            System.out.println("Grad_Bar: Error dataset: mas datos que labels ");
+            entorno.addError(new Token("Grafica BarPlot","Mas datos que labels",fila,columna));
             int sizelabel = this.labels.size();
             for (int i = 0; i < this.data.size(); i++){
                 if (i<sizelabel) 
-                    dataset.addValue( SumPosArreglo(this.data.get(i)) , "" , this.labels.get(i));    
+                    dataset.addValue(this.data.get(i) , "" , this.labels.get(i));    
                 else 
                     //agregar desconocido a los datos
-                     dataset.addValue( SumPosArreglo(this.data.get(i)) , "" , "Desconocido "+i);  
+                     dataset.addValue(this.data.get(i) , "" , "Desconocido "+i);  
             
             }
                    
@@ -69,10 +66,10 @@ public class Graf_Bar extends GraficaArit{
 ////------------------------------/mas labels que datos----------------
         else {
             //error
-            System.out.println("Grad_Bar: Error dataset mas labels que datos ");
+            entorno.addError(new Token("Grafica BarPlot","Error dataset mas labels que datos",fila,columna));
             int sizedatos= this.data.size();
             for (int i = 0; i < this.labels.size(); i++){
-                if (i<sizedatos) dataset.addValue( SumPosArreglo(this.data.get(i)) , "" , this.labels.get(i));    
+                if (i<sizedatos) dataset.addValue(this.data.get(i) , "" , this.labels.get(i));    
                 else 
                     //agregar desconocido a los datos
                      dataset.addValue( 0 , "" , this.labels.get(i));  
@@ -83,28 +80,43 @@ public class Graf_Bar extends GraficaArit{
       return dataset; 
         
     }
+    
+    public void generarImagen(Entorno entorno){
+        JFreeChart chart = ChartFactory.createBarChart(this.title,           
+        this.titleX,            
+        this.titleY, FillDataset(entorno),          
+        PlotOrientation.VERTICAL,           
+        false, true, false);
+
+        CategoryItemRenderer renderer = ((CategoryPlot)chart.getPlot()).getRenderer();
+        renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        renderer.setBaseItemLabelsVisible(true);
+        ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, 
+                TextAnchor.TOP_CENTER);
+        renderer.setBasePositiveItemLabelPosition(position);
+ 
+        GraficaArit.GenerarImagen(chart, this.title);
+    }
 
     @Override
     public ChartPanel CreatePane() {
-     JFreeChart chart = ChartFactory.createBarChart(this.title,           
-         this.titleX,            
-         this.titleY, FillDataset(),          
-         PlotOrientation.VERTICAL,           
-         false, true, false);
-     
+        JFreeChart chart = ChartFactory.createBarChart(this.title,           
+        this.titleX,            
+        this.titleY, FillDataset(new Entorno()),          
+        PlotOrientation.VERTICAL,           
+        false, true, false);
 
-    CategoryItemRenderer renderer = ((CategoryPlot)chart.getPlot()).getRenderer();
-    renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
-    renderer.setBaseItemLabelsVisible(true);
-    ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, 
-            TextAnchor.TOP_CENTER);
-    renderer.setBasePositiveItemLabelPosition(position);
+        CategoryItemRenderer renderer = ((CategoryPlot)chart.getPlot()).getRenderer();
+        renderer.setBaseItemLabelGenerator(new StandardCategoryItemLabelGenerator());
+        renderer.setBaseItemLabelsVisible(true);
+        ItemLabelPosition position = new ItemLabelPosition(ItemLabelAnchor.OUTSIDE12, 
+                TextAnchor.TOP_CENTER);
+        renderer.setBasePositiveItemLabelPosition(position);
  
-      ChartPanel chartPanel = new ChartPanel( chart );    
-      GraficaArit.GenerarImagen(chart, this.title);
- 
-         
-    return chartPanel;
+        ChartPanel chartPanel = new ChartPanel( chart );    
+        GraficaArit.GenerarImagen(chart, this.title);
+        
+        return chartPanel;
     }
 
     private Number SumPosArreglo(LinkedList<Double> d1) {
