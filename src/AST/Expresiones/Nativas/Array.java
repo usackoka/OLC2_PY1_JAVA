@@ -112,16 +112,28 @@ public class Array extends Expresion{
                 }
             }
         }else{
-            for(int i = 0; i < numero; i++){
-                if(fin){
-                    for(Object element : datos){
+            if(fin){
+                for(Object element : datos){
+                    for(int i = 0; i < numero; i++){
                         ((LinkedList)element).add(getDato());
                     }
-                }else{
-                    for(Object element : datos){
-                        getSubArray(numero, (LinkedList)element, fin);
+                }
+            }else{
+                for(Object element : datos){
+                    for(int i = 0; i < numero; i++){
+                        recursiva((LinkedList)element);
                     }
                 }
+            }
+        }
+    }
+    
+    public void recursiva(LinkedList<Object> element){
+        if(element.isEmpty()){
+            element.add(new LinkedList<Object>());
+        }else{
+            for(Object subelement : element){
+                recursiva((LinkedList)subelement);
             }
         }
     }
