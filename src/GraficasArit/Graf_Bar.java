@@ -25,10 +25,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.ui.TextAnchor;
 
-/**
- *
- * @author D_ALCAZAR
- */
 public class Graf_Bar extends GraficaArit{
 
 
@@ -105,7 +101,7 @@ public class Graf_Bar extends GraficaArit{
     renderer.setBasePositiveItemLabelPosition(position);
  
       ChartPanel chartPanel = new ChartPanel( chart );    
-      GraficaArit.GenerarImagen(chart);
+      GraficaArit.GenerarImagen(chart, this.title);
  
          
     return chartPanel;

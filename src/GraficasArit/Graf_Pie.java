@@ -16,10 +16,6 @@ import org.jfree.chart.labels.StandardPieSectionLabelGenerator;
 import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
-/**
- *
- * @author D_ALCAZAR
- */
 public class Graf_Pie extends GraficaArit{
 
     private final LinkedList<String> labels;
@@ -88,7 +84,7 @@ public class Graf_Pie extends GraficaArit{
        //"{2}", new DecimalFormat("0"), new DecimalFormat("0%"));
        ((PiePlot) chart.getPlot()).setLabelGenerator(labelGenerator);
        
-       GraficaArit.GenerarImagen(chart);
+       GraficaArit.GenerarImagen(chart, this.title);
        return new ChartPanel( chart );  
     }
 }

@@ -19,10 +19,6 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.TextAnchor;
 
-/**
- *
- * @author D_ALCAZAR
- */
 public class Graf_Line extends GraficaArit{
 
     private final LinkedList<LinkedList<Double>> data;
@@ -60,7 +56,7 @@ public class Graf_Line extends GraficaArit{
          false,true,true);
 
       ChartPanel chartPanel = new ChartPanel( chart );    
-      GraficaArit.GenerarImagen(chart);
+      GraficaArit.GenerarImagen(chart, this.main);
  
          
       return chartPanel;

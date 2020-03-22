@@ -16,10 +16,6 @@ import org.jfree.data.statistics.HistogramDataset;
 import org.jfree.data.statistics.HistogramType;
 import org.jfree.data.xy.IntervalXYDataset;
 
-/**
- *
- * @author D_ALCAZAR
- */
 public class Graf_Hist extends GraficaArit{
 
     private final LinkedList<LinkedList<Double>> data;
@@ -143,7 +139,7 @@ data.add(1.76);
 //    plot.setBackgroundPaint(new Color(255,228,196));
 
     //guardar imagen
-    GraficaArit.GenerarImagen(chart);
+    GraficaArit.GenerarImagen(chart, this.main);
  
     return new ChartPanel(chart);
     

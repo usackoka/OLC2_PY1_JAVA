@@ -16,10 +16,6 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-/**
- *
- * @author D_ALCAZAR
- */
 public class Graf_Plot extends GraficaArit{
 
     private final LinkedList<LinkedList<Double>> data;
@@ -100,7 +96,7 @@ public class Graf_Plot extends GraficaArit{
 //    plot.setBackgroundPaint(new Color(255,228,196));
 
     //guardar imagen
-    GraficaArit.GenerarImagen(chart);
+    GraficaArit.GenerarImagen(chart, this.main);
  
     return new ChartPanel(chart);
   

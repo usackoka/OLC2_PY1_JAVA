@@ -125,7 +125,6 @@ public class GUI_Principal extends javax.swing.JFrame{
         tablaErrores = new javax.swing.JTable();
         jScrollPane3 = new javax.swing.JScrollPane();
         tablaDebugger = new javax.swing.JTable();
-        graf1 = new javax.swing.JPanel();
         txtLineas = new javax.swing.JTextField();
         txtBuscar = new javax.swing.JTextField();
         txtReemplazar = new javax.swing.JTextField();
@@ -202,19 +201,6 @@ public class GUI_Principal extends javax.swing.JFrame{
         jScrollPane3.setViewportView(tablaDebugger);
 
         tabPaneTablas.addTab("Debugger", jScrollPane3);
-
-        javax.swing.GroupLayout graf1Layout = new javax.swing.GroupLayout(graf1);
-        graf1.setLayout(graf1Layout);
-        graf1Layout.setHorizontalGroup(
-            graf1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 758, Short.MAX_VALUE)
-        );
-        graf1Layout.setVerticalGroup(
-            graf1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 250, Short.MAX_VALUE)
-        );
-
-        tabPaneTablas.addTab("Grafico1", graf1);
 
         txtLineas.setBackground(new java.awt.Color(102, 102, 102));
 
@@ -385,11 +371,10 @@ public class GUI_Principal extends javax.swing.JFrame{
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(tabPaneTablas, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING))
-                            .addComponent(txtConsola2, javax.swing.GroupLayout.PREFERRED_SIZE, 763, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtConsola2, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
+                            .addComponent(tabPaneTablas)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addComponent(jButton1)))
@@ -595,7 +580,7 @@ public class GUI_Principal extends javax.swing.JFrame{
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-               DefaultPieDataset dataset = new DefaultPieDataset( );
+      DefaultPieDataset dataset = new DefaultPieDataset( );
       dataset.setValue( "IPhone 5s" , new Double( 20 ) );  
       dataset.setValue( "SamSung Grand" , new Double( 20 ) );   
       dataset.setValue( "MotoG" , new Double( 40 ) );    
@@ -618,52 +603,32 @@ public class GUI_Principal extends javax.swing.JFrame{
        //--------------------------Ejemplo Pie-------------------------------
        Graf_Pie graf0 = new Graf_Pie(datos,labels,titulo); 
        ChartPanel p1 = graf0.CreatePane();
-       p1.setSize(graf1.size());
-       graf1.add(p1);
-       graf1.repaint();
        
        //--------------------------Ejemplo Barras-------------------------------
-       graf1.removeAll();
        LinkedList<LinkedList<Double>> l1=new LinkedList<>();
        l1.add(datos);
        l1.add(datos);
        Graf_Bar graf01 = new Graf_Bar(l1,"Titulo eje X","Titulo Eje Y","Titulo",labels); 
        p1 = graf01.CreatePane();
-       p1.setSize(graf1.size());
-       graf1.add(p1);
-       graf1.repaint();
        
         //--------------------------Ejemplo histograma-------------------------------
-       graf1.removeAll();
        double limiteXS =13, limiteYS =-1000,limiteXI =10,limiteYI =-10;
        
        Graf_Hist graf02 = new Graf_Hist(l1, "Eje X","Titulo Grafica",limiteXS,limiteXI,limiteYS,limiteYI); 
        p1 = graf02.CreatePane();
-       p1.setSize(graf1.size());
-       graf1.add(p1);
-       graf1.repaint();
-       
         this.repaint();
         
-                //--------------------------Ejemplo lineal-------------------------------
-       graf1.removeAll();       
+       //--------------------------Ejemplo lineal-------------------------------
        Graf_Line graf03 = new Graf_Line(l1,"P", "Eje X","Eje Y","Titulo Grafica"); 
        p1 = graf03.CreatePane();
-       p1.setSize(graf1.size());
-       graf1.add(p1);
-       graf1.repaint();
        
       
         //--------------------------Ejemplo Dispersa-------------------------------
-       graf1.removeAll();
        limiteXS =13; limiteYS =-1000;limiteXI =10;limiteYI =-10;
        
        Graf_Plot graf05 = new Graf_Plot(l1,
                "Eje X","Eje Y","Titulo Grafica",limiteXS,limiteXI,limiteYS,limiteYI,true); 
        p1 = graf05.CreatePane();
-       p1.setSize(graf1.size());
-       graf1.add(p1);
-       graf1.repaint();
        
        this.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -706,7 +671,6 @@ public class GUI_Principal extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnReemplazar;
-    private javax.swing.JPanel graf1;
     private javax.swing.JButton jButton1;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JFileChooser jFileFolder;
@@ -731,10 +695,10 @@ public class GUI_Principal extends javax.swing.JFrame{
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTree jTree2;
-    public static javax.swing.JTabbedPane tabPaneTablas;
+    private javax.swing.JTabbedPane tabPaneTablas;
     private javax.swing.JTabbedPane tabPrincipal;
-    public static javax.swing.JTable tablaDebugger;
-    public static javax.swing.JTable tablaErrores;
+    private javax.swing.JTable tablaDebugger;
+    private javax.swing.JTable tablaErrores;
     public static javax.swing.JTextField txtBuscar;
     public static javax.swing.JTextArea txtConsola;
     public static javax.swing.JTextField txtConsola2;
