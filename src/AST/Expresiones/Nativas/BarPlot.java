@@ -20,6 +20,7 @@ public class BarPlot extends Sentencia {
     
     public BarPlot(Expresion Eh, Expresion Exlab, Expresion Eylab, Expresion Emain, Expresion Enames, int fila, int columna){
         this.Eh = Eh;
+        this.Exlab = Exlab;
         this.Eylab = Eylab;
         this.Emain = Emain;
         this.Enames = Enames;
