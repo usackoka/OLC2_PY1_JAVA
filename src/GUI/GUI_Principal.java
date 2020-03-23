@@ -131,7 +131,8 @@ public class GUI_Principal extends javax.swing.JFrame{
         btnReemplazar = new javax.swing.JButton();
         btnBuscar = new javax.swing.JButton();
         jTree2 = new javax.swing.JTree();
-        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -235,10 +236,17 @@ public class GUI_Principal extends javax.swing.JFrame{
             }
         });
 
-        jButton1.setText("CrearGraficos");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButton2.setText("Ejecutar JavaCC");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Ejecutar Cup y Flex");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
             }
         });
 
@@ -368,16 +376,16 @@ public class GUI_Principal extends javax.swing.JFrame{
                         .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnReemplazar, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtConsola2, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
-                            .addComponent(jScrollPane1)
-                            .addComponent(tabPaneTablas)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addComponent(jButton1)))
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtConsola2, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1)
+                        .addComponent(tabPaneTablas)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -395,7 +403,9 @@ public class GUI_Principal extends javax.swing.JFrame{
                 .addGap(8, 8, 8))
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jButton3))
                 .addGap(18, 18, 18)
                 .addComponent(tabPaneTablas, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -579,46 +589,14 @@ public class GUI_Principal extends javax.swing.JFrame{
         }
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      DefaultPieDataset dataset = new DefaultPieDataset( );
-      dataset.setValue( "IPhone 5s" , new Double( 20 ) );  
-      dataset.setValue( "SamSung Grand" , new Double( 20 ) );   
-      dataset.setValue( "MotoG" , new Double( 40 ) );    
-      dataset.setValue( "Nokia Lumia" , new Double( 10 ) );
-      
-      LinkedList <Double> datos = new LinkedList<>();
-      LinkedList <String> labels = new LinkedList<>();
-      String titulo ="Grafica Pie";
-      datos.add(12.6);
-      datos.add(83.0);
-      datos.add(14.0);
-      datos.add(15.0);
-      datos.add(16.0);
-      
-      for (int i = 0; i < 4; i++) {
-            labels.add("A"+i);
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        AnalizarColine();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
-     }
-      
-       //--------------------------Ejemplo Barras-------------------------------
-       LinkedList<LinkedList<Double>> l1=new LinkedList<>();
-       l1.add(datos);
-       l1.add(datos);
-       
-        //--------------------------Ejemplo histograma-------------------------------
-       double limiteXS =13, limiteYS =-1000,limiteXI =10,limiteYI =-10;
-       
-       Graf_Hist graf02 = new Graf_Hist(l1, "Eje X","Titulo Grafica",limiteXS,limiteXI,limiteYS,limiteYI); 
-       ChartPanel p1 = graf02.CreatePane();
-        this.repaint();
-        
-       //--------------------------Ejemplo lineal-------------------------------
-       Graf_Line graf03 = new Graf_Line(l1,"P", "Eje X","Eje Y","Titulo Grafica"); 
-       p1 = graf03.CreatePane();
-
-       
-       this.repaint();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -658,7 +636,8 @@ public class GUI_Principal extends javax.swing.JFrame{
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnReemplazar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JFileChooser jFileFolder;
     private javax.swing.JMenu jMenu1;
