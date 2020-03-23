@@ -620,8 +620,8 @@ public class GUI_Principal extends javax.swing.JFrame{
         //--------------------------Ejemplo Dispersa-------------------------------
        limiteXS =13; limiteYS =-1000;limiteXI =10;limiteYI =-10;
        
-       Graf_Plot graf05 = new Graf_Plot(l1,
-               "Eje X","Eje Y","Titulo Grafica",limiteXS,limiteXI,limiteYS,limiteYI,true); 
+       Graf_Plot graf05 = new Graf_Plot(datos,
+               "Eje X","Eje Y","Titulo Grafica",limiteYS,limiteYI,0,0); 
        p1 = graf05.CreatePane();
        
        this.repaint();

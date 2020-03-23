@@ -37,6 +37,18 @@ public class Matrix extends Expresion{
         return this;
     }
     
+    public LinkedList<Object> getMapeo(){
+        LinkedList<Object> mapeo = new LinkedList<>();
+        int col = getNCol();
+        for(int i = 0; i<col; i++){
+            for(LinkedList list : this.data){
+                mapeo.add(list.get(i));
+            }
+        }
+        
+        return mapeo;
+    }
+    
     public void instanciarData(Entorno entorno){
         //valido los parámetros
         Object valorFilas = filasExpresion.getValor(entorno);

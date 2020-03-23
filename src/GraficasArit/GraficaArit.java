@@ -16,17 +16,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import javax.swing.text.Document;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.data.general.DefaultPieDataset;
 
 public abstract class GraficaArit {
 
     static int contador=0;
     
-    public abstract  ChartPanel CreatePane();
+    public abstract ChartPanel CreatePane();
     
     static void GenerarImagen(JFreeChart chart, String name) {
         contador++;

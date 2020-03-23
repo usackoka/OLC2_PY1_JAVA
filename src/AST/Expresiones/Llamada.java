@@ -45,6 +45,13 @@ public class Llamada extends Expresion{
                 }
                 entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
                 return null;
+            case "plot":
+                PARAMETROS = 5;
+                if(parametros.size()==PARAMETROS){
+                    return new Plot(this.parametros.get(0),this.parametros.get(1),this.parametros.get(2), this.parametros.get(3), this.parametros.get(4), fila, columna).ejecutar(entorno);
+                }
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
+                return null;
             case "c":
                 if(parametros.size()>=PARAMETROS){
                     return new C(this.parametros, fila, columna).getValor(entorno);
