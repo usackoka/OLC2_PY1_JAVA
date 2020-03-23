@@ -615,14 +615,7 @@ public class GUI_Principal extends javax.swing.JFrame{
        //--------------------------Ejemplo lineal-------------------------------
        Graf_Line graf03 = new Graf_Line(l1,"P", "Eje X","Eje Y","Titulo Grafica"); 
        p1 = graf03.CreatePane();
-       
-      
-        //--------------------------Ejemplo Dispersa-------------------------------
-       limiteXS =13; limiteYS =-1000;limiteXI =10;limiteYI =-10;
-       
-       Graf_Plot graf05 = new Graf_Plot(datos,
-               "Eje X","Eje Y","Titulo Grafica",limiteYS,limiteYI,0,0); 
-       p1 = graf05.CreatePane();
+
        
        this.repaint();
     }//GEN-LAST:event_jButton1ActionPerformed
