@@ -117,31 +117,19 @@ data.add(1.76);
        dataset.setType(HistogramType.RELATIVE_FREQUENCY);
        dataset.addSeries("Histogram",datan,50);
        return dataset;
-       
-//        double[] data = new double[dataArrayList.size()];
-//
-//        for(int p = 0; p < dataArrayList.size();p++)
-//             data[p] = dataArrayList.get(p);
-    
     }
         
     @Override
     public ChartPanel CreatePane() {
-   
-    // Create chart
-    JFreeChart chart = ChartFactory.createHistogram(
+        // Create chart
+        JFreeChart chart = ChartFactory.createHistogram(
         this.main, 
         this.xlab, "", FillDataset(),
         PlotOrientation.VERTICAL, false,true,true);
 
-    //Changes background color
-//    XYPlot plot = (XYPlot)chart.getPlot();
-//    plot.setBackgroundPaint(new Color(255,228,196));
-
-    //guardar imagen
-    GraficaArit.GenerarImagen(chart, this.main);
- 
-    return new ChartPanel(chart);
+        //guardar imagen
+        GraficaArit.GenerarImagen(chart, this.main);
+        return new ChartPanel(chart);
     
     }
 
