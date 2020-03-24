@@ -11,6 +11,7 @@ import AST.Expresion;
 import AST.Expresiones.Primitivo;
 import AST.Sentencia;
 import Analyzer.Token;
+import GraficasArit.Graf_Line;
 import GraficasArit.Graf_Plot;
 import java.util.LinkedList;
 
@@ -30,7 +31,6 @@ public class Plot extends Sentencia{
 
     @Override
     public Object ejecutar(Entorno entorno) {
-        
         //Obtengo el LinkedList<LinkedList<Double>> para graficar los datos
         //o el vector
         LinkedList<Double> datos = new LinkedList<>();
@@ -89,6 +89,9 @@ public class Plot extends Sentencia{
             graf05.generarImagen(entorno);
         }else{
             //GRAFICA LINEAL
+            Graf_Line graf05 = new Graf_Line(datos,Etype.getValor(entorno).toString(),
+                    Exlab.getValor(entorno).toString(),Eylab.getValor(entorno).toString(),Emain.getValor(entorno).toString(),fila,columna); 
+            graf05.generarImagen(entorno);
         }
         
         return null;
