@@ -8,25 +8,62 @@ package AST.Expresiones.Nativas;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.Primitivo;
 import AST.Sentencia;
+import Analyzer.Token;
+import GraficasArit.Graf_Hist;
+import java.util.LinkedList;
 
 public class Hist extends Sentencia{
 
-    Expresion v, main, xlab, xlim, ylim;
+    Expresion v, main, xlab;
     
-    public Hist(Expresion v, Expresion main, Expresion xlab, int fila, int columna){
+    public Hist(Expresion v, Expresion xlab, Expresion main, int fila, int columna){
         this.v = v;
         this.main = main;
         this.xlab = xlab;
-        this.xlim = xlim;
-        this.ylim = ylim;
         this.fila = fila;
         this.columna = columna;
     }
     
     @Override
     public Object ejecutar(Entorno entorno) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        //Obtengo el LinkedList<Double> para graficar los datos
+        LinkedList<Double> datos = new LinkedList<>();
+        Object Odatos = v.getValor(entorno);
+        //creo el linkedList de double
+        if(Odatos instanceof LinkedList){
+            LinkedList<Object> temp = (LinkedList)Odatos;
+            for(Object element : temp){
+                Object tipo = Primitivo.getTipoDato(element);
+                if(!(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))){
+                    entorno.addError(new Token("Hist-TipoDeDato Parameter(x)", "Se esperaba un vector int o double, viene: "+tipo, fila, columna));
+                    return null;
+                }
+                try {
+                    datos.add(Integer.parseInt(element.toString())+0.0);
+                } catch (Exception e) {
+                    datos.add(Double.parseDouble(element.toString()));
+                }
+            }
+        }else{
+            Object tipo = Primitivo.getTipoDato(Odatos);
+            if(!(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))){
+                entorno.addError(new Token("Hist-TipoDeDato Parameter(x)", "Se esperaba un vector int o double, viene: "+tipo, fila, columna));
+                return null;
+            }
+            try {
+                datos.add(Integer.parseInt(Odatos.toString())+0.0);
+            } catch (Exception e) {
+                datos.add(Double.parseDouble(Odatos.toString()));
+            }
+        }
+        
+        Graf_Hist hist = new Graf_Hist(datos, xlab.getValor(entorno).toString(), main.getValor(entorno).toString());
+        hist.generarImagen(entorno);
+        
+        return null;
     }
 
 }

@@ -52,6 +52,8 @@ public class Primitivo extends Expresion{
             return Expresion.TIPO_PRIMITIVO.BOOLEAN;
         }else if(obj instanceof Integer){
             return Expresion.TIPO_PRIMITIVO.INTEGER;
+        }else if(obj instanceof LinkedList){
+            return getTipoDato(((LinkedList)obj).get(0));
         }else if(obj instanceof Matrix){
             return Expresion.TIPO_PRIMITIVO.MATRIX;
         }else if(obj instanceof ListArit){

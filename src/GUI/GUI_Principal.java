@@ -16,16 +16,6 @@ import java.net.URISyntaxException;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
-import Analyzer.*;
-import GraficasArit.Graf_Bar;
-import GraficasArit.Graf_Hist;
-import GraficasArit.Graf_Line;
-import GraficasArit.Graf_Pie;
-import GraficasArit.Graf_Plot;
-import java.awt.Font;
-import java.util.LinkedList;
-import org.jfree.chart.ChartPanel;
-import org.jfree.data.general.DefaultPieDataset;
 
 public class GUI_Principal extends javax.swing.JFrame{
 
