@@ -10,7 +10,9 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Primitivo;
 import AST.Expresiones.Variable;
+import AST.Nodo;
 import AST.Sentencia;
+import GraficasArit.Graph_AST;
 
 public class Declaracion extends Sentencia{
     
@@ -40,6 +42,21 @@ public class Declaracion extends Sentencia{
         Variable var = new Variable(valor,tipo,fila,columna);
         entorno.addVariable(id.toLowerCase(), var);
         return null;
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, "ASIGNACION");
+        
+        int cont_hijo = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_hijo, id+"=");
+        arbol.addRelacion(cont_raiz,cont_hijo);
+        
+        cont_hijo = value.Recorrido(arbol);
+        arbol.addRelacion(cont_raiz,cont_hijo);
+        
+        return cont_raiz;
     }
 
 }

@@ -10,6 +10,7 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Primitivo;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class Matrix extends Expresion{
@@ -26,6 +27,11 @@ public class Matrix extends Expresion{
         this.data = new LinkedList<>();
         
         instanciarData(entorno);
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
     }
     
     public Matrix(){

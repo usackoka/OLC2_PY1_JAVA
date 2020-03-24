@@ -12,6 +12,7 @@ import AST.Expresiones.Primitivo;
 import AST.Sentencia;
 import Analyzer.Token;
 import GraficasArit.Graf_Hist;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class Hist extends Sentencia{
@@ -24,6 +25,11 @@ public class Hist extends Sentencia{
         this.xlab = xlab;
         this.fila = fila;
         this.columna = columna;
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
     }
     
     @Override

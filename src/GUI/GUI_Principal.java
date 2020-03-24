@@ -485,8 +485,29 @@ public class GUI_Principal extends javax.swing.JFrame{
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
         // TODO add your handling code here:
+        //si hay algo para analizar
+        if(paginaActual==null){
+            JOptionPane.showMessageDialog(null, "Nada para analizar");
+            return;
+        }
         
-        //GraficarArbol.GraficarArbol(ejecutar.padre, paginaActual.nombreArchivo.replace(".fs", "").replace(".js",""));
+        txtConsola.setText("");
+        dtmErrores.setRowCount(0);
+        String cadena = paginaActual.txtEntrada.getText();
+        
+        Lexer lex = new Lexer(new BufferedReader(new StringReader(cadena+"\n\n")));
+        lex.setPrincipal(new Principal(tablaErrores, tablaDebugger,txtConsola));
+
+        try {
+            parser parse = new parser(lex);
+            parse.setPrincipal(lex.getPrincipal());
+            parse.parse();
+            principal = parse.getPrincipal();
+            principal.graficar();
+        } catch (Exception ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.toString());
+        }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     public void iniciarArbol(File selectedFile) {

@@ -11,6 +11,7 @@ import AST.Expresion;
 import AST.Expresiones.ListArit;
 import AST.Expresiones.Primitivo;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class Array extends Expresion{
@@ -145,6 +146,11 @@ public class Array extends Expresion{
     @Override
     public String toString() {
         return this.data.toString();
+    }
+
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
     }
     
     

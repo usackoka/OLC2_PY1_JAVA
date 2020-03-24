@@ -7,7 +7,9 @@
 package AST.Sentencias;
 
 import AST.Entorno;
+import AST.Nodo;
 import AST.Sentencia;
+import GraficasArit.Graph_AST;
 
 
 public class Corte extends Sentencia{
@@ -25,5 +27,12 @@ public class Corte extends Sentencia{
     
     public enum TIPO_CORTE{
         BREAK, CONTINUE
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, this.tipoCorte.toString());
+        return cont_raiz;
     }
 }

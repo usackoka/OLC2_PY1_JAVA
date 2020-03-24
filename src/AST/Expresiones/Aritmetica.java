@@ -9,6 +9,7 @@ package AST.Expresiones;
 import AST.Entorno;
 import AST.Expresion;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 
 public class Aritmetica extends Expresion{
     
@@ -105,5 +106,19 @@ public class Aritmetica extends Expresion{
         
         entorno.addError(new Token("Aritmetica", "No soportado: "+TipoOperacion+" tipos:" + tipIzq + " y " + tipDer, fila, columna));
         return "";
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, TipoOperacion.toString());
+        
+        int cont_hijo = left.Recorrido(arbol);
+        arbol.addRelacion(cont_raiz,cont_hijo);
+        
+        cont_hijo = right.Recorrido(arbol);
+        arbol.addRelacion(cont_raiz,cont_hijo);
+        
+        return cont_raiz;
     }
 }

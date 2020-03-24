@@ -8,7 +8,9 @@ package AST.Sentencias;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Nodo;
 import AST.Sentencia;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class Switch extends Sentencia{
@@ -41,4 +43,21 @@ public class Switch extends Sentencia{
         return default_!=null?default_.ejecutar(entorno):null;
     }
 
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, "Switch");
+        
+        for(Nodo nodo:this.listaCasos){
+            int cont_hijo = nodo.Recorrido(arbol);
+            arbol.addRelacion(cont_raiz,cont_hijo);
+        }
+        
+        if(this.default_!=null){
+            int cont_hijo = default_.Recorrido(arbol);
+            arbol.addRelacion(cont_raiz, cont_hijo);
+        }
+        
+        return cont_raiz;
+    }
 }

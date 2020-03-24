@@ -12,6 +12,7 @@ import AST.Expresiones.Primitivo;
 import AST.Nodo;
 import AST.Sentencia;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class For extends Sentencia{
@@ -66,5 +67,18 @@ public class For extends Sentencia{
         }
         //entorno.addError(new Token("FOR","No se puede iterar con un objeto de tipo: "+expresion.getTipo(entorno),fila, columna));
         return ret;
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, "For");
+        
+        for(Nodo nodo:this.instrucciones){
+            int cont_hijo = nodo.Recorrido(arbol);
+            arbol.addRelacion(cont_raiz,cont_hijo);
+        }
+        
+        return cont_raiz;
     }
 }

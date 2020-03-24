@@ -8,6 +8,7 @@ package AST.Sentencias;
 
 import AST.Entorno;
 import AST.*;
+import GraficasArit.Graph_AST;
 
 public class Print extends Sentencia{
 
@@ -21,6 +22,11 @@ public class Print extends Sentencia{
     public Object ejecutar(Entorno entorno) {
         entorno.print(this.expresion.getValor(entorno).toString()+"\n");
         return null;
+    }
+
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
     }
 
 }

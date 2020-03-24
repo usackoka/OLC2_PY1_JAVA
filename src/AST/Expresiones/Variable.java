@@ -8,6 +8,8 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Nodo;
+import GraficasArit.Graph_AST;
 
 public class Variable extends Expresion{
 
@@ -33,4 +35,8 @@ public class Variable extends Expresion{
         return this.TIPO;
     }
 
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
+    }
 }

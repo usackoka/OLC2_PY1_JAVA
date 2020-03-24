@@ -12,6 +12,7 @@ import AST.Expresiones.Primitivo;
 import AST.Sentencia;
 import Analyzer.Token;
 import GraficasArit.Graf_Pie;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 import org.jfree.chart.ChartPanel;
 
@@ -27,6 +28,11 @@ public class Pie extends Sentencia{
         this.columna = columna;
     }
 
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
+    }
+    
     @Override
     public Object ejecutar(Entorno entorno) {
         

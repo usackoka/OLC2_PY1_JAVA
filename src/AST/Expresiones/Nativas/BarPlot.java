@@ -12,6 +12,7 @@ import AST.Expresiones.Primitivo;
 import AST.Sentencia;
 import Analyzer.Token;
 import GraficasArit.Graf_Bar;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class BarPlot extends Sentencia {
@@ -81,4 +82,8 @@ public class BarPlot extends Sentencia {
         return null;
     }
     
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
+    }
 }

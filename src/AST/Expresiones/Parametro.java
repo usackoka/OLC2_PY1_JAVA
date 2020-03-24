@@ -8,6 +8,8 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Nodo;
+import GraficasArit.Graph_AST;
 
 public class Parametro extends Expresion{
 
@@ -24,5 +26,10 @@ public class Parametro extends Expresion{
     @Override
     public Object getValor(Entorno entorno) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
     }
 }

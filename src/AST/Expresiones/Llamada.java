@@ -9,8 +9,10 @@ package AST.Expresiones;
 import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Nativas.*;
+import AST.Nodo;
 import AST.Sentencias.Print;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class Llamada extends Expresion{
@@ -23,6 +25,19 @@ public class Llamada extends Expresion{
         this.parametros = parametros;
         this.fila = fila;
         this.columna = columna;
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, id+"()");
+        
+        for(Nodo nodo:this.parametros){
+            int cont_hijo = nodo.Recorrido(arbol);
+            arbol.addRelacion(cont_raiz,cont_hijo);
+        }
+        
+        return cont_raiz;
     }
     
     @Override

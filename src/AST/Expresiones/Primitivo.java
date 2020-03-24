@@ -10,7 +10,9 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Nativas.Array;
 import AST.Expresiones.Nativas.Matrix;
+import AST.Nodo;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 //En este caso, primitivo hace referencia a un vector de tipo primitivo
@@ -76,5 +78,13 @@ public class Primitivo extends Expresion{
     
     public String getEscapes(String cadena){
         return cadena.replace("\\n", "\n").replace("\\\\", "\\").replace("\\\"","\"").replace("\\t", "\t").replace("\\r", "\r");
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, this.values.get(0).toString());
+        
+        return cont_raiz;
     }
 }

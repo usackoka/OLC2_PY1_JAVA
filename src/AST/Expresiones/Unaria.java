@@ -8,7 +8,9 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Nodo;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 
 public class Unaria extends Expresion{
 
@@ -51,5 +53,16 @@ public class Unaria extends Expresion{
         
         entorno.addError(new Token("Unaria", "No soportado" + tipoOperacion + " con: "+tipo, fila, columna));
         return def;
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, this.tipoOperacion.toString());
+        
+        int cont_hijo = this.unaria.Recorrido(arbol);
+        arbol.addRelacion(cont_raiz,cont_hijo);
+        
+        return cont_raiz;
     }
 }

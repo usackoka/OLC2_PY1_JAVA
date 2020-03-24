@@ -8,7 +8,9 @@ package AST.Sentencias;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Nodo;
 import AST.Sentencia;
+import GraficasArit.Graph_AST;
 
 public class Return extends Sentencia{
 
@@ -23,6 +25,18 @@ public class Return extends Sentencia{
     @Override
     public Object ejecutar(Entorno entorno) {
         return this.expresion==null?null:expresion.getValor(entorno);
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, "RETURN");
+        
+        if(this.expresion!=null){
+            int cont_hijo = this.expresion.Recorrido(arbol);
+            arbol.addRelacion(cont_raiz,cont_hijo);
+        }
+        return cont_raiz;
     }
 
 }

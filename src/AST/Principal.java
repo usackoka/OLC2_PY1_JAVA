@@ -7,6 +7,7 @@ package AST;
 
 import AST.Sentencias.Funcion;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -19,7 +20,6 @@ public class Principal extends Thread{
     JTable tablaErrores, tablaDebugger;
     JTextArea txtConsola;
     Entorno entorno;
-    
     LinkedList<Nodo> nodos;
     
     public Principal(JTable tablaErrores, JTable tablaDebugger, JTextArea txtConsola){
@@ -53,6 +53,19 @@ public class Principal extends Thread{
         });
         
         System.out.println("Ejecutado con éxito!!");
+    }
+    
+    public void graficar(){
+        Graph_AST ast = new Graph_AST();
+        
+        int cont_raiz = ast.getNextContGraph();
+        ast.addNodoGraph(cont_raiz, "AST-ARIT-SOFT");
+        
+        for(Nodo nodo:this.nodos){
+            ast.addRelacion(cont_raiz,nodo.Recorrido(ast));
+        }
+        
+        ast.graficarAST();
     }
     
     public void print(String cadena){

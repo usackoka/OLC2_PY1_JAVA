@@ -9,6 +9,7 @@ package AST.Expresiones.Nativas;
 import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Primitivo;
+import GraficasArit.Graph_AST;
 
 public class TypeOf extends Expresion{
 
@@ -18,6 +19,11 @@ public class TypeOf extends Expresion{
         this.expresion = expresion;
         this.fila = fila;
         this.columna = columna;
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
     }
     
     @Override

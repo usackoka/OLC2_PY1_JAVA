@@ -13,6 +13,7 @@ import AST.Expresiones.Primitivo;
 import AST.Nodo;
 import AST.Sentencia;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class Funcion extends Sentencia{
@@ -79,6 +80,19 @@ public class Funcion extends Sentencia{
     
     public int getConteoParametros(){
         return this.parametros.size();
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, id);
+        
+        for(Nodo nodo:this.instrucciones){
+            int cont_hijo = nodo.Recorrido(arbol);
+            arbol.addRelacion(cont_raiz,cont_hijo);
+        }
+        
+        return cont_raiz;
     }
 
 }

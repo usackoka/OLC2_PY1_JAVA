@@ -10,6 +10,7 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Primitivo;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class Round extends Expresion{
@@ -19,6 +20,11 @@ public class Round extends Expresion{
         this.expresion = expresion;
         this.fila = fila;
         this.columna = columna;
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
     }
     
     @Override

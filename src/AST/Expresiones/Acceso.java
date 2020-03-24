@@ -8,6 +8,7 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import GraficasArit.Graph_AST;
 
 public class Acceso extends Expresion{
 
@@ -32,6 +33,14 @@ public class Acceso extends Expresion{
     public Object getValor(Entorno entorno) {
         //empiezo a retornar el valor
         return null;
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, "ACCESO");
+        
+        return cont_raiz;
     }
 
 }

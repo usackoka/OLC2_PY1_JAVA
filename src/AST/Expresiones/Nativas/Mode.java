@@ -10,6 +10,7 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Primitivo;
 import Analyzer.Token;
+import GraficasArit.Graph_AST;
 import java.util.Comparator;
 import java.util.LinkedList;
 
@@ -21,6 +22,11 @@ public class Mode extends Expresion{
         this.expresiones = expresiones;
         this.fila = fila;
         this.columna = columna;
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
     }
 
     @Override

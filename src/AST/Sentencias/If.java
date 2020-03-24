@@ -10,6 +10,7 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Nodo;
 import AST.Sentencia;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class If extends Sentencia{
@@ -63,6 +64,19 @@ public class If extends Sentencia{
             }
         }
         return null;
+    }
+
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, "If");
+        
+        for(Nodo nodo:this.instrucciones){
+            int cont_hijo = nodo.Recorrido(arbol);
+            arbol.addRelacion(cont_raiz,cont_hijo);
+        }
+        
+        return cont_raiz;
     }
 
 }

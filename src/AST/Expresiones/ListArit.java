@@ -8,6 +8,7 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class ListArit extends Expresion{
@@ -58,5 +59,9 @@ public class ListArit extends Expresion{
         return ret;
     }
     
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
+    }
     
 }

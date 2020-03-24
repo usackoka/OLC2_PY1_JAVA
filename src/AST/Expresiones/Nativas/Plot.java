@@ -13,6 +13,7 @@ import AST.Sentencia;
 import Analyzer.Token;
 import GraficasArit.Graf_Line;
 import GraficasArit.Graf_Plot;
+import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 public class Plot extends Sentencia{
@@ -27,6 +28,11 @@ public class Plot extends Sentencia{
         this.Emain = Emain;
         this.fila = fila;
         this.columna = columna;
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        return 0;
     }
 
     @Override

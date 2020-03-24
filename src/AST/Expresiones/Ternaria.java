@@ -8,6 +8,8 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Nodo;
+import GraficasArit.Graph_AST;
 
 public class Ternaria extends Expresion{
 
@@ -27,5 +29,22 @@ public class Ternaria extends Expresion{
             return verdadera.getValor(entorno);
         }
         return falsa.getValor(entorno);
+    }
+    
+    @Override
+    public int Recorrido(Graph_AST arbol) {
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, "TERNARIA");
+        
+        int cont_hijo = condicion.Recorrido(arbol);
+        arbol.addRelacion(cont_raiz,cont_hijo);
+        
+        cont_hijo = verdadera.Recorrido(arbol);
+        arbol.addRelacion(cont_raiz,cont_hijo);
+        
+        cont_hijo = falsa.Recorrido(arbol);
+        arbol.addRelacion(cont_raiz,cont_hijo);
+        
+        return cont_raiz;
     }
 }
