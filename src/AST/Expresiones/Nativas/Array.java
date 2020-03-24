@@ -86,10 +86,22 @@ public class Array extends Expresion{
             valoresIngresar.add(valorExpresion);
         }
         
-        //empiezo a llenar el arreglo con sus dimensiones :p
-        for (int i = 0; i < dimensiones.size(); i++) {
-            getSubArray(dimensiones.get(i), this.data, i==dimensiones.size()-1);
+        fillData(this.data, dimensiones.size()-1, dimensiones);
+    }
+    
+    public LinkedList<Object> fillData(LinkedList<Object> lista, int indexDim, LinkedList<Integer> dimensiones){
+        int limite = dimensiones.get(indexDim);
+        if(indexDim==0){//ultima iteracion
+            for(int i = 0; i<limite; i++){
+                lista.add(getDato());
+            }
+        }else{
+            //debo crear listas
+            for(int i = 0; i<limite; i++){
+                lista.add(fillData(new LinkedList<>(), indexDim-1, dimensiones));
+            }
         }
+        return lista;
     }
     
     LinkedList<Object> valoresIngresar;
@@ -101,44 +113,6 @@ public class Array extends Expresion{
         return valoresIngresar.get(cont++);
     }
     
-    public void getSubArray(int numero, LinkedList<Object> datos, boolean fin){
-        if(datos.isEmpty()){
-            if(fin){
-                for (int i = 0; i < numero; i++) {
-                    datos.add(getDato());
-                }
-            }else{
-                for (int i = 0; i < numero; i++) {
-                    datos.add(new LinkedList<Object>());
-                }
-            }
-        }else{
-            if(fin){
-                for(Object element : datos){
-                    for(int i = 0; i < numero; i++){
-                        ((LinkedList)element).add(getDato());
-                    }
-                }
-            }else{
-                for(Object element : datos){
-                    for(int i = 0; i < numero; i++){
-                        recursiva((LinkedList)element);
-                    }
-                }
-            }
-        }
-    }
-    
-    public void recursiva(LinkedList<Object> element){
-        if(element.isEmpty()){
-            element.add(new LinkedList<Object>());
-        }else{
-            for(Object subelement : element){
-                recursiva((LinkedList)subelement);
-            }
-        }
-    }
-
     public LinkedList<Object> getData(){
         return this.data;
     }

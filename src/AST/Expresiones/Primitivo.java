@@ -10,7 +10,6 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Nativas.Array;
 import AST.Expresiones.Nativas.Matrix;
-import AST.Nodo;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
