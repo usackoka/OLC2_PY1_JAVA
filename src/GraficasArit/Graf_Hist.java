@@ -1,7 +1,10 @@
 package GraficasArit;
 
 import AST.Entorno;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -22,39 +25,75 @@ public class Graf_Hist extends GraficaArit{
         this.main=title;
     }
 
-    private IntervalXYDataset FillDataset(Entorno entorno) {
-        double[] datan = new double[data.size()];
-        for(int p = 0; p < data.size();p++){
-             datan[p] = data.get(p);
-        }
-        
-        HistogramDataset dataset = new HistogramDataset();
-        dataset.setType(HistogramType.RELATIVE_FREQUENCY);
-        dataset.addSeries("Histogram",datan,50);
-        return dataset;
-    }
     
     public void generarImagen(Entorno entorno){// Create chart
-        JFreeChart chart = ChartFactory.createHistogram(
-        this.main, 
-        this.xlab, "", FillDataset(entorno),
-        PlotOrientation.VERTICAL, false,true,true);
 
-        //guardar imagen
-        GraficaArit.GenerarImagen(chart, this.main);
+    HistogramDataset dataset = new HistogramDataset();
+    double[] values = new double[this.data.size()];//{10,15,5,8,7,4,11,18,27,14,12};
+    for (int i = 0; i < this.data.size(); i++) values[i]=this.data.get(i);
+
+    dataset.setType(HistogramType.FREQUENCY);
+     int bins =(int)(1+3.322*Math.log10(values.length));
+     if (bins%2==0)bins++;
+
+     //dataset.addSeries("H1", values, ope1,0,calcularmax()); //evaluar cual de las 2 distribuciones es la correcta
+     dataset.addSeries("H1", values, bins,0,calcularmax(values,bins)); // Pruebas
+
+
+      JFreeChart barGraph = ChartFactory.createHistogram
+    (null, "", null, dataset, PlotOrientation.VERTICAL, false, false, false);
+     
+    //guardar imagen
+        GraficaArit.GenerarImagen(barGraph, this.main);
     }
         
     @Override
     public ChartPanel CreatePane() {
         // Create chart
-        JFreeChart chart = ChartFactory.createHistogram(
-        this.main, 
-        this.xlab, "", FillDataset(new Entorno()),
-        PlotOrientation.VERTICAL, false,true,true);
+       HistogramDataset dataset = new HistogramDataset();
+        double[] values = new double[this.data.size()];//{10,15,5,8,7,4,11,18,27,14,12};
+        for (int i = 0; i < this.data.size(); i++) values[i]=this.data.get(i);
 
-        //guardar imagen
-        GraficaArit.GenerarImagen(chart, this.main);
-        return new ChartPanel(chart);
+        dataset.setType(HistogramType.FREQUENCY);
+         int bins =(int)(1+3.322*Math.log10(values.length));
+         if (bins%2==0)bins++;
+
+       //dataset.addSeries("H1", values, ope1,0,calcularmax()); //evaluar cual de las 2 distribuciones es la correcta
+       dataset.addSeries("H1", values, bins,0,calcularmax(values,bins)); // Pruebas
+
+
+        JFreeChart barGraph = ChartFactory.createHistogram
+       (null, "", null, dataset, PlotOrientation.VERTICAL, false, false, false);
+      
+        return new ChartPanel(barGraph );
     
     }
+
+
+    private double calcularmax( double[] values,int op1) {
+        double VM=getMaxValue(values);
+        double ret = op1;
+        if(op1==0)return ret;
+        while(true){
+            if(VM<ret)break;
+            else {
+                ret=ret+op1;
+            }
+            
+        }
+        return ret;
+        
+    
+    }
+    public static double getMaxValue(double[] numbers){
+        if (numbers.length==0)return 1;
+        double maxValue = numbers[0];
+        for(int i=1;i < numbers.length;i++){
+          if(numbers[i] > maxValue){
+                maxValue = numbers[i];
+              }
+        }
+        return maxValue;
+    }
 }
+
