@@ -39,6 +39,7 @@ public class Aritmetica extends Expresion{
             if(valLeft instanceof LinkedList && valRight instanceof LinkedList){
                 LinkedList<Object> tempLeft = (LinkedList)valLeft;
                 LinkedList<Object> tempRight = (LinkedList)valRight;
+                LinkedList<Object> tempNew = new LinkedList<>();
                 if(tempLeft.size()!=tempRight.size()){
                     entorno.addError(new Token("OPERACION-"+TipoOperacion+" entre vectores", "Los vectores no poseen el mismo tamaño", fila, columna));
                     return new LinkedList<>();
@@ -47,29 +48,31 @@ public class Aritmetica extends Expresion{
                     Primitivo pleft = new Primitivo(tempLeft.get(i), Primitivo.getTipoDato(tempLeft.get(i)),fila,columna);
                     Primitivo pright = new Primitivo(tempRight.get(i), Primitivo.getTipoDato(tempRight.get(i)),fila,columna);
                     Aritmetica operacion = new Aritmetica(pleft,pright,TipoOperacion,fila, columna);
-                    tempLeft.set(i, operacion.getValor(entorno));
+                    tempNew.add(operacion.getValor(entorno));
                 }
-                return tempLeft;
+                return tempNew;
             }
             else if(valLeft instanceof LinkedList){
                 LinkedList<Object> temp = (LinkedList)valLeft;
+                LinkedList<Object> tempNew = new LinkedList<>();
                 for(int i = 0; i<temp.size(); i++){
                     Primitivo element = new Primitivo(temp.get(i), Primitivo.getTipoDato(temp.get(i)),fila,columna);
                     Primitivo pright = new Primitivo(valRight, Primitivo.getTipoDato(valRight), fila, columna);
                     Aritmetica operacion = new Aritmetica(element,pright,TipoOperacion, fila, columna);
-                    temp.set(i,operacion.getValor(entorno));
+                    tempNew.add(operacion.getValor(entorno));
                 }
-                return temp;
+                return tempNew;
             }
             else if(valRight instanceof LinkedList){
                 LinkedList<Object> temp = (LinkedList)valRight;
+                LinkedList<Object> tempNew = new LinkedList<>();
                 for(int i = 0; i<temp.size(); i++){
                     Primitivo element = new Primitivo(temp.get(i), Primitivo.getTipoDato(temp.get(i)),fila,columna);
                     Primitivo pleft = new Primitivo(valLeft, Primitivo.getTipoDato(valLeft), fila, columna);
                     Aritmetica operacion = new Aritmetica(pleft,element,TipoOperacion, fila, columna);
-                    temp.set(i,operacion.getValor(entorno));
+                    tempNew.add(operacion.getValor(entorno));
                 }
-                return temp;
+                return tempNew;
             }
             
             switch (TipoOperacion)
