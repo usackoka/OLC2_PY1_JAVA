@@ -10,6 +10,7 @@ import AST.Entorno;
 import AST.Expresion;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
+import java.util.LinkedList;
 
 public class Aritmetica extends Expresion{
     
@@ -32,70 +33,105 @@ public class Aritmetica extends Expresion{
     public Object getValor(Entorno entorno) {
         Object valLeft = left.getValor(entorno);
         Object valRight = right.getValor(entorno);
-        Object tipIzq = Primitivo.getTipoDato(valLeft);
-        Object tipDer = Primitivo.getTipoDato(valRight);
             
         try {
+            //========== VALIDO OPERACIONES ENTRE VECTORES
+            if(valLeft instanceof LinkedList && valRight instanceof LinkedList){
+                LinkedList<Object> tempLeft = (LinkedList)valLeft;
+                LinkedList<Object> tempRight = (LinkedList)valRight;
+                if(tempLeft.size()!=tempRight.size()){
+                    entorno.addError(new Token("OPERACION-"+TipoOperacion+" entre vectores", "Los vectores no poseen el mismo tamaño", fila, columna));
+                    return new LinkedList<>();
+                }
+                for(int i=0;i<tempLeft.size();i++){
+                    Primitivo pleft = new Primitivo(tempLeft.get(i), Primitivo.getTipoDato(tempLeft.get(i)),fila,columna);
+                    Primitivo pright = new Primitivo(tempRight.get(i), Primitivo.getTipoDato(tempRight.get(i)),fila,columna);
+                    Aritmetica operacion = new Aritmetica(pleft,pright,TipoOperacion,fila, columna);
+                    tempLeft.set(i, operacion.getValor(entorno));
+                }
+                return tempLeft;
+            }
+            else if(valLeft instanceof LinkedList){
+                LinkedList<Object> temp = (LinkedList)valLeft;
+                for(int i = 0; i<temp.size(); i++){
+                    Primitivo element = new Primitivo(temp.get(i), Primitivo.getTipoDato(temp.get(i)),fila,columna);
+                    Primitivo pright = new Primitivo(valRight, Primitivo.getTipoDato(valRight), fila, columna);
+                    Aritmetica operacion = new Aritmetica(element,pright,TipoOperacion, fila, columna);
+                    temp.set(i,operacion.getValor(entorno));
+                }
+                return temp;
+            }
+            else if(valRight instanceof LinkedList){
+                LinkedList<Object> temp = (LinkedList)valRight;
+                for(int i = 0; i<temp.size(); i++){
+                    Primitivo element = new Primitivo(temp.get(i), Primitivo.getTipoDato(temp.get(i)),fila,columna);
+                    Primitivo pleft = new Primitivo(valLeft, Primitivo.getTipoDato(valLeft), fila, columna);
+                    Aritmetica operacion = new Aritmetica(pleft,element,TipoOperacion, fila, columna);
+                    temp.set(i,operacion.getValor(entorno));
+                }
+                return temp;
+            }
+            
             switch (TipoOperacion)
             {
                 case MAS:
-                    if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.STRING) || tipDer.equals(Expresion.TIPO_PRIMITIVO.STRING))
+                    if (valLeft instanceof String || valRight instanceof String)
                     {
                         return valLeft + "" + valRight;
                     }
-                    else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
+                    else if (valLeft instanceof Double || valRight instanceof Double)
                     {
                         Object value = Double.parseDouble(String.valueOf(valLeft)) + Double.parseDouble(String.valueOf(valRight));
                         return value;
                     }
-                    else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
+                    else if ((valLeft instanceof Integer) && (valRight instanceof Integer))
                     {
                         return Integer.parseInt(String.valueOf(valLeft)) + Integer.parseInt(String.valueOf(valRight));
                     }
                 case MENOS:
-                    if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
+                    if (valLeft instanceof Double || valRight instanceof Double)
                     {
                         Object value = Double.parseDouble(String.valueOf(valLeft)) - Double.parseDouble(String.valueOf(valRight));
                         return value;
                     }
-                    else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
+                    else if (valLeft instanceof Integer && valRight instanceof Integer)
                     {
                         Object value = Integer.parseInt(String.valueOf(valLeft)) - Integer.parseInt(String.valueOf(valRight));
                         return value;
                     }
                 case POR:
-                    if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
+                    if (valLeft instanceof Double || valRight instanceof Double)
                     {
                         return Double.parseDouble(String.valueOf(valLeft)) * Double.parseDouble(String.valueOf(valRight));
                     }
-                    else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
+                    else if (valLeft instanceof Integer && valRight instanceof Integer)
                     {
                         return Integer.parseInt(String.valueOf(valLeft)) * Integer.parseInt(String.valueOf(valRight));
                     }
                 case MOD:
-                    if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
+                    if (valLeft instanceof Double || valRight instanceof Double)
                     {
                         return Double.parseDouble(String.valueOf(valLeft)) % Double.parseDouble(String.valueOf(valRight));
                     }
-                    else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
+                    else if (valLeft instanceof Integer && valRight instanceof Integer)
                     {
                         return Integer.parseInt(String.valueOf(valLeft)) % Integer.parseInt(String.valueOf(valRight));
                     }
                 case DIV:
-                    if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
+                    if (valLeft instanceof Double || valRight instanceof Double)
                     {
                         return Double.parseDouble(String.valueOf(valLeft)) / Double.parseDouble(String.valueOf(valRight));
                     }
-                    else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) && tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
+                    else if (valLeft instanceof Integer && valRight instanceof Integer)
                     {
                         return Integer.parseInt(String.valueOf(valLeft)) / Integer.parseInt(String.valueOf(valRight));
                     }
                 case POT:
-                    if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.DOUBLE) || tipDer.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
+                    if (valLeft instanceof Double || valRight instanceof Double)
                     {
                         return Math.pow(Double.parseDouble(String.valueOf(valLeft)), Double.parseDouble(String.valueOf(valRight)));
                     }
-                    else if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipDer.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
+                    else if (valLeft instanceof Integer || valRight instanceof Integer)
                     {
                         return (int)Math.pow(Integer.parseInt(String.valueOf(valLeft)), Integer.parseInt(String.valueOf(valRight)));
                     }
@@ -104,7 +140,7 @@ public class Aritmetica extends Expresion{
             System.out.println(e);
         }
         
-        entorno.addError(new Token("Aritmetica", "No soportado: "+TipoOperacion+" tipos:" + tipIzq + " y " + tipDer, fila, columna));
+        entorno.addError(new Token("Aritmetica", "No soportado: "+TipoOperacion+" tipos:" + Primitivo.getTipoDato(valLeft) + " y " + Primitivo.getTipoDato(valRight), fila, columna));
         return "";
     }
     

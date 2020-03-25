@@ -31,19 +31,17 @@ public class Logica extends Expresion{
     public Object getValor(Entorno entorno) {
         Object valLeft = left.getValor(entorno);
         Object valRight = right.getValor(entorno);
-        Object tipIzq = Primitivo.getTipoDato(valLeft);
-        Object tipDer = Primitivo.getTipoDato(valRight);
             
         try {
             switch (TipoOperacion)
             {
                 case AND:
-                    if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN) && tipDer.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN))
+                    if (valLeft instanceof Boolean && valRight instanceof Boolean)
                     {
                         return Boolean.parseBoolean(String.valueOf(valLeft)) && Boolean.parseBoolean(String.valueOf(valRight));
                     }
                 case OR:
-                    if (tipIzq.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN) && tipDer.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN))
+                    if (valLeft instanceof Boolean && valRight instanceof Boolean)
                     {
                         return Boolean.parseBoolean(String.valueOf(valLeft)) || Boolean.parseBoolean(String.valueOf(valRight));
                     }
@@ -52,7 +50,7 @@ public class Logica extends Expresion{
             System.out.println(e);
         }
         
-        entorno.addError(new Token("Logica", "No soportado: "+TipoOperacion+" tipos:" + tipIzq + " y " + tipDer, fila, columna));
+        entorno.addError(new Token("Logica", "No soportado: "+TipoOperacion+" tipos:" + Primitivo.getTipoDato(valLeft) + " y " + Primitivo.getTipoDato(valRight), fila, columna));
         return false;
     }
     
