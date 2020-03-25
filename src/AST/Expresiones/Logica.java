@@ -10,6 +10,7 @@ import AST.Entorno;
 import AST.Expresion;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
+import java.util.LinkedList;
 
 public class Logica extends Expresion{
     Expresion left, right;
@@ -31,8 +32,48 @@ public class Logica extends Expresion{
     public Object getValor(Entorno entorno) {
         Object valLeft = left.getValor(entorno);
         Object valRight = right.getValor(entorno);
-            
+        
         try {
+            //========== VALIDO OPERACIONES ENTRE VECTORES
+            if(valLeft instanceof LinkedList && valRight instanceof LinkedList){
+                LinkedList<Object> tempLeft = (LinkedList)valLeft;
+                LinkedList<Object> tempRight = (LinkedList)valRight;
+                LinkedList<Object> tempNew = new LinkedList<>();
+                if(tempLeft.size()!=tempRight.size()){
+                    entorno.addError(new Token("OPERACION-"+TipoOperacion+" entre vectores", "Los vectores no poseen el mismo tamaño", fila, columna));
+                    return new LinkedList<>();
+                }
+                for(int i=0;i<tempLeft.size();i++){
+                    Primitivo pleft = new Primitivo(tempLeft.get(i), Primitivo.getTipoDato(tempLeft.get(i)),fila,columna);
+                    Primitivo pright = new Primitivo(tempRight.get(i), Primitivo.getTipoDato(tempRight.get(i)),fila,columna);
+                    Logica operacion = new Logica(pleft,pright,TipoOperacion,fila, columna);
+                    tempNew.add(operacion.getValor(entorno));
+                }
+                return tempNew;
+            }
+            else if(valLeft instanceof LinkedList){
+                LinkedList<Object> temp = (LinkedList)valLeft;
+                LinkedList<Object> tempNew = new LinkedList<>();
+                for(int i = 0; i<temp.size(); i++){
+                    Primitivo element = new Primitivo(temp.get(i), Primitivo.getTipoDato(temp.get(i)),fila,columna);
+                    Primitivo pright = new Primitivo(valRight, Primitivo.getTipoDato(valRight), fila, columna);
+                    Logica operacion = new Logica(element,pright,TipoOperacion, fila, columna);
+                    tempNew.add(operacion.getValor(entorno));
+                }
+                return tempNew;
+            }
+            else if(valRight instanceof LinkedList){
+                LinkedList<Object> temp = (LinkedList)valRight;
+                LinkedList<Object> tempNew = new LinkedList<>();
+                for(int i = 0; i<temp.size(); i++){
+                    Primitivo element = new Primitivo(temp.get(i), Primitivo.getTipoDato(temp.get(i)),fila,columna);
+                    Primitivo pleft = new Primitivo(valLeft, Primitivo.getTipoDato(valLeft), fila, columna);
+                    Logica operacion = new Logica(pleft,element,TipoOperacion, fila, columna);
+                    tempNew.add(operacion.getValor(entorno));
+                }
+                return tempNew;
+            }
+            
             switch (TipoOperacion)
             {
                 case AND:
