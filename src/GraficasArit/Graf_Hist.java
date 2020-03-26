@@ -36,7 +36,7 @@ public class Graf_Hist extends GraficaArit{
      int bins =(int)(1+3.322*Math.log10(values.length));
      if (bins%2==0)bins++;
 
-     //dataset.addSeries("H1", values, ope1,0,calcularmax()); //evaluar cual de las 2 distribuciones es la correcta
+     //dataset.addSeries("H1", values, bins); //evaluar cual de las 2 distribuciones es la correcta
      dataset.addSeries("H1", values, bins,0,calcularmax(values,bins)); // Pruebas
 
 
@@ -45,6 +45,18 @@ public class Graf_Hist extends GraficaArit{
      
     //guardar imagen
         GraficaArit.GenerarImagen(barGraph, this.main);
+    //guardar imagen op 2 
+         dataset = new HistogramDataset();
+        dataset.addSeries("H1", values, bins); //evaluar cual de las 2 distribuciones es la correcta
+
+
+         JFreeChart barGraph1 = ChartFactory.createHistogram
+       (null, "", null, dataset, PlotOrientation.VERTICAL, false, false, false);
+     
+    //guardar imagen
+        GraficaArit.GenerarImagen(barGraph1, this.main);    
+        
+        
     }
         
     @Override
