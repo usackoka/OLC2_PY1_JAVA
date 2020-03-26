@@ -1,0 +1,1076 @@
+
+options {
+  IGNORE_CASE = true;
+  STATIC = false;
+}
+
+PARSER_BEGIN(Gramatica)
+/** Analizador de expresiones aritmeticas sencillas. */
+package Analyzer_JavaCC;
+import java.util.LinkedList;
+import AST.*;
+import AST.Expresiones.*;
+import AST.Sentencias.*;
+
+public class Gramatica {
+ Principal principal;
+ public void setPrincipal(Principal principal) {
+    this.principal = principal;
+ }
+}
+PARSER_END(Gramatica)
+
+/** Lexico */
+SKIP : {
+      " "
+    | "\t"
+    | "\r"
+    | "\n"
+    | <"#" (~["\n", "\r"])*>
+    | <"#*" (~["*"])* "*" ("*" | ~["*","#"] (~["*"])* "*")* "#">
+}
+
+
+
+
+TOKEN : {
+      <numero: (["0"-"9"])+>
+    | <doble: (["0"-"9"])+"."(["0"-"9"])+>
+    | <cadena:(["\""]((~["\"","\n"])|("\\\""))*["\""])>
+
+//valores
+| <res_null:"null">
+| <res_false:"false">
+| <res_true:"true">
+| <res_function:"function">
+| <res_in:"in">
+| <res_if:"if">
+| <res_else:"else">
+| <res_while:"while">
+| <res_for:"for">
+| <res_switch:"switch">
+| <res_case:"case">
+| <res_default:"default">
+| <res_break:"break">
+| <res_continue:"continue">
+| <res_return:"return">
+| <res_do:"do">
+| <l_corchete:"[">
+| <r_corchete:"]">
+| <l_llave:"{">
+| <r_llave:"}">
+| <l_parent:"(">
+| <r_parent:")">
+| <coma:",">
+| <puntocoma:";">
+| <igualigual:"==">
+| <igual:"=">
+| <mas:"+">
+| <menos:"-">
+| <por:"*">
+| <potencia:"^">
+| <modular:"%%">
+| <div:"/">
+| <ternario:"?">
+| <mayorigual:">=">
+| <mayor:">">
+| <menorigual:"<=">
+| <menor:"<">
+| <diferente:"!=">
+| <and:"&">
+| <or:"|">
+| <not:"!">
+| <dospuntos:":">
+
+ | <id:( ["a"-"z","A"-"Z"]|("."["a"-"z","A"-"Z","_"]))(["a"-"z","A"-"Z"]|"_"|["0"-"9"]|".")*>
+   
+   
+    
+
+}
+
+MORE :
+{
+    "\"" :STRING_STATE
+}
+
+<STRING_STATE> MORE:
+{
+    <~["\""]>
+}
+
+<STRING_STATE> TOKEN:
+{
+   <STRING:"\""> : DEFAULT 
+}
+/** Fin Lexico */
+
+
+/** Producción inicial 
+    Analizar -> (Instruccion)+ /** Producción inicial 
+    AnEOF
+*/
+/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+(e=E())+ <EOF> {return e;}
+S ::= DECLARACIONES:a
+    {:
+        principal.setNodos(a);
+    :}
+LinkedList<Nodo> 
+;
+*/
+LinkedList<Nodo> Analizar() :
+{LinkedList<Nodo> e;}
+{
+    (e=DECLARACIONES()) <EOF> {principal.setNodos(e);return e;}
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+DECLARACIONES::= ---------------------------
+    DECLARACIONES:a DECLARACION:b -------------------------
+    {:
+        RESULT = a;
+        a.add(b); 
+    :}
+    | DECLARACION:a -------------
+    {:
+        RESULT = new LinkedList<Nodo>();
+        RESULT.add(a);
+    :}
+;
+*/
+LinkedList<Nodo> DECLARACIONES() :
+{LinkedList<Nodo> e= new LinkedList<Nodo>();Nodo n;}
+{
+  (n=DECLARACION() {e.add(n);})+ {return e;}
+}
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+DECLARACION ::= revisar
+        FUNCION:a --------------------------------------
+    {:
+        RESULT = a;
+    :}
+    | SENTENCIA:a --------------------------
+    {:
+        RESULT = a;
+    :}
+    | INSTRUCCION:a PUEDE_SEMICOLON ------------------------
+    {:
+        RESULT = a;
+    :}
+;
+*/
+Nodo DECLARACION() :
+{Nodo n;}
+{
+     LOOKAHEAD(3) (n=FUNCION())  { return n;} 
+    |(n=SENTENCIA())  { return n;} 
+    |LOOKAHEAD(3) (n=INSTRUCCION()) ((<puntocoma>)?) { return n;}
+     
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+FUNCION ::=
+            id:a igual res_function l_parent PARAMETROS:b r_parent l_llave BLOQUES:c r_llave -----------------
+    {:
+        RESULT = new Funcion(a,b,c,aleft+1,aright+1);
+    :}
+          | id:a igual l_parent PARAMETROS:b r_parent igual mayor l_llave BLOQUES:c r_llave------------
+    {:
+        RESULT = new Funcion(a,b,c,aleft+1,aright+1);
+    :}
+;
+
+*/
+Sentencia FUNCION() :
+{Token t;LinkedList<Parametro> b= new LinkedList<Parametro>();LinkedList<Nodo> c= new LinkedList<Nodo>();}
+{
+     t=<id> <igual> 
+    (<res_function> <l_parent> (b=LISTA_PARAMETROS())? <r_parent> <l_llave> (c=LISTA_BLOQUES())? <r_llave>
+     {return new Funcion(t.image,b,c,t.beginLine, t.beginColumn);}
+    |<l_parent> (b=LISTA_PARAMETROS())? <r_parent> <igual> <mayor> <l_llave> (c=LISTA_BLOQUES())?  <r_llave>
+     {return new Funcion(t.image,b,c,t.beginLine, t.beginColumn);}
+    )
+}
+
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+PARAMETROS ::= ---------------------
+LISTA_PARAMETROS:a
+    {:
+        RESULT = a;
+    :}
+    | 
+    {:
+        RESULT = new LinkedList<Parametro>();
+    :}
+;
+
+LISTA_PARAMETROS ::= ----------------
+   LISTA_PARAMETROS:a coma PARAMETRO:b
+    {:
+        RESULT = a;
+        RESULT.add(b);
+    :}
+    | PARAMETRO:a
+    {:
+        RESULT = new LinkedList<Parametro>();
+        RESULT.add(a);
+    :}
+;
+
+PARAMETRO ::= -----------------
+ E:a 
+    {:
+        RESULT = new Parametro(null,a,a.fila,a.columna);
+    :}
+    | id:a igual E:b
+    {:
+        RESULT = new Parametro(a,b,aleft+1,aright+1);
+    :}
+;
+
+*/
+LinkedList<Parametro> LISTA_PARAMETROS() :
+{Parametro a,b;LinkedList<Parametro> lista= new LinkedList<Parametro>();}
+{
+    a=PARAMETRO(){lista.add(a);} (<coma> b=PARAMETRO(){lista.add(b);} )* {return lista;}
+}
+
+Parametro PARAMETRO() :
+{Expresion a;Token t;}
+{      t= ( <igual> a=E() {return new Parametro(t.image,a,t.beginLine, t.beginColumn);})? {return new Parametro(null,new Primitivo(t.image,Expresion.TIPO_PRIMITIVO.VARIABLE,t.beginLine, t.beginColumn),token.beginLine, token.beginColumn);}
+
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    LOOKAHEAD(10)( a=E() {return new Parametro(null,a,token.beginLine, token.beginColumn);})
+        | LOOKAHEAD(3)
+
+ LOOKAHEAD(3)( t=<id> {return new Parametro(null,new Primitivo(t.image,Expresion.TIPO_PRIMITIVO.VARIABLE,t.beginLine, t.beginColumn),token.beginLine, token.beginColumn);})
+       |LOOKAHEAD(3)
+
+SENTENCIA ::= ?????????????
+    IF:a -----------------------------
+    {:
+        RESULT = a;
+    :}
+    | SWITCH:a -------------------
+    {:
+        RESULT = a;
+    :}
+    | WHILE:a  -----------------------------
+    {:
+        RESULT = a;
+    :}
+    | DOWHILE:a ------------------
+    {:
+        RESULT = a;
+    :}
+    | FOR:a -------------------------
+    {:
+        RESULT = a;
+    :}
+;
+*/
+Sentencia SENTENCIA() :
+{Sentencia n;}
+{
+     (n=IF())  { return n;} 
+    |(n=SWITCH())  { return n;} 
+    |(n=WHILE())  { return n;} 
+    |(n=DOWHILE())  { return n;} 
+    |(n=FOR())  { return n;} 
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+FOR ::= res_for l_parent id:a res_in E:b r_parent l_llave BLOQUES:c r_llave
+    {:
+        RESULT = new For(a,b,c,aleft+1,aright+1);
+    :}
+t=<res_do> <l_llave> (b=LISTA_BLOQUES())?  <r_llave> <res_while> <l_parent> a=E()<r_parent> <puntocoma>
+;
+*/
+Sentencia FOR() :
+{Expresion a;Token t;Default c =null;LinkedList<Nodo> b= new LinkedList<Nodo>();}
+{
+     <res_for> <l_parent> t=<id> <res_in> a= E() <r_parent> <l_llave> (b=LISTA_BLOQUES())? <r_llave>{return new For(t.image,a,b,t.beginLine, t.beginColumn);}
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+DOWHILE ::= ---------------------------------
+  res_do:c l_llave BLOQUES:b r_llave res_while l_parent E:a r_parent puntocoma
+    {:
+        RESULT = new DoWhile(a,b,cleft+1,cright+1);
+    :}
+;
+*/
+Sentencia DOWHILE() :
+{Expresion a;Token t;Default c =null;LinkedList<Nodo> b= new LinkedList<Nodo>();}
+{
+    t=<res_do> <l_llave> (b=LISTA_BLOQUES())?  <r_llave> <res_while> <l_parent> a=E() <r_parent> <puntocoma>{return new DoWhile(a,b,t.beginLine, t.beginColumn);}
+}
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+WHILE ::=------------------------------------------
+   res_while:c l_parent E:a r_parent l_llave BLOQUES:b r_llave
+    {:
+        RESULT = new While(a,b,cleft+1,cright+1);
+    :}
+;
+
+*/
+Sentencia WHILE() :
+{Expresion a;Token t;Default c =null;LinkedList<Nodo> b= new LinkedList<Nodo>();}
+{
+    t=<res_while> <l_parent> a=E() <r_parent> <l_llave> (b=LISTA_BLOQUES())?  <r_llave>{return new While(a,b,t.beginLine, t.beginColumn);}
+}
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+SWITCH ::= ???????????????????????
+          res_switch:d l_parent E:a r_parent l_llave LISTA_CASOS:b DEFAULT:c r_llave
+    {:
+        RESULT = new Switch(a,b,c,dleft+1,dright+1);
+    :}
+;
+non terminal Default DEFAULT;
+non terminal Parametro PARAMETRO;
+non terminal LinkedList<Caso> LISTA_CASOS;
+*/
+Sentencia SWITCH() :
+{Nodo n;Expresion a;Token t;Default c =null;LinkedList<Caso> b= new LinkedList<Caso>();}
+{
+    t=<res_switch> <l_parent> a=E() <r_parent> <l_llave> b = LISTA_CASOS() (LOOKAHEAD(2) c = DEFAULT())? <r_llave>{return new Switch(a,b,c,t.beginLine, t.beginColumn);}
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+DEFAULT ::= res_default:a dospuntos BLOQUES:b
+    {:
+        RESULT = new Default(b,aleft+1,aright+1);
+    :}
+    | 
+    {:
+        RESULT = null;
+    :}
+;
+
+*/
+
+Default DEFAULT() :
+{Expresion a;Token t;Sentencia s1,s2;LinkedList<Nodo> b= new LinkedList<Nodo>(); LinkedList<Caso> lista= new LinkedList<Caso>();}
+{
+   t=<res_default> <dospuntos> (LOOKAHEAD(2) b=LISTA_BLOQUES())? {return new Default(b,t.beginLine, t.beginColumn);}
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+LISTA_CASOS ::= ?????????????????????????
+LISTA_CASOS:a res_case:d E:b dospuntos BLOQUES:c -------------------
+    {:
+        RESULT = a;
+        RESULT.add(new Caso(b,c,dleft+1,dright+1));
+    :}
+    | res_case:c E:a dospuntos BLOQUES:b------------------
+    {:
+        RESULT = new LinkedList<Caso>();
+        RESULT.add(new Caso(a,b,cleft+1,cright+1));
+    :}
+;
+*/
+
+LinkedList<Caso> LISTA_CASOS() :
+{Caso c1,c2 ; LinkedList<Caso> lista= new LinkedList<Caso>();}
+{
+   c1 = CASO111()  {lista.add(c1);} (LOOKAHEAD(2) c2 = CASO111()  {lista.add(c2);})*{return lista;}
+}
+
+Caso CASO111() :
+{Expresion a;Token t;Sentencia s1,s2;LinkedList<Nodo> b= new LinkedList<Nodo>(); LinkedList<Caso> lista= new LinkedList<Caso>();}
+{
+   t=<res_case> a=E() <dospuntos> (LOOKAHEAD(2) b=LISTA_BLOQUES())? {return new Caso(a,b,t.beginLine, t.beginColumn);}
+}
+
+ 
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+IF ::= -----------------------------
+        res_if:c l_parent E:a r_parent l_llave BLOQUES:b r_llave --------------------
+    {:
+        RESULT = new If(a,b,null,cleft+1,cright+1);
+    :}
+    |  res_if:c l_parent E:a r_parent l_llave BLOQUES:b r_llave ELSE:d
+    {:
+        RESULT = new If(a,b,d,cleft+1,cright+1);
+    :}
+;
+
+ELSE ::= -------------------
+    {:
+        RESULT = a;
+    :}
+    | res_else:c l_llave BLOQUES:a r_llave
+    {:
+        RESULT = new Else(a,cleft+1,cright+1);
+    :}
+;
+
+*/
+Sentencia IF() :
+{Nodo n;Expresion a;Token t;Sentencia d=null;LinkedList<Nodo> b= new LinkedList<Nodo>();}
+{
+    t=<res_if> <l_parent> a=E()<r_parent> <l_llave> (b=LISTA_BLOQUES())? <r_llave> (d=ELSE())? {return new If(a,b,d,t.beginLine, t.beginColumn);}
+}
+
+Sentencia ELSE() :
+{Token t;Sentencia d=null;LinkedList<Nodo> b= new LinkedList<Nodo>();}
+{
+     t=<res_else>  
+       (
+       d=IF() 
+       |
+       <l_llave> (b=LISTA_BLOQUES())? <r_llave> {d = new Else(b,t.beginLine, t.beginColumn);}
+       )
+      {return d;}
+}
+
+
+/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BLOQUES ::= ------------------------------ 
+    LISTA_BLOQUES:a ----------------
+    {:
+        RESULT = a;
+    :}
+    | 
+    {:
+        RESULT = new LinkedList<Nodo>();
+    :}
+;
+
+LISTA_BLOQUES ::= -------------------
+ LISTA_BLOQUES:a INSTRUCCION:b PUEDE_SEMICOLON -------------
+    {:
+        RESULT = a;
+        RESULT.add(b);
+    :}
+    | LISTA_BLOQUES:a SENTENCIA:b
+    {:
+        RESULT = a;
+        RESULT.add(b);
+    :}
+    | SENTENCIA:a 
+    {:
+        RESULT = new LinkedList<Nodo>();
+        RESULT.add(a);
+    :}
+    | INSTRUCCION:a PUEDE_SEMICOLON
+    {:
+        RESULT = new LinkedList<Nodo>();
+        RESULT.add(a);
+    :}
+;
+*/
+LinkedList<Nodo>  LISTA_BLOQUES() :
+{LinkedList<Nodo> lista = new LinkedList<Nodo>();Nodo n1,n2;}
+{
+     n1=LISTA_BLOQUES_CONJ() { lista.add(n1);}  (LOOKAHEAD(2) n2=LISTA_BLOQUES_CONJ(){ lista.add(n2);} )*  { return lista;} 
+}
+
+ 
+Nodo  LISTA_BLOQUES_CONJ() :
+{Nodo n1;}
+{
+     (n1=SENTENCIA())  { return n1;} 
+    |(n1=INSTRUCCION()) ((<puntocoma>)?) { return n1;}
+}
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+INSTRUCCION ::= incompleto
+    res_break:a --------------------
+    {:
+        RESULT = new Corte(Corte.TIPO_CORTE.BREAK,aleft+1,aright+1);
+    :}
+    | res_continue:a -------------------
+    {:
+        RESULT = new Corte(Corte.TIPO_CORTE.CONTINUE,aleft+1,aright+1);
+    :}
+    | LLAMADA:a ---------------------
+    {:
+        RESULT = a;
+    :}
+    | VARIABLE:a incompleto
+    {:
+        RESULT = a;
+    :}
+    | RETURN:a ----------------
+    {:
+        RESULT = a;
+    :}
+;
+*/
+
+Nodo INSTRUCCION() :
+{Nodo n;Token t;}
+{
+     t = <res_break>{return new Corte(Corte.TIPO_CORTE.BREAK,t.beginLine, t.beginColumn);}
+    |t = <res_continue>{return new Corte(Corte.TIPO_CORTE.CONTINUE,t.beginLine, t.beginColumn);}
+    | LOOKAHEAD(2)n=VARIABLE() { return n;}
+    | LOOKAHEAD(2)n=LLAMADA()  { return n;}
+    | n=RETURN()  { return n;}
+}
+
+/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+RETURN ::= --------------------------------
+ res_return:b l_parent E:a r_parent
+    {:
+        RESULT = new Return(a,bleft+1,bright+1);
+    :}
+    | res_return:b
+    {:
+        RESULT = new Return(null,bleft+1,bright+1);
+    :}
+;
+*/
+Sentencia RETURN() :
+{Expresion a= null;Token t; }
+{
+      t=<res_return> (<l_parent> a=E() <r_parent>)? { return new Return(a,t.beginLine, t.beginColumn);}
+      
+}
+
+/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+VARIABLE ::=  incompleto
+    id:a igual E:b -----------------------------
+    {:
+        RESULT = new Declaracion(a,b,aleft+1,aright+1);
+    :}
+    | ACCESO_ESTRUCTURA2 igual E ---incompleto
+;
+*/
+
+Sentencia VARIABLE() :
+{Expresion b,c;Token t; }
+{
+       LOOKAHEAD(2) t=<id> <igual> b=E() { return new Declaracion(t.image,b,t.beginLine,t.beginColumn);}
+      |LOOKAHEAD(2) b=ACCESO_ESTRUCTURA2() t=<igual> c=E() {
+            //incompleto
+            // return new acceso_estructura2(b,c, t.beginLine,t.beginColumn);
+            return null;
+            
+        }
+      
+}
+
+/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ACCESO_ESTRUCTURA2 ::= incompleto
+       id l_corchete E r_corchete--------------------
+    {:
+    :}
+    | id l_corchete l_corchete E r_corchete r_corchete ---------------------------
+    {:
+    :}
+    | id l_corchete E coma E r_corchete ---------------------------
+    {:
+    :}
+    | id l_corchete coma E r_corchete -------------------
+    {:
+    :}
+    | id l_corchete E coma r_corchete -----------------------
+    {:
+    :}
+    | ACCESO_ESTRUCTURA2 l_corchete E r_corchete ---------------------
+    {:
+    :}
+    | ACCESO_ESTRUCTURA2  l_corchete l_corchete E r_corchete r_corchete ----------------------
+    {:
+    :}
+    | ACCESO_ESTRUCTURA2 l_corchete E coma E r_corchete ------------------------
+    {:
+    :}
+    | ACCESO_ESTRUCTURA2 l_corchete coma E r_corchete -------------------------
+    {:
+    :}
+    | ACCESO_ESTRUCTURA2 l_corchete E coma r_corchete
+    {:
+    :}
+;
+
+*/
+//incompleto  - cambiar tipo Expresion
+Expresion ACCESO_ESTRUCTURA2():
+{Expresion a,b,c;Token t; }
+{
+     a= ACCESO_ESTRUCTURA2_ELEMENT()   
+     (
+            LOOKAHEAD(4)<l_corchete> b=E() <r_corchete>
+              { /*a= new algo1(a,b,t.beginLine,t.beginColumn);*/ a= null;}
+        |
+            LOOKAHEAD(4)<l_corchete> <l_corchete> b=E() <r_corchete> <r_corchete>
+              { /*a= new algo1(a,b,t.beginLine,t.beginColumn);*/ a= null;}
+        |
+            LOOKAHEAD(4)<l_corchete> b=E() <coma> c=E() <r_corchete>
+              { /*a= new algo1(a,b,c,t.beginLine,t.beginColumn);*/ a= null;}
+        |
+            LOOKAHEAD(4)<l_corchete> <coma> c=E() <r_corchete>
+              { /*a= new algo1(a,null,c,t.beginLine,t.beginColumn);*/ a= null;}
+        |
+            LOOKAHEAD(4)<l_corchete> b=E() <coma> <r_corchete>
+              { /*a= new algo1(a,b,null,t.beginLine,t.beginColumn);*/ a= null;}
+     )*
+     { return a;}
+
+}
+
+//incompleto  - cambiar tipo Expresion
+Expresion ACCESO_ESTRUCTURA2_ELEMENT():
+{Expresion a,b;Token t; }
+{
+       LOOKAHEAD(4)t=<id> <l_corchete> a=E() <r_corchete>
+            { /*return new algo1(t.image,a,t.beginLine,t.beginColumn);*/ return null;}
+      |
+        LOOKAHEAD(4)t=<id> <l_corchete> <l_corchete> a=E() <r_corchete> <r_corchete>  
+            { /*return new algo2(t.image,a,t.beginLine,t.beginColumn);*/ return null;}
+      |
+        LOOKAHEAD(4)t=<id> <l_corchete> a=E() <coma> b=E() <r_corchete>
+            { /*return new algo3(t.image,a,b,t.beginLine,t.beginColumn);*/ return null;}
+      |
+        LOOKAHEAD(4)t=<id> <l_corchete> <coma> b=E() <r_corchete> 
+            { /*return new algo4(t.image,null,b,t.beginLine,t.beginColumn);*/ return null;}
+      |
+        LOOKAHEAD(4)t=<id> <l_corchete> a=E() <coma> <r_corchete>
+            { /*return new algo5(t.image,a,null,t.beginLine,t.beginColumn);*/ return null;}
+      
+}
+
+/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+LLAMADA ::= ------------------------
+      id:a l_parent PARAMETROS_LLAMADA:b r_parent
+    {:
+        RESULT = new Llamada(a,b,aleft+1,aright+1);
+    :}
+non terminal LinkedList<Expresion> LISTA_LLAMADA, PARAMETROS_LLAMADA;
+;
+*/
+Expresion LLAMADA() :
+{LinkedList<Expresion> lista = new LinkedList<Expresion>();Nodo n;Token t; }
+{
+      t=<id> <l_parent> (lista=LISTA_LLAMADA())? <r_parent> { return new Llamada(t.image,lista,t.beginLine,t.beginColumn);}
+}
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+LISTA_LLAMADA ::=  revisar
+     LISTA_LLAMADA:a coma E:b
+    {:
+        RESULT = a;
+        RESULT.add(b);
+    :}
+    | LISTA_LLAMADA:a coma res_default:b
+    {:
+        RESULT = a;
+        RESULT.add(new Primitivo(Expresion.TIPO_PRIMITIVO.DEFAULT,Expresion.TIPO_PRIMITIVO.DEFAULT,bleft+1,bright+1));
+    :}
+    | res_default:a
+    {:
+        RESULT = new LinkedList<Expresion>();
+        RESULT.add(new Primitivo(Expresion.TIPO_PRIMITIVO.DEFAULT,Expresion.TIPO_PRIMITIVO.DEFAULT,aleft+1,aright+1));
+    :}
+*/
+LinkedList<Expresion>  LISTA_LLAMADA() :
+{Expresion ex,ex1; LinkedList<Expresion> lista = new LinkedList<Expresion>();}
+{
+      (ex=LISTA_LLAMADA111(){lista.add(ex);}) (<coma> ex1=LISTA_LLAMADA111() {lista.add(ex1);})* { return lista;}
+}
+
+Expresion  LISTA_LLAMADA111() :
+{Token t; Expresion ex;}
+{
+       ex =E(){ return ex; }
+     | t =<res_default>{return new Primitivo(Expresion.TIPO_PRIMITIVO.DEFAULT,Expresion.TIPO_PRIMITIVO.DEFAULT,t.beginLine, t.beginColumn);}
+      
+}
+
+
+
+
+
+
+/* //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+E ::=  revisar
+    CONSTANTE:a ------------------------------------------------------    
+    {:
+        RESULT = a;
+    :}
+    | BINARIA:a -------------------------------------------------------
+    {:
+        RESULT = a;
+    :}
+    | UNARIA:a----------------------------------
+    {:
+        RESULT = a;
+    :}
+    | TERNARIA:a ----------------------------------------
+    {:
+        RESULT = a;
+    :}
+    | LLAMADA:a  ----------------------------------------
+    {:
+        RESULT = a;
+    :}
+    | l_parent E:a r_parent ------------------------
+    {:
+        RESULT = a;
+    :}
+    | ACCESO_ESTRUCTURA:a revisar
+    {:
+        RESULT = a;
+    :}
+
+     (
+         b = LOGICA() <ternario> c=LOGICA() <dospuntos> d=LOGICA() {a = new Ternaria(b,c,d,token.beginLine, token.beginColumn);}
+    )*
+;
+*/
+Expresion E() :
+{Expresion a;}
+{
+    (a = TERNARIA()){return a;}
+   
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+TERNARIA ::= E:a ternario:d E:b dospuntos E:c 
+{:
+    RESULT = new Ternaria(a,b,c,dleft+1,dright+1);
+:}
+;
+*/
+Expresion TERNARIA() :
+{Expresion a, b, c, d;Token t;}
+{
+    a=LOGICA() 
+    (LOOKAHEAD(2) t=<ternario> b=E() <dospuntos> c=E() {a = new Ternaria(a,b,c,t.beginLine, t.beginColumn);} )*
+   {return a;}
+}
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+BINARIA ::= ------------------
+    ARITMETICA:a ---------------------------
+    {:
+        RESULT = a;
+    :}
+    | LOGICA:a ----------------------
+    {:
+        RESULT = a;
+    :}
+    | RELACIONAL:a ---------------------
+    {:
+        RESULT = a;
+    :}
+;
+
+Expresion BINARIA ():
+{Expresion a;}
+{
+     (a = RELACIONAL()){return a;}  
+}
+*/
+
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+LOGICA ::= -------------
+     E:a or:c E:b------------
+    {:
+        RESULT = new Logica(a,b,Logica.TIPO_OPERACION.OR,cleft+1,cright+1);
+    :}
+    | E:a and:c E:b--------------
+    {:
+        RESULT = new Logica(a,b,Logica.TIPO_OPERACION.AND,cleft+1,cright+1);
+    :}
+;
+
+
+*/
+Expresion LOGICA() :
+{Expresion a, b;}
+{
+    a=CondicionAnd() 
+    (
+        <or> b = CondicionAnd() {a = new Logica(a,b,Logica.TIPO_OPERACION.OR, token.beginLine, token.beginColumn);}
+    )*
+    {return a;}
+}
+
+Expresion CondicionAnd() :
+{Expresion a, b;}
+{
+    a=RELACIONAL() 
+    (
+        <and> b = RELACIONAL() {a = new Logica(a,b,Logica.TIPO_OPERACION.AND, token.beginLine, token.beginColumn);}
+ )*
+    {return a;}
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+RELACIONAL ::= -------------------------
+    E:a menor:c E:b --------------------------
+    {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.MENOR,cleft+1,cright+1);
+    :}
+    | E:a menorigual:c E:b ----------------------
+    {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.MENORIGUAL,cleft+1,cright+1);
+    :}
+    | E:a mayor:c E:b ---------------------------
+    {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.MAYOR,cleft+1,cright+1);
+    :}
+    | E:a mayorigual:c E:b -------------------------
+    {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.MAYORIGUAL,cleft+1,cright+1);
+    :}
+    | E:a igualigual:c E:b -------------------
+    {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.IGUALIGUAL,cleft+1,cright+1);
+    :}
+    | E:a diferente:c E:b-----------------
+    {:
+        RESULT = new Relacional(a,b,Relacional.TIPO_OPERACION.DIFERENTE,cleft+1,cright+1);
+    :}
+;
+*/
+
+Expresion RELACIONAL() :
+{Expresion a, b;}
+{
+    a=ExpresionRelacional() 
+    (
+        <igualigual> b = ExpresionRelacional() {a = new Relacional(a,b,Relacional.TIPO_OPERACION.IGUALIGUAL, token.beginLine, token.beginColumn);}
+        |
+        <diferente> b = ExpresionRelacional() {a = new Relacional(a,b,Relacional.TIPO_OPERACION.DIFERENTE, token.beginLine, token.beginColumn);}
+ )*
+    {return a;}
+}
+
+
+Expresion ExpresionRelacional() :
+{Expresion a, b;}
+{
+    a=ARITMETICA() 
+    (
+        <menor> b=ARITMETICA() {a = new Relacional(a,b,Relacional.TIPO_OPERACION.MENOR, token.beginLine, token.beginColumn);}
+        |
+        <menorigual> b=ARITMETICA() {a = new Relacional(a,b,Relacional.TIPO_OPERACION.MENORIGUAL, token.beginLine, token.beginColumn);}
+        |
+        <mayor> b=ARITMETICA() {a = new Relacional(a,b,Relacional.TIPO_OPERACION.MAYOR, token.beginLine, token.beginColumn);}
+        |
+        <mayorigual> b=ARITMETICA() {a = new Relacional(a,b,Relacional.TIPO_OPERACION.MAYORIGUAL, token.beginLine, token.beginColumn);}
+    )*
+    {return a;}
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ARITMETICA ::= --------------------------
+    E:a mas:c E:b ------
+    {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.MAS,cleft+1,cright+1);
+    :}
+    | E:a menos:c E:b ---------
+    {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.MENOS,cleft+1,cright+1);
+    :}
+    | E:a por:c E:b -----------------
+    {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.POR,cleft+1,cright+1);
+    :}
+    | E:a div:c E:b -----------------
+    {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.DIV,cleft+1,cright+1);
+    :}
+    | E:a potencia:c E:b -----------------------
+    {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.POT,cleft+1,cright+1);
+    :}
+    | E:a modular:c E:b --------------
+    {:
+        RESULT = new Aritmetica(a,b,Aritmetica.TIPO_OPERACION.MOD,cleft+1,cright+1);
+    :}
+*/
+Expresion ARITMETICA():
+{Expresion ex;}
+{
+    ex = ExpresionAditiva(){return ex;}
+}
+
+Expresion ExpresionAditiva() :
+{Expresion e, e1;}
+{
+    e=ExpresionMultiplicativa()
+    ((
+        <mas> e1=ExpresionMultiplicativa() {e =new Aritmetica(e,e1,Aritmetica.TIPO_OPERACION.MAS,token.beginLine, token.beginColumn);}
+        |
+        <menos> e1=ExpresionMultiplicativa() {e =new Aritmetica(e,e1,Aritmetica.TIPO_OPERACION.MENOS,token.beginLine, token.beginColumn);}
+                )
+    )*
+    {return e;}
+}
+
+Expresion ExpresionMultiplicativa() :
+{Expresion e, e1;}
+{
+    e=ExpresionPotencia()
+    (
+        <por> e1=ExpresionPotencia() {e =new Aritmetica(e,e1,Aritmetica.TIPO_OPERACION.POR,token.beginLine, token.beginColumn);}
+        |
+        <div> e1=ExpresionPotencia() {e =new Aritmetica(e,e1,Aritmetica.TIPO_OPERACION.DIV,token.beginLine, token.beginColumn);}
+        |
+        <modular> e1=ExpresionPotencia() {e =new Aritmetica(e,e1,Aritmetica.TIPO_OPERACION.MOD,token.beginLine, token.beginColumn);}
+)*
+    {return e;}
+}
+
+Expresion ExpresionPotencia() :
+{Expresion e, e1;}
+{
+    e=ExpresionUnaria()
+    (
+        <potencia> e1=ExpresionUnaria() {e =new Aritmetica(e,e1,Aritmetica.TIPO_OPERACION.POT,token.beginLine, token.beginColumn);}
+    )*
+    {return e;}
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+UNARIA::=  --------------
+     menos:b E:a----------
+    {:
+        RESULT = new Unaria(a,Unaria.TIPO_OPERACION.MENOS,bleft+1,bright+1);
+    :}
+    %prec UMINUS------------
+    | not:b E:a
+    {:
+        RESULT = new Unaria(a,Unaria.TIPO_OPERACION.NOT,bleft+1,bright+1);
+    :}
+    | mas:b E:a----------
+    {:
+        RESULT = a;
+    :}
+    %prec UPLUS
+;
+*/
+Expresion ExpresionUnaria() :
+{Expresion e;}
+{
+    <menos> e=ExpresionUnaria() {return new Unaria(e,Unaria.TIPO_OPERACION.MENOS, token.beginLine, token.beginColumn);}
+    |
+    <not>   e=ExpresionUnaria() {return new Unaria(e,Unaria.TIPO_OPERACION.NOT, token.beginLine, token.beginColumn);}
+    |
+    <mas>   e=ExpresionUnaria() {return e;}
+    |
+    e=Primitivo() {return e;}
+}
+
+Expresion Primitivo() :
+{Expresion e;}
+{
+    e = CONSTANTE() {return e;}
+   |<l_parent> e=E() <r_parent> {return e;}
+   |LOOKAHEAD(2) e = LLAMADA() {return e;}
+   |LOOKAHEAD(2) e = ACCESO_ESTRUCTURA() {return e;}
+}
+
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ACCESO_ESTRUCTURA ::= --------------
+    id:a -----------------------------------
+    {:
+        RESULT = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+    :}
+    | ACCESO_ESTRUCTURA:a l_corchete E:b r_corchete -------------
+    {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.SIMPLE);
+    :}
+    | ACCESO_ESTRUCTURA:a  l_corchete l_corchete E:b r_corchete r_corchete---------------
+    {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.DOBLE);
+    :}
+    | ACCESO_ESTRUCTURA:a l_corchete E:b coma E:c r_corchete  ------------------------
+    {:
+        RESULT = new Acceso(a,b,c,Acceso.TIPO_ACCESO.XY);
+    :}
+    | ACCESO_ESTRUCTURA:a l_corchete coma E:b r_corchete ---------------------------
+    {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.Y);
+    :}
+    | ACCESO_ESTRUCTURA:a l_corchete E:b coma r_corchete -------------------------
+    {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.X);
+    :}
+;
+*/
+
+
+Expresion ACCESO_ESTRUCTURA():
+{Expresion a,b,c;Token t;}
+{
+   t =<id>{a = new Primitivo(t.image,Expresion.TIPO_PRIMITIVO.VARIABLE,t.beginLine, t.beginColumn);} 
+    (
+        LOOKAHEAD(4)(<l_corchete> b=E() <r_corchete> {a = new Acceso(a,b,null,Acceso.TIPO_ACCESO.SIMPLE);})
+        |
+        LOOKAHEAD(4)(<l_corchete> <l_corchete> b=E() <r_corchete><r_corchete> {a = new Acceso(a,b,null,Acceso.TIPO_ACCESO.DOBLE);})
+        |
+        LOOKAHEAD(4)(<l_corchete> b=E() <coma> c=E() <r_corchete> {a = new Acceso(a,b,c,Acceso.TIPO_ACCESO.XY);})
+        |
+        LOOKAHEAD(4)(<l_corchete> <coma> b=E() <r_corchete>{a = new Acceso(a,b,null,Acceso.TIPO_ACCESO.Y);})
+        |
+        LOOKAHEAD(4)(<l_corchete> b=E() <coma>  <r_corchete>{a = new Acceso(a,b,null,Acceso.TIPO_ACCESO.X);})
+        
+
+    )*{return a;}
+    
+}
+/*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+CONSTANTE ::= -----------------------------------------
+     numero:a ----------------------------------------------
+    {:
+        RESULT = new Primitivo(Integer.parseInt(a),Expresion.TIPO_PRIMITIVO.INTEGER,aleft+1,aright+1);
+    :}
+    | res_true:a ---------------------------------------
+    {:
+        RESULT = new Primitivo(true,Expresion.TIPO_PRIMITIVO.BOOLEAN,aleft+1,aright+1);
+    :}
+    | res_false:a ---------------------------
+    {:
+        RESULT = new Primitivo(false,Expresion.TIPO_PRIMITIVO.BOOLEAN,aleft+1,aright+1);
+    :}
+    | doble:a ------------------------------------------
+    {:
+        RESULT = new Primitivo(Double.parseDouble(a),Expresion.TIPO_PRIMITIVO.DOUBLE,aleft+1,aright+1);
+    :}
+    | res_null:a ----------------------------------------
+    {:
+        RESULT = new Primitivo("null",Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
+    :}
+    | cadena:a ------------------------------------
+    {:
+        String cad = a.substring(1,a.length());
+        cad = cad.substring(0,cad.length()-1);
+        RESULT = new Primitivo(cad,Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
+    :}
+;
+*/
+Expresion CONSTANTE():
+{String  a,cad;Token t; }
+{
+    <numero>{return new Primitivo(Integer.parseInt(token.image),Expresion.TIPO_PRIMITIVO.INTEGER,token.beginLine, token.beginColumn);}
+    |<res_true>{return new Primitivo(true,Expresion.TIPO_PRIMITIVO.BOOLEAN,token.beginLine, token.beginColumn);}
+    |<res_false>{return new Primitivo(false,Expresion.TIPO_PRIMITIVO.BOOLEAN,token.beginLine, token.beginColumn);}
+    |<doble>{return new Primitivo(Double.parseDouble(token.image),Expresion.TIPO_PRIMITIVO.DOUBLE,token.beginLine, token.beginColumn);}
+    |<res_null>{return new Primitivo("null",Expresion.TIPO_PRIMITIVO.STRING,token.beginLine, token.beginColumn);}
+
+    |<cadena>{ a = String.valueOf(token.image);
+              cad = a.substring(1,a.length());
+              cad = cad.substring(0,cad.length()-1);
+              return new Primitivo(cad,Expresion.TIPO_PRIMITIVO.STRING,token.beginLine, token.beginColumn);}
+
+
+}
+

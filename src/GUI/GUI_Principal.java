@@ -585,7 +585,24 @@ public class GUI_Principal extends javax.swing.JFrame{
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+              if(paginaActual==null){
+            JOptionPane.showMessageDialog(null, "Nada para analizar");
+            return;
+        }
+        
+        txtConsola.setText("");
+        dtmErrores.setRowCount(0);
+
+        try {
+            // TODO add your handling code here:
+            principal =new Principal(tablaErrores, tablaDebugger,txtConsola);
+            Analyzer_JavaCC.PrincipaJavaCC.Analizar(paginaActual.txtEntrada.getText(),principal);
+            principal.start();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Boton ejecutar JavaCC: "+ex.getMessage());
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     public static void main(String args[]) {

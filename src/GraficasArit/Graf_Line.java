@@ -6,6 +6,7 @@
 package GraficasArit;
 
 import AST.Entorno;
+import Analyzer.Token;
 import java.util.LinkedList;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -67,8 +68,8 @@ public class Graf_Line extends GraficaArit{
         } else if (this.tipoG.toLowerCase().equals("i")){
                 renderer.setSeriesShapesVisible(0, false);
         } else  if (!this.tipoG.toLowerCase().equals("o")){
-   //''''''''''''''''''''guardar error ''''''''''''''''''''''''''''''''''''''''''''             
-                System.out.println("Error letra grafica linea incorrecta :"+this.tipoG);
+   //''''''''''''''''''''guardar error ''''''''''''''''''''''''''''''''''''''''''''    
+          entorno.addError(new Token("Graf_Line", " letra grafica lineal incorrecta :"+this.tipoG, fila, columna));
         }
         plot.setRenderer(renderer);
 
