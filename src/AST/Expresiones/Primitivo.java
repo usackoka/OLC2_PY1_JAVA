@@ -24,12 +24,12 @@ public final class Primitivo extends Expresion{
         this.TIPO = TIPO;
         this.values = new LinkedList<>();
         
-        if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
-            value = getEscapes(value.toString());
-            this.values.add(value);
-        }else if(value instanceof LinkedList){
+        if(value instanceof LinkedList){
             this.values = (LinkedList)value;
         }else{
+            if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
+                value = getEscapes(value.toString());
+            }
             this.values.add(value);
         }
         

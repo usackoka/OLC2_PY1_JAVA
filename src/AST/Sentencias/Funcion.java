@@ -30,6 +30,18 @@ public class Funcion extends Sentencia{
         this.fila = fila;
         this.columna = columna;
         this.valoresParametros = new LinkedList<>();
+        this.expresionID = null;
+    }
+    
+    Expresion expresionID;
+    public Funcion(String id, Expresion expresionID, LinkedList<Nodo> instrucciones, int fila, int columna){
+        this.id = id;
+        this.expresionID = expresionID;
+        this.instrucciones = instrucciones;
+        this.fila = fila;
+        this.columna = columna;
+        this.valoresParametros = new LinkedList<>();
+        this.parametros = new LinkedList<>();
     }
     
     @Override
@@ -61,24 +73,32 @@ public class Funcion extends Sentencia{
     
     public void crearParametros(Entorno entorno){
         int i = 0;
+        
+        //si viene un id
+        if(expresionID!=null && expresionID instanceof Primitivo){
+            (new Declaracion(((Primitivo)this.expresionID).getID(entorno), valoresParametros.get(i), fila, columna)).ejecutar(entorno);
+        }
+        
         for(Parametro parametro : parametros){
             Object value = valoresParametros.get(i++);
             //si mandan un default
             if(value.equals(Expresion.TIPO_PRIMITIVO.DEFAULT)){
                 //preegunto si hay un valor por defecto
-                if(parametro.id != null){
-                    //si el id es null es porque viene un id
-                    (new Declaracion(parametro.id, value, fila, columna)).ejecutar(entorno);
+                if(parametro.expresion != null){
+                    (new Declaracion(parametro.id, parametro.expresion.getValor(entorno), fila, columna)).ejecutar(entorno);
                 }else{
                     entorno.addError(new Token("Parametro-Default-Funcion("+this.id+")", "No se puede enviar un valor default en este parámetro: "+i, fila, columna));
                 }
             }else{
-                (new Declaracion(((Primitivo)parametro.expresion).getID(entorno), value, fila, columna)).ejecutar(entorno);
+                (new Declaracion(parametro.id, value, fila, columna)).ejecutar(entorno);
             }
         }
     }
     
     public int getConteoParametros(){
+        if(this.expresionID != null){
+            return 1;
+        }
         return this.parametros.size();
     }
     

@@ -8,7 +8,6 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
-import AST.Nodo;
 import GraficasArit.Graph_AST;
 
 public class Parametro extends Expresion{

@@ -35,32 +35,33 @@ public class Acceso extends Expresion{
     @Override
     public Object getValor(Entorno entorno) {
         //empiezo a retornar el valor
-        
-        //PREGUNTO SI ES ACCESO A VECTOR
-        if(this.subAcceso instanceof Primitivo){
+        int x = -1;
+        int y = -1;
+        if(Ex != null){
             Object Ox = Ex.getValor(entorno);
-            int x = 0;
             try {
                 x = (int)Ox;
             } catch (Exception e) {
                 entorno.addError(new Token("Acceso-TipoX","No se puede castear a Entero: "+Ox,fila,columna));
-                return new LinkedList<>();
+                return 0;
             }
-            
-            return ((Primitivo)this.subAcceso).getPos(x,entorno);
         }
-        //si trae mas subaccesos
-        else if(this.subAcceso instanceof Acceso){
-            Object Osub = this.subAcceso.getValor(entorno);
-            Object Ox = Ex.getValor(entorno);
-            int x = 0;
+        if(Ey != null){
+            Object Oy = Ey.getValor(entorno);
             try {
-                x = (int)Ox;
+                y = (int)Oy;
             } catch (Exception e) {
-                entorno.addError(new Token("Acceso-TipoX","No se puede castear a Entero: "+Ox,fila,columna));
-                return new LinkedList<>();
+                entorno.addError(new Token("Acceso-TipoY","No se puede castear a Entero: "+Oy,fila,columna));
+                return 0;
             }
-            return (new Primitivo(Osub, Primitivo.getTipoDato(Osub), fila, columna)).getPos(x, entorno);
+        }
+        
+        
+        
+        if(this.subAcceso instanceof Primitivo){
+            Object Osub = this.subAcceso.getValor(entorno);
+            if(Osub instanceof LinkedList){
+            }
         }
         
         entorno.addError(new Token("Acceso-No soportado", "No soportado subacceso: "+this.subAcceso.getClass(), fila, columna));

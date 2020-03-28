@@ -137,15 +137,25 @@ FUNCION ::= id:a igual res_function l_parent PARAMETROS:b r_parent l_llave BLOQU
     {:
         RESULT = new Funcion(a,b,c,aleft+1,aright+1);
     :}
+    | id:a igual res_function E:b l_llave BLOQUES:c r_llave
+    {:
+        RESULT = new Funcion(a,b,c,aleft+1,aright+1);
+    :}
     | id:a igual l_parent PARAMETROS:b r_parent igual mayor l_llave BLOQUES:c r_llave
+    {:
+        RESULT = new Funcion(a,b,c,aleft+1,aright+1);
+    :}
+    | id:a igual E:b igual mayor l_llave BLOQUES:c r_llave
     {:
         RESULT = new Funcion(a,b,c,aleft+1,aright+1);
     :}
 ;
 
-PARAMETROS ::= LISTA_PARAMETROS:a
+PARAMETROS ::= PARAMETRO:a coma LISTA_PARAMETROS:b
     {:
-        RESULT = a;
+        RESULT = new LinkedList<Parametro>();
+        RESULT.add(a);
+        RESULT.addAll(b);
     :}
     | /* empty */
     {:
@@ -165,9 +175,9 @@ LISTA_PARAMETROS ::= LISTA_PARAMETROS:a coma PARAMETRO:b
     :}
 ;
 
-PARAMETRO ::= E:a 
+PARAMETRO ::= id:a 
     {:
-        RESULT = new Parametro(null,a,a.fila,a.columna);
+        RESULT = new Parametro(a,null,aleft+1,aright+1);
     :}
     | id:a igual E:b
     {:
