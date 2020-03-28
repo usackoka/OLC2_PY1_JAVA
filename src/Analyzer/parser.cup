@@ -81,6 +81,7 @@ non terminal Parametro PARAMETRO;
 non terminal LinkedList<Caso> LISTA_CASOS;
 non terminal LinkedList<Parametro> LISTA_PARAMETROS, PARAMETROS;
 
+precedence left ternario;
 precedence left or;
 precedence left and;
 precedence left diferente,igualigual;
@@ -89,7 +90,6 @@ precedence left mas,menos;
 precedence left por,div,modular;
 precedence left potencia;
 precedence right not,UMINUS,UPLUS;
-precedence left ternario,dospuntos;
 precedence left l_parent,r_parent,l_corchete,r_corchete;
 
 start with S;

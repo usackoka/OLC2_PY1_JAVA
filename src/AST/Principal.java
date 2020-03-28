@@ -55,7 +55,7 @@ public class Principal extends Thread{
         System.out.println("Ejecutado con éxito!!");
     }
     
-    public void graficar(){
+    public void graficar(String syte){
         Graph_AST ast = new Graph_AST();
         
         int cont_raiz = ast.getNextContGraph();
@@ -65,7 +65,7 @@ public class Principal extends Thread{
             ast.addRelacion(cont_raiz,nodo.Recorrido(ast));
         }
         
-        ast.graficarAST();
+        ast.graficarAST(syte);
     }
     
     public void print(String cadena){

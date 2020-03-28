@@ -745,7 +745,7 @@ public class GUI_Principal extends javax.swing.JFrame{
             parse.setPrincipal(lex.getPrincipal());
             parse.parse();
             principal = parse.getPrincipal();
-            principal.graficar();
+            principal.graficar("CUP");
         } catch (Exception ex) {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println(ex.toString());
@@ -765,7 +765,7 @@ public class GUI_Principal extends javax.swing.JFrame{
             // TODO add your handling code here:
             principal =new Principal(tablaErrores, tablaDebugger,txtConsola);
             Analyzer_JavaCC.PrincipaJavaCC.Analizar(paginaActual.txtEntrada.getText(),principal);
-            principal.graficar();
+            principal.graficar("JavaCC");
             
         } catch (Exception ex) {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);

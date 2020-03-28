@@ -34,10 +34,10 @@ public class Graph_AST {
         recorridoArbol += "id_"+nodo1+" -> "+"id_"+nodo2+"\n";
     }
     
-    public void graficarAST(){
+    public void graficarAST(String syte){
         FileWriter fichero = null;
         PrintWriter pw = null;
-        String nombreArchivo = "graficaAST";
+        String nombreArchivo = "AST_"+syte;
         String nombre = nombreArchivo;
         String archivo = "Graficas\\" + nombre + ".dot";
         try {
