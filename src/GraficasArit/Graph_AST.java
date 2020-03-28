@@ -39,7 +39,7 @@ public class Graph_AST {
         PrintWriter pw = null;
         String nombreArchivo = "graficaAST";
         String nombre = nombreArchivo;
-        String archivo = nombre + ".dot";
+        String archivo = "Graficas\\" + nombre + ".dot";
         try {
             fichero = new FileWriter(archivo);
             pw = new PrintWriter(fichero);
@@ -52,7 +52,9 @@ public class Graph_AST {
             System.out.println(e);
         }
         try {
-            String cmd = "dot -Tjpg " + nombre + ".dot -o " + nombre + ".jpg";
+            String cmd = "cd "+(new File (".").getAbsolutePath ())+"\n";
+            cmd += "cd Graficas"+"\n";
+            cmd += "dot -Tjpg " + nombre + ".dot -o " + nombre + ".jpg";
             Runtime.getRuntime().exec(cmd);
             Desktop.getDesktop().open(new File(archivo));
         } catch (IOException ioe) {

@@ -89,7 +89,7 @@ precedence left mas,menos;
 precedence left por,div,modular;
 precedence left potencia;
 precedence right not,UMINUS,UPLUS;
-precedence left ternario;
+precedence left ternario,dospuntos;
 precedence left l_parent,r_parent,l_corchete,r_corchete;
 
 start with S;

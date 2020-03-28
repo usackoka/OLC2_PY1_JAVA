@@ -123,6 +123,8 @@ public class GUI_Principal extends javax.swing.JFrame{
         jTree2 = new javax.swing.JTree();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -132,9 +134,6 @@ public class GUI_Principal extends javax.swing.JFrame{
         jMenuItem5 = new javax.swing.JMenuItem();
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenuItem14 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem12 = new javax.swing.JMenuItem();
-        jMenuItem13 = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
@@ -240,6 +239,20 @@ public class GUI_Principal extends javax.swing.JFrame{
             }
         });
 
+        jButton4.setText("Graficar AST JavaCC");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
+        jButton5.setText("Graficar AST Cup");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         jMenu1.setText("Archivo");
 
         jMenuItem2.setText("Nuevo");
@@ -300,31 +313,6 @@ public class GUI_Principal extends javax.swing.JFrame{
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Herramientas");
-
-        jMenuItem12.setText("Graficar");
-        jMenuItem12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem12ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem12);
-
-        jMenuItem13.setText("Ejecutar");
-        jMenuItem13.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jMenuItem13MouseClicked(evt);
-            }
-        });
-        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem13ActionPerformed(evt);
-            }
-        });
-        jMenu2.add(jMenuItem13);
-
-        jMenuBar1.add(jMenu2);
-
         jMenu3.setText("Reportes");
 
         jMenuItem10.setText("Manual de Usuario");
@@ -369,14 +357,20 @@ public class GUI_Principal extends javax.swing.JFrame{
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtConsola2, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1)
-                        .addComponent(tabPaneTablas)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtConsola2, javax.swing.GroupLayout.DEFAULT_SIZE, 763, Short.MAX_VALUE)
+                            .addComponent(jScrollPane1)
+                            .addComponent(tabPaneTablas))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 148, Short.MAX_VALUE)
+                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -395,7 +389,9 @@ public class GUI_Principal extends javax.swing.JFrame{
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
                 .addGap(18, 18, 18)
                 .addComponent(tabPaneTablas, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -472,44 +468,8 @@ public class GUI_Principal extends javax.swing.JFrame{
         txtBuscar.setText("");
         txtReemplazar.setText("");
     }//GEN-LAST:event_btnReemplazarActionPerformed
-
-    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-
-        AnalizarColine();
-    }//GEN-LAST:event_jMenuItem13ActionPerformed
-
-    private void jMenuItem13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuItem13MouseClicked
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jMenuItem13MouseClicked
-
-    private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        // TODO add your handling code here:
-        //si hay algo para analizar
-        if(paginaActual==null){
-            JOptionPane.showMessageDialog(null, "Nada para analizar");
-            return;
-        }
-        
-        txtConsola.setText("");
-        dtmErrores.setRowCount(0);
-        String cadena = paginaActual.txtEntrada.getText();
-        
-        Lexer lex = new Lexer(new BufferedReader(new StringReader(cadena+"\n\n")));
-        lex.setPrincipal(new Principal(tablaErrores, tablaDebugger,txtConsola));
-
-        try {
-            parser parse = new parser(lex);
-            parse.setPrincipal(lex.getPrincipal());
-            parse.parse();
-            principal = parse.getPrincipal();
-            principal.graficar();
-        } catch (Exception ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-            System.err.println(ex.toString());
-        }
-    }//GEN-LAST:event_jMenuItem12ActionPerformed
-
+  
+    
     public void iniciarArbol(File selectedFile) {
         File root = new File("Proyectos");
         FileTreeModel model = new FileTreeModel(selectedFile);
@@ -606,25 +566,18 @@ public class GUI_Principal extends javax.swing.JFrame{
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-              if(paginaActual==null){
-            JOptionPane.showMessageDialog(null, "Nada para analizar");
-            return;
-        }
-        
-        txtConsola.setText("");
-        dtmErrores.setRowCount(0);
-
-        try {
-            // TODO add your handling code here:
-            principal =new Principal(tablaErrores, tablaDebugger,txtConsola);
-            Analyzer_JavaCC.PrincipaJavaCC.Analizar(paginaActual.txtEntrada.getText(),principal);
-            principal.start();
-            
-        } catch (Exception ex) {
-            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("Boton ejecutar JavaCC: "+ex.getMessage());
-        }
+        AnalizarColine2();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        GraficarArbolJavaCC();
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        GraficarArbolCUP();
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -666,18 +619,17 @@ public class GUI_Principal extends javax.swing.JFrame{
     private javax.swing.JButton btnReemplazar;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JFileChooser jFileFolder;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem14;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
@@ -689,10 +641,10 @@ public class GUI_Principal extends javax.swing.JFrame{
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTree jTree2;
-    private javax.swing.JTabbedPane tabPaneTablas;
+    public static javax.swing.JTabbedPane tabPaneTablas;
     private javax.swing.JTabbedPane tabPrincipal;
-    private javax.swing.JTable tablaDebugger;
-    private javax.swing.JTable tablaErrores;
+    public static javax.swing.JTable tablaDebugger;
+    public static javax.swing.JTable tablaErrores;
     public static javax.swing.JTextField txtBuscar;
     public static javax.swing.JTextArea txtConsola;
     public static javax.swing.JTextField txtConsola2;
@@ -751,6 +703,73 @@ public class GUI_Principal extends javax.swing.JFrame{
         } catch (Exception ex) {
             Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
             System.err.println(ex.toString());
+        }
+    }
+    
+    private void AnalizarColine2(){
+        if(paginaActual==null){
+            JOptionPane.showMessageDialog(null, "Nada para analizar");
+            return;
+        }
+        
+        txtConsola.setText("");
+        dtmErrores.setRowCount(0);
+
+        try {
+            // TODO add your handling code here:
+            principal =new Principal(tablaErrores, tablaDebugger,txtConsola);
+            Analyzer_JavaCC.PrincipaJavaCC.Analizar(paginaActual.txtEntrada.getText(),principal);
+            principal.start();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Boton ejecutar JavaCC: "+ex.getMessage());
+        }
+    }
+    
+    public void GraficarArbolCUP(){
+        if(paginaActual==null){
+            JOptionPane.showMessageDialog(null, "Nada para analizar");
+            return;
+        }
+        
+        txtConsola.setText("");
+        dtmErrores.setRowCount(0);
+        String cadena = paginaActual.txtEntrada.getText();
+        
+        Lexer lex = new Lexer(new BufferedReader(new StringReader(cadena+"\n\n")));
+        lex.setPrincipal(new Principal(tablaErrores, tablaDebugger,txtConsola));
+
+        try {
+            parser parse = new parser(lex);
+            parse.setPrincipal(lex.getPrincipal());
+            parse.parse();
+            principal = parse.getPrincipal();
+            principal.graficar();
+        } catch (Exception ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.toString());
+        }
+    }
+    
+    public void GraficarArbolJavaCC(){
+        if(paginaActual==null){
+            JOptionPane.showMessageDialog(null, "Nada para analizar");
+            return;
+        }
+        
+        txtConsola.setText("");
+        dtmErrores.setRowCount(0);
+
+        try {
+            // TODO add your handling code here:
+            principal =new Principal(tablaErrores, tablaDebugger,txtConsola);
+            Analyzer_JavaCC.PrincipaJavaCC.Analizar(paginaActual.txtEntrada.getText(),principal);
+            principal.graficar();
+            
+        } catch (Exception ex) {
+            Logger.getLogger(GUI_Principal.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Boton graficar JavaCC: "+ex.getMessage());
         }
     }
     

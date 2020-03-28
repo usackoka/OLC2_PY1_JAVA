@@ -1019,7 +1019,7 @@ Expresion ACCESO_ESTRUCTURA():
         |
         LOOKAHEAD(4)(<l_corchete> b=E() <coma> c=E() <r_corchete> {a = new Acceso(a,b,c,Acceso.TIPO_ACCESO.XY);})
         |
-        LOOKAHEAD(4)(<l_corchete> <coma> b=E() <r_corchete>{a = new Acceso(a,b,null,Acceso.TIPO_ACCESO.Y);})
+        LOOKAHEAD(4)(<l_corchete> <coma> b=E() <r_corchete>{a = new Acceso(a,null,b,Acceso.TIPO_ACCESO.Y);})
         |
         LOOKAHEAD(4)(<l_corchete> b=E() <coma>  <r_corchete>{a = new Acceso(a,b,null,Acceso.TIPO_ACCESO.X);})
         
