@@ -17,7 +17,7 @@ public class Matrix extends Expresion{
 
     Expresion dataExpresion, filasExpresion, columnasExpresion;
     LinkedList<LinkedList<Object>> data;
-    
+
     public Matrix(Expresion dataExpresion, Expresion filaExpresion, Expresion columnasExpresion, Entorno entorno, int fila, int columna){
         this.dataExpresion = dataExpresion;
         this.filasExpresion = filaExpresion;
@@ -38,9 +38,53 @@ public class Matrix extends Expresion{
         this.data = new LinkedList<>();
     }
     
+    public Matrix(int filas, int columnas){
+        this.data = new LinkedList<>();
+        for (int i = 0; i < filas; i++) {
+            this.data.add(new LinkedList<>());
+            for (int j = 0; j < columnas; j++) {
+                this.data.get(i).add(0);
+            }
+        }
+    }
+    
     @Override
     public Object getValor(Entorno entorno) {
         return this;
+    }
+    
+    public Object getValorIndex(int indexFila, int indexColumna, Entorno entorno){
+        indexFila = indexFila - 1;
+        indexColumna = indexColumna - 1;
+        
+        if(indexFila>=getNRow() || indexFila<0){
+            entorno.addError(new Token("Matrix-getValor","IndexOutOfBounds Row size:"+getNRow()+" index:"+(indexFila+1),fila,columna));
+            return 0;
+        }
+        
+        if(indexColumna>=getNCol()|| indexFila<0){
+            entorno.addError(new Token("Matrix-getValor","IndexOutOfBounds Col size:"+getNCol()+" index:"+(indexColumna+1),fila,columna));
+            return 0;
+        }
+        
+        return this.data.get(indexFila).get(indexColumna);
+    }
+    
+    public void setValor(int indexFila, int indexColumna, Object value, Entorno entorno){
+        indexFila = indexFila - 1;
+        indexColumna = indexColumna - 1;
+        
+        if(indexFila>=getNRow() || indexFila<0){
+            entorno.addError(new Token("Matrix-SetValor","IndexOutOfBounds Row size:"+getNRow()+" index:"+(indexFila+1),fila,columna));
+            return;
+        }
+        
+        if(indexColumna>=getNCol()|| indexFila<0){
+            entorno.addError(new Token("Matrix-SetValor","IndexOutOfBounds Col size:"+getNCol()+" index:"+(indexColumna+1),fila,columna));
+            return;
+        }
+        
+        this.data.get(indexFila).set(indexColumna,value);
     }
     
     public LinkedList<Object> getMapeo(){

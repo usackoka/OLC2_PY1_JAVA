@@ -8,6 +8,7 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.Nativas.Matrix;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
@@ -70,6 +71,52 @@ public class Logica extends Expresion{
                     Primitivo pleft = new Primitivo(valLeft, Primitivo.getTipoDato(valLeft), fila, columna);
                     Logica operacion = new Logica(pleft,element,TipoOperacion, fila, columna);
                     tempNew.add(operacion.getValor(entorno));
+                }
+                return tempNew;
+            }
+            
+            //===================== VALIDO OPERACIONES ENTRE MATRICES
+            else if(valLeft instanceof Matrix && valRight instanceof Matrix){
+                Matrix tempLeft = (Matrix)valLeft;
+                Matrix tempRight = (Matrix)valRight;
+                Matrix tempNew = new Matrix(tempLeft.getNRow(),tempLeft.getNCol());
+                if(tempLeft.getNCol()!=tempRight.getNCol() && tempLeft.getNRow()!=tempRight.getNRow()){
+                    entorno.addError(new Token("OPERACION-"+TipoOperacion+" entre matrices", "Las matrices no tienen las mismas dimensiones", fila, columna));
+                    return tempNew;
+                }
+                for(int i=0; i<tempLeft.getNRow(); i++){
+                    for(int j=0; j<tempLeft.getNCol(); j++){
+                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1, entorno), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, entorno)),fila,columna);
+                        Primitivo pright = new Primitivo(tempRight.getValorIndex(i+1, j+1, entorno), Primitivo.getTipoDato(tempRight.getValorIndex(i+1, j+1, entorno)),fila,columna);
+                        Logica operacion = new Logica(pleft,pright,TipoOperacion,fila, columna);
+                        tempNew.setValor(i+1,j+1,operacion.getValor(entorno),entorno);
+                    }
+                }
+                return tempNew;
+            }
+            else if(valLeft instanceof Matrix){
+                Matrix tempLeft = (Matrix)valLeft;
+                Matrix tempNew = new Matrix(tempLeft.getNRow(),tempLeft.getNCol());
+                for(int i=0; i<tempLeft.getNRow(); i++){
+                    for(int j=0; j<tempLeft.getNCol(); j++){
+                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1, entorno), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, entorno)),fila,columna);
+                        Primitivo pright = new Primitivo(valRight, Primitivo.getTipoDato(valRight),fila,columna);
+                        Logica operacion = new Logica(pleft,pright,TipoOperacion,fila, columna);
+                        tempNew.setValor(i+1,j+1,operacion.getValor(entorno),entorno);
+                    }
+                }
+                return tempNew;
+            }
+            else if(valRight instanceof Matrix){
+                Matrix tempRight = (Matrix)valRight;
+                Matrix tempNew = new Matrix(tempRight.getNRow(),tempRight.getNCol());
+                for(int i=0; i<tempRight.getNRow(); i++){
+                    for(int j=0; j<tempRight.getNCol(); j++){
+                        Primitivo pleft = new Primitivo(valLeft, Primitivo.getTipoDato(valLeft),fila,columna);
+                        Primitivo pright = new Primitivo(tempRight.getValorIndex(i+1, j+1, entorno), Primitivo.getTipoDato(tempRight.getValorIndex(i+1, j+1, entorno)),fila,columna);
+                        Logica operacion = new Logica(pleft,pright,TipoOperacion,fila, columna);
+                        tempNew.setValor(i+1,j+1,operacion.getValor(entorno),entorno);
+                    }
                 }
                 return tempNew;
             }
