@@ -15,18 +15,24 @@ import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
 //En este caso, primitivo hace referencia a un vector de tipo primitivo
-public class Primitivo extends Expresion{
+public final class Primitivo extends Expresion{
     
     //por ser vector el mas primitivo se maneja un conteo de valores
     LinkedList<Object> values;
     
     public Primitivo(Object value, Object TIPO, int fila, int columna){
         this.TIPO = TIPO;
+        this.values = new LinkedList<>();
+        
         if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
             value = getEscapes(value.toString());
+            this.values.add(value);
+        }else if(value instanceof LinkedList){
+            this.values = (LinkedList)value;
+        }else{
+            this.values.add(value);
         }
-        this.values = new LinkedList<>();
-        this.values.add(value);
+        
         this.fila = fila;
         this.columna = columna;
     }
@@ -42,6 +48,30 @@ public class Primitivo extends Expresion{
         }else{
             return this.values;
         }
+    }
+    
+    public Object getPos(int index, Entorno entorno){
+        index = index - 1;
+        
+        LinkedList<Object> values = new LinkedList<>();
+        
+        if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.VARIABLE)){
+            Object Ovalues = entorno.getValorVariable(this.values.get(0).toString().toLowerCase(), fila, columna);
+            if(Ovalues instanceof LinkedList){
+                values = (LinkedList<Object>)Ovalues;
+            }else{
+                values.add(Ovalues);
+            }
+        }else{
+            values = this.values;
+        }
+        
+        if(index>=values.size() || index<0){
+            entorno.addError(new Token("Vector-Primitivo","IndexOutOfBounds size:"+values.size()+" index:"+(index+1),fila,columna));
+            return 0;
+        }
+        
+        return values.get(index);
     }
     
     public static Object getTipoDato(Object obj){

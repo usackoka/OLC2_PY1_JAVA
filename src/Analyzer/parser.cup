@@ -440,7 +440,7 @@ ACCESO_ESTRUCTURA ::= id:a
     :}
     | ACCESO_ESTRUCTURA:a l_corchete coma E:b r_corchete
     {:
-        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.Y);
+        RESULT = new Acceso(a,null,b,Acceso.TIPO_ACCESO.Y);
     :}
     | ACCESO_ESTRUCTURA:a l_corchete E:b coma r_corchete
     {:

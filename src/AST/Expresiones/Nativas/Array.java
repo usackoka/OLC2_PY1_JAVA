@@ -26,6 +26,8 @@ public class Array extends Expresion{
         this.fila = fila;
         this.columna = columna;
         this.data = new LinkedList<>();
+        //valores a ingresar
+        this.valoresIngresar = new LinkedList<>();
         
         instanciarData(entorno);
     }
@@ -70,8 +72,6 @@ public class Array extends Expresion{
             }
         }
         
-        //valores a ingresar
-        this.valoresIngresar = new LinkedList<>();
         if(valorExpresion instanceof LinkedList){
             LinkedList elements = (LinkedList)valorExpresion;
             for(Object element : elements){
@@ -126,6 +126,4 @@ public class Array extends Expresion{
     public int Recorrido(Graph_AST arbol) {
         return 0;
     }
-    
-    
 }

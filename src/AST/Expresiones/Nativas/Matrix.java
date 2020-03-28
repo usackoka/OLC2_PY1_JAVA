@@ -80,6 +80,7 @@ public class Matrix extends Expresion{
             this.data.add(new LinkedList<>());
         }
         
+        //VERIFICAR AQUÍ QUE SEA UN CLON EL QUE ESTOY PASANDO Y NO LA LISTA COMO TAL
         //hago el llenado por columnas
         int element = 0;
         if(valores instanceof LinkedList){

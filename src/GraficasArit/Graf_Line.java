@@ -67,7 +67,7 @@ public class Graf_Line extends GraficaArit{
                 renderer.setSeriesShapesVisible(0, false);
         } else  if (!this.tipoG.toLowerCase().equals("o")){
    //''''''''''''''''''''guardar error ''''''''''''''''''''''''''''''''''''''''''''             
-                entorno.addError(new Token("Grafica Linea","Error letra grafica linea incorrecta :"+this.tipoG,fila,columna));
+            entorno.addError(new Token("Grafica Linea","Error letra grafica linea incorrecta :"+this.tipoG,fila,columna));
         }
         plot.setRenderer(renderer);
 

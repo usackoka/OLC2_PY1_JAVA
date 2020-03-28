@@ -2027,7 +2027,7 @@ class CUP$parser$actions {
 		int bright = ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-1)).right;
 		Expresion b = (Expresion)((java_cup.runtime.Symbol) CUP$parser$stack.elementAt(CUP$parser$top-1)).value;
 		
-        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.Y);
+        RESULT = new Acceso(a,null,b,Acceso.TIPO_ACCESO.Y);
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("ACCESO_ESTRUCTURA",19, ((java_cup.runtime.Symbol)CUP$parser$stack.elementAt(CUP$parser$top-4)), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2154,7 +2154,7 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-        RESULT = new Primitivo("",Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
+        RESULT = new Primitivo("null",Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CONSTANTE",10, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
