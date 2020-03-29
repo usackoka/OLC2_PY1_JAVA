@@ -24,8 +24,8 @@ public class Acceso extends Expresion{
         this.Ey = y;
         this.subAcceso = subAcceso;
         this.tipoAcceso = tipoAcceso;
-        this.fila = x.fila;
-        this.columna = x.columna;
+        this.fila = x==null?y.fila:x.fila;
+        this.columna = x==null?y.columna:x.columna;
     }
     
     public enum TIPO_ACCESO{
@@ -58,7 +58,31 @@ public class Acceso extends Expresion{
         
         
         Object Osub = this.subAcceso.getValor(entorno);
-        if(Osub instanceof LinkedList){
+        if(Osub instanceof ListArit){
+            if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                return (new ListArit(((ListArit)Osub).getData(),x,entorno,fila,columna));
+            }else if(tipoAcceso.equals(TIPO_ACCESO.DOBLE)){
+                LinkedList data = ((ListArit)Osub).getData();
+                return ((new Primitivo(data, Primitivo.getTipoDato(data), fila, columna))).getPos(x, entorno);
+            }else{
+                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a una List con acceso: "+this.tipoAcceso, fila, columna));
+                return 0;
+            }
+        }else if(Osub instanceof Matrix){
+            if(tipoAcceso.equals(TIPO_ACCESO.XY)){
+                return ((Matrix)Osub).getValorIndex(x,y,null,entorno);
+            }else if(tipoAcceso.equals(TIPO_ACCESO.X)){
+                return ((Matrix)Osub).getValorIndex(x,null,null,entorno);
+            }else if(tipoAcceso.equals(TIPO_ACCESO.Y)){
+                return ((Matrix)Osub).getValorIndex(null,y,null,entorno);
+            }else if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                return ((Matrix)Osub).getValorIndex(null,null,x,entorno);
+            }else{
+                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a una Matriz con acceso: "+this.tipoAcceso, fila, columna));
+                return 0;
+            }
+        }else{
+            //aquí entra linkedList y valores puntuales
             if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
                 return ((new Primitivo(Osub, Primitivo.getTipoDato(Osub), fila, columna))).getPos(x, entorno);
             }else{
@@ -67,8 +91,6 @@ public class Acceso extends Expresion{
             }
         }
         
-        entorno.addError(new Token("Acceso-No soportado", "No soportado subacceso tipo: "+this.subAcceso.getClass(), fila, columna));
-        return 0;
     }
     
     @Override

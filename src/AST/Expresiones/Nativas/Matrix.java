@@ -53,21 +53,55 @@ public class Matrix extends Expresion{
         return this;
     }
     
-    public Object getValorIndex(int indexFila, int indexColumna, Entorno entorno){
-        indexFila = indexFila - 1;
-        indexColumna = indexColumna - 1;
-        
-        if(indexFila>=getNRow() || indexFila<0){
-            entorno.addError(new Token("Matrix-getValor","IndexOutOfBounds Row size:"+getNRow()+" index:"+(indexFila+1),fila,columna));
-            return 0;
+    public Object getValorIndex(Integer indexFila, Integer indexColumna, Integer z, Entorno entorno){
+        //PREGUNTO EL TIPO DE ACCESO
+        if(indexFila==null && indexColumna==null){
+            //acceso Z
+            z = z - 1;
+            LinkedList<Object> list = getMapeo();
+            if(z>=list.size() || z<0){
+                entorno.addError(new Token("Matrix-Acceso(Z)","IndexOutOfBounds size:"+list.size()+" index:"+(z+1),fila,columna));
+                return 0;
+            }else{
+                return list.get(z);
+            }
+        }else if(indexFila==null){
+            //ACCESO Y
+            indexColumna = indexColumna - 1;
+            if(indexColumna>=getNCol()|| indexColumna<0){
+                entorno.addError(new Token("Matrix-Acceso(Y)","IndexOutOfBounds Col size:"+getNCol()+" index:"+(indexColumna+1),fila,columna));
+                return 0;
+            }else{
+                LinkedList<Object> temp = new LinkedList<>();
+                for (int i = 0; i < this.data.size(); i++) {
+                    temp.add(this.data.get(i).get(indexColumna));
+                }
+                return temp;
+            }
+        }else if(indexColumna==null){
+            //ACCSO X
+            indexFila = indexFila - 1;
+            if(indexFila>=getNRow() || indexFila<0){
+                entorno.addError(new Token("Matrix-Acceso(X)","IndexOutOfBounds Row size:"+getNRow()+" index:"+(indexFila+1),fila,columna));
+                return 0;
+            }else{
+                return this.data.get(indexFila);
+            }
+        }else{
+            //SI ES ACCESO XY
+            indexFila = indexFila - 1;
+            indexColumna = indexColumna - 1;
+            if(indexFila>=getNRow() || indexFila<0){
+                entorno.addError(new Token("Matrix-getValor","IndexOutOfBounds Row size:"+getNRow()+" index:"+(indexFila+1),fila,columna));
+                return 0;
+            }
+            if(indexColumna>=getNCol()|| indexColumna<0){
+                entorno.addError(new Token("Matrix-getValor","IndexOutOfBounds Col size:"+getNCol()+" index:"+(indexColumna+1),fila,columna));
+                return 0;
+            }
+
+            return this.data.get(indexFila).get(indexColumna);
         }
-        
-        if(indexColumna>=getNCol()|| indexFila<0){
-            entorno.addError(new Token("Matrix-getValor","IndexOutOfBounds Col size:"+getNCol()+" index:"+(indexColumna+1),fila,columna));
-            return 0;
-        }
-        
-        return this.data.get(indexFila).get(indexColumna);
     }
     
     public void setValor(int indexFila, int indexColumna, Object value, Entorno entorno){

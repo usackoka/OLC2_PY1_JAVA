@@ -8,10 +8,11 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
-public class ListArit extends Expresion{
+public final class ListArit extends Expresion{
     
     LinkedList<Object> data;
     LinkedList<Expresion> expresiones;
@@ -30,6 +31,19 @@ public class ListArit extends Expresion{
     
     public ListArit(LinkedList<Object> data){
         this.data = data;
+    }
+    
+    //PARA CUANDO LA CREO DESDE ACCESOS
+    public ListArit(LinkedList<Object> data, int x, Entorno entorno, int fila, int columna){
+        x = x - 1;
+        if(x>=data.size() || x<0){
+            entorno.addError(new Token("ListArit","IndexOutOfBounds size:"+data.size()+" index:"+(x+1),fila,columna));
+            return;
+        }
+        this.fila = fila;
+        this.columna = columna;
+        this.data = new LinkedList<>();
+        this.data.add(data.get(x));
     }
     
     public void instanciarData(Entorno entorno){

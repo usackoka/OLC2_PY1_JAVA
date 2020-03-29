@@ -87,8 +87,8 @@ public class Relacional extends Expresion{
                 }
                 for(int i=0; i<tempLeft.getNRow(); i++){
                     for(int j=0; j<tempLeft.getNCol(); j++){
-                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1, entorno), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, entorno)),fila,columna);
-                        Primitivo pright = new Primitivo(tempRight.getValorIndex(i+1, j+1, entorno), Primitivo.getTipoDato(tempRight.getValorIndex(i+1, j+1, entorno)),fila,columna);
+                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1, null,entorno), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, null,entorno)),fila,columna);
+                        Primitivo pright = new Primitivo(tempRight.getValorIndex(i+1, j+1,null, entorno), Primitivo.getTipoDato(tempRight.getValorIndex(i+1, j+1,null, entorno)),fila,columna);
                         Relacional operacion = new Relacional(pleft,pright,TipoOperacion,fila, columna);
                         tempNew.setValor(i+1,j+1,operacion.getValor(entorno),entorno);
                     }
@@ -100,7 +100,7 @@ public class Relacional extends Expresion{
                 Matrix tempNew = new Matrix(tempLeft.getNRow(),tempLeft.getNCol());
                 for(int i=0; i<tempLeft.getNRow(); i++){
                     for(int j=0; j<tempLeft.getNCol(); j++){
-                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1, entorno), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, entorno)),fila,columna);
+                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1, null,entorno), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1,null, entorno)),fila,columna);
                         Primitivo pright = new Primitivo(valRight, Primitivo.getTipoDato(valRight),fila,columna);
                         Relacional operacion = new Relacional(pleft,pright,TipoOperacion,fila, columna);
                         tempNew.setValor(i+1,j+1,operacion.getValor(entorno),entorno);
@@ -114,7 +114,7 @@ public class Relacional extends Expresion{
                 for(int i=0; i<tempRight.getNRow(); i++){
                     for(int j=0; j<tempRight.getNCol(); j++){
                         Primitivo pleft = new Primitivo(valLeft, Primitivo.getTipoDato(valLeft),fila,columna);
-                        Primitivo pright = new Primitivo(tempRight.getValorIndex(i+1, j+1, entorno), Primitivo.getTipoDato(tempRight.getValorIndex(i+1, j+1, entorno)),fila,columna);
+                        Primitivo pright = new Primitivo(tempRight.getValorIndex(i+1, j+1,null, entorno), Primitivo.getTipoDato(tempRight.getValorIndex(i+1, j+1,null, entorno)),fila,columna);
                         Relacional operacion = new Relacional(pleft,pright,TipoOperacion,fila, columna);
                         tempNew.setValor(i+1,j+1,operacion.getValor(entorno),entorno);
                     }
