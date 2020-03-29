@@ -57,14 +57,17 @@ public class Acceso extends Expresion{
         }
         
         
-        
-        if(this.subAcceso instanceof Primitivo){
-            Object Osub = this.subAcceso.getValor(entorno);
-            if(Osub instanceof LinkedList){
+        Object Osub = this.subAcceso.getValor(entorno);
+        if(Osub instanceof LinkedList){
+            if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                return ((new Primitivo(Osub, Primitivo.getTipoDato(Osub), fila, columna))).getPos(x, entorno);
+            }else{
+                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a vector con acceso: "+this.tipoAcceso, fila, columna));
+                return 0;
             }
         }
         
-        entorno.addError(new Token("Acceso-No soportado", "No soportado subacceso: "+this.subAcceso.getClass(), fila, columna));
+        entorno.addError(new Token("Acceso-No soportado", "No soportado subacceso tipo: "+this.subAcceso.getClass(), fila, columna));
         return 0;
     }
     

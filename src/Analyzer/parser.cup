@@ -79,7 +79,7 @@ non terminal Sentencia SENTENCIA, FUNCION, VARIABLE, IF, ELSE, WHILE, DOWHILE, F
 non terminal Default DEFAULT;
 non terminal Parametro PARAMETRO;
 non terminal LinkedList<Caso> LISTA_CASOS;
-non terminal LinkedList<Parametro> LISTA_PARAMETROS, PARAMETROS;
+non terminal LinkedList<Parametro> LISTA_PARAMETROS, PARAMETROS, PARAMETROS1;
 
 precedence left ternario;
 precedence left or;
@@ -130,14 +130,13 @@ VARIABLE ::= id:a igual E:b
     {:
         RESULT = new Declaracion(a,b,aleft+1,aright+1);
     :}
-    | ACCESO_ESTRUCTURA2 igual E
+    | ACCESO_ESTRUCTURA2:a igual:c E:b 
+    {:
+        RESULT = new Modificacion(a,b,cleft+1,cright+1);
+    :}
 ;
 
-FUNCION ::= id:a igual res_function l_parent PARAMETROS:b r_parent l_llave BLOQUES:c r_llave
-    {:
-        RESULT = new Funcion(a,b,c,aleft+1,aright+1);
-    :}
-    | id:a igual res_function E:b l_llave BLOQUES:c r_llave
+FUNCION ::= id:a igual res_function l_parent PARAMETROS1:b r_parent l_llave BLOQUES:c r_llave
     {:
         RESULT = new Funcion(a,b,c,aleft+1,aright+1);
     :}
@@ -148,6 +147,23 @@ FUNCION ::= id:a igual res_function l_parent PARAMETROS:b r_parent l_llave BLOQU
     | id:a igual E:b igual mayor l_llave BLOQUES:c r_llave
     {:
         RESULT = new Funcion(a,b,c,aleft+1,aright+1);
+    :}
+    | id:a igual l_parent id:f igual E:g r_parent igual mayor l_llave BLOQUES:c r_llave
+    {:
+        LinkedList<Parametro> par = new LinkedList<Parametro>();
+        par.add(new Parametro(f,g,aleft+1,aright+1));
+        RESULT = new Funcion(a,par,c,aleft+1,aright+1);
+    :}
+;
+
+PARAMETROS1 ::= LISTA_PARAMETROS:b
+    {:
+        RESULT = new LinkedList<Parametro>();
+        RESULT.addAll(b);
+    :}
+    | /* empty */
+    {:
+        RESULT = new LinkedList<Parametro>();
     :}
 ;
 
