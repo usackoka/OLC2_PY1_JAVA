@@ -183,13 +183,14 @@ FUNCION ::=
 
 */
 Sentencia FUNCION() :
-{Token t;LinkedList<Parametro> b= new LinkedList<Parametro>();LinkedList<Nodo> c= new LinkedList<Nodo>();}
+{Token t;Expresion bb;LinkedList<Parametro> b= new LinkedList<Parametro>();LinkedList<Nodo> c= new LinkedList<Nodo>();}
 {
      t=<id> <igual> 
     (<res_function> <l_parent> (b=LISTA_PARAMETROS())? <r_parent> <l_llave> (c=LISTA_BLOQUES())? <r_llave>
      {return new Funcion(t.image,b,c,t.beginLine, t.beginColumn);}
-    |<l_parent> (b=LISTA_PARAMETROS())? <r_parent> <igual> <mayor> <l_llave> (c=LISTA_BLOQUES())?  <r_llave>
+    |LOOKAHEAD(10)<l_parent> (b=LISTA_PARAMETROS())? <r_parent> <igual> <mayor> <l_llave> (c=LISTA_BLOQUES())?  <r_llave>
      {return new Funcion(t.image,b,c,t.beginLine, t.beginColumn);}
+    |LOOKAHEAD(10) bb=E() { return new Declaracion(t.image,bb,t.beginLine,t.beginColumn);}
     )
 }
 
@@ -207,8 +208,7 @@ LISTA_PARAMETROS:a
     :}
 ;
 
-LISTA_PARAMETROS ::= ----------------
-   LISTA_PARAMETROS:a coma PARAMETRO:b
+LISTA_PARAMETROS ::= LISTA_PARAMETROS:a coma PARAMETRO:b
     {:
         RESULT = a;
         RESULT.add(b);
@@ -220,10 +220,9 @@ LISTA_PARAMETROS ::= ----------------
     :}
 ;
 
-PARAMETRO ::= -----------------
- E:a 
+PARAMETRO ::= id:a -------------------
     {:
-        RESULT = new Parametro(null,a,a.fila,a.columna);
+        RESULT = new Parametro(a,null,aleft+1,aright+1);
     :}
     | id:a igual E:b
     {:
@@ -240,7 +239,8 @@ LinkedList<Parametro> LISTA_PARAMETROS() :
 
 Parametro PARAMETRO() :
 {Expresion a;Token t;}
-{      t= ( <igual> a=E() {return new Parametro(t.image,a,t.beginLine, t.beginColumn);})? {return new Parametro(null,new Primitivo(t.image,Expresion.TIPO_PRIMITIVO.VARIABLE,t.beginLine, t.beginColumn),token.beginLine, token.beginColumn);}
+{      t= <id>( <igual> a=E() {return new Parametro(t.image,a,t.beginLine, t.beginColumn);})? 
+        {return new Parametro(t.image,null,t.beginLine, t.beginColumn);}
 
 }
 
@@ -486,7 +486,7 @@ Nodo  LISTA_BLOQUES_CONJ() :
 
 
 /*//////////////////////////////////////////////////////////////////////////////////////////////////////////////
-INSTRUCCION ::= incompleto
+INSTRUCCION ::= revisar
     res_break:a --------------------
     {:
         RESULT = new Corte(Corte.TIPO_CORTE.BREAK,aleft+1,aright+1);
@@ -499,7 +499,7 @@ INSTRUCCION ::= incompleto
     {:
         RESULT = a;
     :}
-    | VARIABLE:a incompleto
+    | VARIABLE:a ??????????????????/
     {:
         RESULT = a;
     :}
@@ -540,106 +540,123 @@ Sentencia RETURN() :
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-VARIABLE ::=  incompleto
-    id:a igual E:b -----------------------------
+VARIABLE ::=  revisar
+           ACCESO_ESTRUCTURA2 igual E ---revisar
+ ACCESO_ESTRUCTURA2:a igual:c E:b 
     {:
-        RESULT = new Declaracion(a,b,aleft+1,aright+1);
+        RESULT = new Modificacion(a,b,cleft+1,cright+1);
     :}
-    | ACCESO_ESTRUCTURA2 igual E ---incompleto
 ;
 */
 
 Sentencia VARIABLE() :
 {Expresion b,c;Token t; }
 {
-       LOOKAHEAD(2) t=<id> <igual> b=E() { return new Declaracion(t.image,b,t.beginLine,t.beginColumn);}
-      |LOOKAHEAD(2) b=ACCESO_ESTRUCTURA2() t=<igual> c=E() {
-            //incompleto
-            // return new acceso_estructura2(b,c, t.beginLine,t.beginColumn);
-            return null;
+        b=ACCESO_ESTRUCTURA2() t=<igual> c=E() {
+            return new Modificacion(b,c,t.beginLine,t.beginColumn);
             
         }
       
 }
 
 /* //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-ACCESO_ESTRUCTURA2 ::= incompleto
-       id l_corchete E r_corchete--------------------
+ACCESO_ESTRUCTURA2 ::= revisar
+    id:a l_corchete E:b r_corchete ---------------
     {:
+        Primitivo p = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+        RESULT = new Acceso(p,b,null,Acceso.TIPO_ACCESO.SIMPLE);
     :}
-    | id l_corchete l_corchete E r_corchete r_corchete ---------------------------
+    | id:a l_corchete l_corchete E:b r_corchete r_corchete -------------
     {:
+        Primitivo p = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+        RESULT = new Acceso(p,b,null,Acceso.TIPO_ACCESO.DOBLE);
     :}
-    | id l_corchete E coma E r_corchete ---------------------------
+    | id:a l_corchete E:b coma E:c r_corchete---------------
     {:
+        Primitivo p = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+        RESULT = new Acceso(p,b,c,Acceso.TIPO_ACCESO.XY);
     :}
-    | id l_corchete coma E r_corchete -------------------
+    | id:a l_corchete coma E:b r_corchete--------------------
     {:
+        Primitivo p = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+        RESULT = new Acceso(p,null,b,Acceso.TIPO_ACCESO.Y);
     :}
-    | id l_corchete E coma r_corchete -----------------------
+    | id:a l_corchete E:b coma r_corchete ------------------
     {:
+        Primitivo p = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+        RESULT = new Acceso(p,b,null,Acceso.TIPO_ACCESO.X);
     :}
-    | ACCESO_ESTRUCTURA2 l_corchete E r_corchete ---------------------
+    | ACCESO_ESTRUCTURA2:a l_corchete E:b r_corchete -------------------
     {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.SIMPLE); --------------------------
     :}
-    | ACCESO_ESTRUCTURA2  l_corchete l_corchete E r_corchete r_corchete ----------------------
+    | ACCESO_ESTRUCTURA2:a  l_corchete l_corchete E:b r_corchete r_corchete ---------------------
     {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.DOBLE);
     :}
-    | ACCESO_ESTRUCTURA2 l_corchete E coma E r_corchete ------------------------
+    | ACCESO_ESTRUCTURA2:a l_corchete E:b coma E:c r_corchete--------------------
     {:
+        RESULT = new Acceso(a,b,c,Acceso.TIPO_ACCESO.XY);
     :}
-    | ACCESO_ESTRUCTURA2 l_corchete coma E r_corchete -------------------------
+    | ACCESO_ESTRUCTURA2:a l_corchete coma E:b r_corchete
     {:
+        RESULT = new Acceso(a,null,b,Acceso.TIPO_ACCESO.Y);
     :}
-    | ACCESO_ESTRUCTURA2 l_corchete E coma r_corchete
+    | ACCESO_ESTRUCTURA2:a l_corchete E:b coma r_corchete
     {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.X);
     :}
 ;
 
+;
+
 */
-//incompleto  - cambiar tipo Expresion
 Expresion ACCESO_ESTRUCTURA2():
 {Expresion a,b,c;Token t; }
 {
      a= ACCESO_ESTRUCTURA2_ELEMENT()   
      (
             LOOKAHEAD(4)<l_corchete> b=E() <r_corchete>
-              { /*a= new algo1(a,b,t.beginLine,t.beginColumn);*/ a= null;}
+              {  a = new Acceso(a,b,null,Acceso.TIPO_ACCESO.SIMPLE);}
         |
             LOOKAHEAD(4)<l_corchete> <l_corchete> b=E() <r_corchete> <r_corchete>
-              { /*a= new algo1(a,b,t.beginLine,t.beginColumn);*/ a= null;}
+              {  a = new Acceso(a,b,null,Acceso.TIPO_ACCESO.DOBLE);}
         |
             LOOKAHEAD(4)<l_corchete> b=E() <coma> c=E() <r_corchete>
-              { /*a= new algo1(a,b,c,t.beginLine,t.beginColumn);*/ a= null;}
+              {  a = new Acceso(a,b,c,Acceso.TIPO_ACCESO.XY);}
         |
             LOOKAHEAD(4)<l_corchete> <coma> c=E() <r_corchete>
-              { /*a= new algo1(a,null,c,t.beginLine,t.beginColumn);*/ a= null;}
+              {  a= new Acceso(a,null,c,Acceso.TIPO_ACCESO.Y);}
         |
             LOOKAHEAD(4)<l_corchete> b=E() <coma> <r_corchete>
-              { /*a= new algo1(a,b,null,t.beginLine,t.beginColumn);*/ a= null;}
+             {  a= new Acceso(a,b,null,Acceso.TIPO_ACCESO.X);}
      )*
      { return a;}
 
 }
 
-//incompleto  - cambiar tipo Expresion
 Expresion ACCESO_ESTRUCTURA2_ELEMENT():
 {Expresion a,b;Token t; }
 {
        LOOKAHEAD(4)t=<id> <l_corchete> a=E() <r_corchete>
-            { /*return new algo1(t.image,a,t.beginLine,t.beginColumn);*/ return null;}
+            { Primitivo p = new Primitivo(t.image,Expresion.TIPO_PRIMITIVO.VARIABLE,t.beginLine,t.beginColumn);
+              return new Acceso(p,a,null,Acceso.TIPO_ACCESO.SIMPLE);}
       |
         LOOKAHEAD(4)t=<id> <l_corchete> <l_corchete> a=E() <r_corchete> <r_corchete>  
-            { /*return new algo2(t.image,a,t.beginLine,t.beginColumn);*/ return null;}
+            { Primitivo p = new Primitivo(t.image,Expresion.TIPO_PRIMITIVO.VARIABLE,t.beginLine,t.beginColumn);
+              return new Acceso(p,a,null,Acceso.TIPO_ACCESO.DOBLE);}
       |
         LOOKAHEAD(4)t=<id> <l_corchete> a=E() <coma> b=E() <r_corchete>
-            { /*return new algo3(t.image,a,b,t.beginLine,t.beginColumn);*/ return null;}
+            {   Primitivo p = new Primitivo(t.image,Expresion.TIPO_PRIMITIVO.VARIABLE,t.beginLine,t.beginColumn);
+                return new Acceso(p,a,b,Acceso.TIPO_ACCESO.XY);}
       |
         LOOKAHEAD(4)t=<id> <l_corchete> <coma> b=E() <r_corchete> 
-            { /*return new algo4(t.image,null,b,t.beginLine,t.beginColumn);*/ return null;}
+            {  Primitivo p = new Primitivo(t.image,Expresion.TIPO_PRIMITIVO.VARIABLE,t.beginLine,t.beginColumn);
+               return new Acceso(p,null,b,Acceso.TIPO_ACCESO.Y);}
       |
         LOOKAHEAD(4)t=<id> <l_corchete> a=E() <coma> <r_corchete>
-            { /*return new algo5(t.image,a,null,t.beginLine,t.beginColumn);*/ return null;}
+           {  Primitivo p = new Primitivo(t.image,Expresion.TIPO_PRIMITIVO.VARIABLE,t.beginLine,t.beginColumn);
+               return new Acceso(p,a,null,Acceso.TIPO_ACCESO.Y);}
       
 }
 
