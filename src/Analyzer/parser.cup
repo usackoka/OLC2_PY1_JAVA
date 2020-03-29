@@ -68,13 +68,13 @@ UMINUS,UPLUS
 non terminal S
 ;
 
-non terminal PUEDE_SEMICOLON, ACCESO_ESTRUCTURA2
+non terminal PUEDE_SEMICOLON
 ;
 
 non terminal LinkedList<Expresion> LISTA_LLAMADA, PARAMETROS_LLAMADA;
 non terminal LinkedList<Nodo> LISTA_BLOQUES, BLOQUES, DECLARACIONES;
 non terminal Nodo DECLARACION, INSTRUCCION;
-non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA, ACCESO_ESTRUCTURA;
+non terminal Expresion CONSTANTE, E, LLAMADA, BINARIA, UNARIA, ARITMETICA, LOGICA, RELACIONAL, TERNARIA, ACCESO_ESTRUCTURA, ACCESO_ESTRUCTURA2;
 non terminal Sentencia SENTENCIA, FUNCION, VARIABLE, IF, ELSE, WHILE, DOWHILE, FOR, SWITCH, RETURN;
 non terminal Default DEFAULT;
 non terminal Parametro PARAMETRO;
@@ -399,35 +399,50 @@ E ::= CONSTANTE:a
     :}
 ;
 
-ACCESO_ESTRUCTURA2 ::= id l_corchete E r_corchete
+ACCESO_ESTRUCTURA2 ::= id:a l_corchete E:b r_corchete
     {:
+        Primitivo p = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+        RESULT = new Acceso(p,b,null,Acceso.TIPO_ACCESO.SIMPLE);
     :}
-    | id l_corchete l_corchete E r_corchete r_corchete
+    | id:a l_corchete l_corchete E:b r_corchete r_corchete
     {:
+        Primitivo p = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+        RESULT = new Acceso(p,b,null,Acceso.TIPO_ACCESO.DOBLE);
     :}
-    | id l_corchete E coma E r_corchete
+    | id:a l_corchete E:b coma E:c r_corchete
     {:
+        Primitivo p = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+        RESULT = new Acceso(p,b,c,Acceso.TIPO_ACCESO.XY);
     :}
-    | id l_corchete coma E r_corchete
+    | id:a l_corchete coma E:b r_corchete
     {:
+        Primitivo p = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+        RESULT = new Acceso(p,null,b,Acceso.TIPO_ACCESO.Y);
     :}
-    | id l_corchete E coma r_corchete
+    | id:a l_corchete E:b coma r_corchete
     {:
+        Primitivo p = new Primitivo(a,Expresion.TIPO_PRIMITIVO.VARIABLE,aleft+1,aright+1);
+        RESULT = new Acceso(p,b,null,Acceso.TIPO_ACCESO.X);
     :}
-    | ACCESO_ESTRUCTURA2 l_corchete E r_corchete
+    | ACCESO_ESTRUCTURA2:a l_corchete E:b r_corchete
     {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.SIMPLE);
     :}
-    | ACCESO_ESTRUCTURA2  l_corchete l_corchete E r_corchete r_corchete
+    | ACCESO_ESTRUCTURA2:a  l_corchete l_corchete E:b r_corchete r_corchete
     {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.DOBLE);
     :}
-    | ACCESO_ESTRUCTURA2 l_corchete E coma E r_corchete
+    | ACCESO_ESTRUCTURA2:a l_corchete E:b coma E:c r_corchete
     {:
+        RESULT = new Acceso(a,b,c,Acceso.TIPO_ACCESO.XY);
     :}
-    | ACCESO_ESTRUCTURA2 l_corchete coma E r_corchete
+    | ACCESO_ESTRUCTURA2:a l_corchete coma E:b r_corchete
     {:
+        RESULT = new Acceso(a,null,b,Acceso.TIPO_ACCESO.Y);
     :}
-    | ACCESO_ESTRUCTURA2 l_corchete E coma r_corchete
+    | ACCESO_ESTRUCTURA2:a l_corchete E:b coma r_corchete
     {:
+        RESULT = new Acceso(a,b,null,Acceso.TIPO_ACCESO.X);
     :}
 ;
 
