@@ -24,15 +24,18 @@ public class Declaracion extends Sentencia{
         this.fila = fila;
         this.columna = columna;
         this.valorDirecto = null;
+        this.esParametro = false;
     }
     
     //declaracion especial para cuando la creo desde código 
     Object valorDirecto;
-    public Declaracion(String id, Object value, int fila, int columna){
+    boolean esParametro;
+    public Declaracion(String id, Object value, boolean esParametro, int fila, int columna){
         this.id = id;
         this.valorDirecto = value;
         this.fila = fila;
         this.columna = columna;
+        this.esParametro = esParametro;
     }
     
     @Override
@@ -40,7 +43,7 @@ public class Declaracion extends Sentencia{
         Object valor = this.valorDirecto==null?value.getValor(entorno):this.valorDirecto;
         Object tipo = Primitivo.getTipoDato(valor);
         Variable var = new Variable(valor,tipo,fila,columna);
-        entorno.addVariable(id.toLowerCase(), var);
+        entorno.addVariable(id.toLowerCase(), var, esParametro);
         return null;
     }
     

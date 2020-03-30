@@ -54,7 +54,7 @@ public class DoWhile extends Sentencia{
                 }
             }
         }
-        while (Boolean.parseBoolean(this.condicion.getValor(entorno).toString()));
+        while ((Boolean)this.condicion.getValor(entorno));
         
         return null;
     }

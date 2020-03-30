@@ -30,7 +30,7 @@ public class If extends Sentencia{
     @Override
     public Object ejecutar(Entorno entorno) {
         //si se cumple la condicion ejecuto las acciones
-        if(Boolean.parseBoolean(this.condicion.getValor(entorno).toString())){
+        if((Boolean)this.condicion.getValor(entorno)){
         entorno = new Entorno(entorno);
             for (Nodo nodo : this.instrucciones)
             {

@@ -8,7 +8,6 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
-import AST.Nodo;
 import GraficasArit.Graph_AST;
 
 public class Ternaria extends Expresion{
@@ -25,10 +24,7 @@ public class Ternaria extends Expresion{
     
     @Override
     public Object getValor(Entorno entorno) {
-        if(Boolean.parseBoolean(condicion.getValor(entorno).toString())){
-            return verdadera.getValor(entorno);
-        }
-        return falsa.getValor(entorno);
+        return ((Boolean)condicion.getValor(entorno))?verdadera.getValor(entorno):falsa.getValor(entorno);
     }
     
     @Override

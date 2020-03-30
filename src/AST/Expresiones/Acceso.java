@@ -8,6 +8,7 @@ package AST.Expresiones;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.Nativas.Array;
 import AST.Expresiones.Nativas.Matrix;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
@@ -79,6 +80,13 @@ public class Acceso extends Expresion{
                 return ((Matrix)Osub).getValorIndex(null,null,x,entorno);
             }else{
                 entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a una Matriz con acceso: "+this.tipoAcceso, fila, columna));
+                return 0;
+            }
+        }else if(Osub instanceof Array){
+            if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                return ((Array)Osub).subArray(x,entorno,fila,columna);
+            }else{
+                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a un Array con acceso: "+this.tipoAcceso, fila, columna));
                 return 0;
             }
         }else{

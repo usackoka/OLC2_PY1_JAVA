@@ -6,7 +6,6 @@
 
 package AST;
 
-import AST.Expresiones.Parametro;
 import AST.Expresiones.Variable;
 import AST.Sentencias.Funcion;
 import Analyzer.Token;
@@ -79,7 +78,14 @@ public class Entorno {
         return aux;
     }
     
-    public Object addVariable(String key, Variable value) {
+    public Object addVariable(String key, Variable value, boolean esParametro) {
+        
+        //SI ES PARAMETRO, OBLIGO A CREARLO, NO BUSCO SI YA EXISTE
+        if(esParametro){
+            this.tbs.put(key, value);
+            return true;
+        }
+        
         if (existeVariable(key)) {
             //si ya la contiene se reemplaza
             getVariable(key, 0, 0).setValue(value.getValor(this));

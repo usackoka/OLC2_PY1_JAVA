@@ -76,7 +76,7 @@ public class Funcion extends Sentencia{
         
         //si viene un id
         if(expresionID!=null && expresionID instanceof Primitivo){
-            (new Declaracion(((Primitivo)this.expresionID).getID(entorno), valoresParametros.get(i), fila, columna)).ejecutar(entorno);
+            (new Declaracion(((Primitivo)this.expresionID).getID(entorno), valoresParametros.get(i), true, fila, columna)).ejecutar(entorno);
         }
         
         for(Parametro parametro : parametros){
@@ -85,12 +85,12 @@ public class Funcion extends Sentencia{
             if(value.equals(Expresion.TIPO_PRIMITIVO.DEFAULT)){
                 //preegunto si hay un valor por defecto
                 if(parametro.expresion != null){
-                    (new Declaracion(parametro.id, parametro.expresion.getValor(entorno), fila, columna)).ejecutar(entorno);
+                    (new Declaracion(parametro.id, parametro.expresion.getValor(entorno), true, fila, columna)).ejecutar(entorno);
                 }else{
                     entorno.addError(new Token("Parametro-Default-Funcion("+this.id+")", "No se puede enviar un valor default en este parámetro: "+i, fila, columna));
                 }
             }else{
-                (new Declaracion(parametro.id, value, fila, columna)).ejecutar(entorno);
+                (new Declaracion(parametro.id, value, true, fila, columna)).ejecutar(entorno);
             }
         }
     }

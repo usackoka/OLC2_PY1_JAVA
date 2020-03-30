@@ -14,11 +14,13 @@ import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
-public class Array extends Expresion{
+public final class Array extends Expresion{
 
     Expresion expresion;
     Expresion vector;
     LinkedList<Object> data;
+    LinkedList<Object> valoresIngresar;
+    LinkedList<Integer> dimensiones;
     
     public Array(Expresion expresion, Expresion vector, Entorno entorno, int fila, int columna){
         this.expresion = expresion;
@@ -26,14 +28,26 @@ public class Array extends Expresion{
         this.fila = fila;
         this.columna = columna;
         this.data = new LinkedList<>();
-        //valores a ingresar
+        this.dimensiones = new LinkedList<>();
         this.valoresIngresar = new LinkedList<>();
         
-        instanciarData(entorno);
+        instanciarDimensiones(entorno);
+        instanciarValoresIngresar(entorno);
+        fillData(this.data, dimensiones.size()-1, dimensiones);
     }
     
     public Array(){
         this.data = new LinkedList<>();
+        this.dimensiones = new LinkedList<>();
+        this.valoresIngresar = new LinkedList<>();
+    }
+    
+    public Array(LinkedList data, int fila, int columna){
+        this.data = data;
+        this.dimensiones = new LinkedList<>();
+        this.valoresIngresar = new LinkedList<>();
+        this.fila = fila;
+        this.columna =columna;
     }
     
     @Override
@@ -41,8 +55,8 @@ public class Array extends Expresion{
         return this;
     }
     
-    public void instanciarData(Entorno entorno){
-        Object valorExpresion = expresion.getValor(entorno);
+    //============================ INSTANCIANDO VALORES ======================================================
+    public void instanciarDimensiones(Entorno entorno){
         Object valorVector = vector.getValor(entorno);
         
         //valido que el parámetro sea un vector de integer
@@ -52,7 +66,7 @@ public class Array extends Expresion{
         }
         
         //saco las dimensiones en una lista
-        LinkedList<Integer> dimensiones = new LinkedList<>();
+        this.dimensiones = new LinkedList<>();
         if(valorVector instanceof LinkedList){
             LinkedList elements = (LinkedList)valorVector;
             for(Object element : elements){
@@ -71,6 +85,10 @@ public class Array extends Expresion{
                 return;
             }
         }
+    }
+    
+    public void instanciarValoresIngresar(Entorno entorno){
+        Object valorExpresion = expresion.getValor(entorno);
         
         if(valorExpresion instanceof LinkedList){
             LinkedList elements = (LinkedList)valorExpresion;
@@ -80,13 +98,22 @@ public class Array extends Expresion{
         }else if(valorExpresion instanceof ListArit){
             ListArit elements = (ListArit)valorExpresion;
             for(Object element : elements.getData()){
-                valoresIngresar.add(element);
+                LinkedList<Object> temp = new LinkedList<>();
+                temp.add(element);
+                ListArit list = new ListArit(temp);
+                valoresIngresar.add(list);
             }
         }else{
             valoresIngresar.add(valorExpresion);
         }
-        
-        fillData(this.data, dimensiones.size()-1, dimensiones);
+    }
+    
+    int cont = 0;
+    private Object getDato(){
+        if(cont>=valoresIngresar.size()){
+            cont = 0;
+        }
+        return valoresIngresar.get(cont++);
     }
     
     public LinkedList<Object> fillData(LinkedList<Object> lista, int indexDim, LinkedList<Integer> dimensiones){
@@ -104,13 +131,18 @@ public class Array extends Expresion{
         return lista;
     }
     
-    LinkedList<Object> valoresIngresar;
-    int cont = 0;
-    public Object getDato(){
-        if(cont>=valoresIngresar.size()){
-            cont = 0;
+    //=============================== SUB ARRAY =========================
+    public Object subArray(int x, Entorno entorno, int fila, int columna){
+        x = x-1;
+        if(x>=this.data.size() || x<0){
+            entorno.addError(new Token("Array-Acceso","IndexOutOfBounds size:"+data.size()+" index:"+(x+1),fila,columna));
+            return 0;
         }
-        return valoresIngresar.get(cont++);
+        
+        if(data.get(x) instanceof LinkedList){
+            return new Array((LinkedList)data.get(x),fila,columna);
+        }
+        return data.get(x);
     }
     
     public LinkedList<Object> getData(){

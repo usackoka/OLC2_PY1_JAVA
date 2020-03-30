@@ -28,7 +28,7 @@ public class While extends Sentencia{
     @Override
     public Object ejecutar(Entorno entorno) {
         entorno = new Entorno(entorno);
-        while (Boolean.parseBoolean(this.condicion.getValor(entorno).toString()))
+        while ((Boolean)this.condicion.getValor(entorno))
         {
             for (Nodo nodo : this.instrucciones)
             {

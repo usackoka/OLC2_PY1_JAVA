@@ -8,10 +8,11 @@ package AST.Sentencias;
 
 import AST.Entorno;
 import AST.Expresion;
-import AST.Expresiones.Primitivo;
+import AST.Expresiones.ListArit;
+import AST.Expresiones.Nativas.Array;
+import AST.Expresiones.Nativas.Matrix;
 import AST.Nodo;
 import AST.Sentencia;
-import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
@@ -36,7 +37,7 @@ public class For extends Sentencia{
         for (Object value : valores)
         {
             //declaro la variable
-            (new Declaracion(id, value, fila, columna)).ejecutar(entorno);
+            (new Declaracion(id, value, false, fila, columna)).ejecutar(entorno);
             for (Nodo nodo : this.instrucciones)
             {
                 if (nodo instanceof Sentencia)
@@ -62,6 +63,12 @@ public class For extends Sentencia{
         Object val = expresion.getValor(entorno);
         if(val instanceof LinkedList){
             return (LinkedList<Object>)val;
+        }else if(val instanceof ListArit){
+            return ((ListArit)val).getData();
+        }else if(val instanceof Matrix){
+            return ((Matrix)val).getMapeo();
+        }else if(val instanceof Array){
+            return ((Array)val).getData();
         }else{
             ret.add(val);
         }
