@@ -100,6 +100,11 @@ public class Llamada extends Expresion{
                 }
                 entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
                 return new Array();
+            case "length":
+                if(parametros.size()==PARAMETROS){
+                    return new Length(this.parametros.get(0), entorno, fila, columna).getValor(entorno);
+                }
+                entorno.addError(new Token(this.id, "la función "+this.id+" recibe "+PARAMETROS+" parametros exclusivamente", fila, columna));
             case "print":
                 if(parametros.size()==PARAMETROS){
                     return new Print(this.parametros.get(0)).ejecutar(entorno);
