@@ -10,22 +10,22 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Nativas.Array;
 import AST.Expresiones.Nativas.Matrix;
+import AST.Expresiones.Nativas.VectorArit;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
-import java.util.LinkedList;
 
 //En este caso, primitivo hace referencia a un vector de tipo primitivo
 public final class Primitivo extends Expresion{
     
     //por ser vector el mas primitivo se maneja un conteo de valores
-    LinkedList<Object> values;
+    VectorArit values;
     
     public Primitivo(Object value, Object TIPO, int fila, int columna){
         this.TIPO = TIPO;
-        this.values = new LinkedList<>();
+        this.values = new VectorArit();
         
-        if(value instanceof LinkedList){
-            this.values = (LinkedList)value;
+        if(value instanceof VectorArit){
+            this.values = (VectorArit)value;
         }else{
             if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
                 value = getEscapes(value.toString());
@@ -45,20 +45,30 @@ public final class Primitivo extends Expresion{
                 return entorno.getValorVariable(this.values.get(0).toString().toLowerCase(), fila, columna);
             }
             return values.get(0);
-        }else{
-            return this.values;
         }
+        return this.values;
+    }
+    
+    public Variable getVariable(Entorno entorno){
+        if(values.size()==1){
+            //pregunto si es una variable
+            if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.VARIABLE)){
+                return entorno.getVariable(this.values.get(0).toString().toLowerCase(), fila, columna);
+            }
+        }
+        entorno.addError(new Token("Primitivo-getVariable", "No se encontró la variable: "+this.values.get(0).toString(), fila, columna));
+        return new Variable(null, TIPO, fila, columna);
     }
     
     public Object getPos(int index, Entorno entorno){
         index = index - 1;
         
-        LinkedList<Object> values = new LinkedList<>();
+        VectorArit values = new VectorArit();
         
         if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.VARIABLE)){
             Object Ovalues = entorno.getValorVariable(this.values.get(0).toString().toLowerCase(), fila, columna);
-            if(Ovalues instanceof LinkedList){
-                values = (LinkedList<Object>)Ovalues;
+            if(Ovalues instanceof VectorArit){
+                values = (VectorArit)Ovalues;
             }else{
                 values.add(Ovalues);
             }
@@ -83,8 +93,8 @@ public final class Primitivo extends Expresion{
             return Expresion.TIPO_PRIMITIVO.BOOLEAN;
         }else if(obj instanceof Integer){
             return Expresion.TIPO_PRIMITIVO.INTEGER;
-        }else if(obj instanceof LinkedList){
-            return getTipoDato(((LinkedList)obj).get(0));
+        }else if(obj instanceof VectorArit){
+            return getTipoDato(((VectorArit)obj).get(0));
         }else if(obj instanceof Matrix){
             return Expresion.TIPO_PRIMITIVO.MATRIX;
         }else if(obj instanceof ListArit){

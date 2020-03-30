@@ -33,7 +33,7 @@ public class ToUpperCase extends Expresion{
         Object valor = expresion.getValor(entorno);
         Object tipo = Primitivo.getTipoDato(valor);
         
-        if(valor instanceof LinkedList){
+        if(valor instanceof VectorArit){
             entorno.addError(new Token("Vector["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede afectar el vector con mas de un valor", fila, columna));
             return defecto;
         }

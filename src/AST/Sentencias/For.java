@@ -11,6 +11,7 @@ import AST.Expresion;
 import AST.Expresiones.ListArit;
 import AST.Expresiones.Nativas.Array;
 import AST.Expresiones.Nativas.Matrix;
+import AST.Expresiones.Nativas.VectorArit;
 import AST.Nodo;
 import AST.Sentencia;
 import GraficasArit.Graph_AST;
@@ -61,8 +62,8 @@ public class For extends Sentencia{
         //obtengo el valor
         LinkedList<Object> ret = new LinkedList<>();
         Object val = expresion.getValor(entorno);
-        if(val instanceof LinkedList){
-            return (LinkedList<Object>)val;
+        if(val instanceof VectorArit){
+            return (VectorArit)val;
         }else if(val instanceof ListArit){
             return ((ListArit)val).getData();
         }else if(val instanceof Matrix){

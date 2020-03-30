@@ -35,7 +35,7 @@ public class Trunk extends Expresion{
         Object valor = expresion.getValor(entorno);
         Object tipo = Primitivo.getTipoDato(valor);
         
-        if(valor instanceof LinkedList){
+        if(valor instanceof VectorArit){
             entorno.addError(new Token("Vector["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede truncar un vector con mas de un valor", fila, columna));
             return defecto;
         }

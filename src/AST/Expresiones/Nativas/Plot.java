@@ -42,10 +42,10 @@ public class Plot extends Sentencia{
         LinkedList<Double> datos = new LinkedList<>();
         Object Odatos = Ev.getValor(entorno);
         //creo el linkedList de double
-        if(Odatos instanceof Matrix || Odatos instanceof LinkedList){
+        if(Odatos instanceof Matrix || Odatos instanceof VectorArit){
             LinkedList<Object> temp;
-            if(Odatos instanceof LinkedList){
-                temp = (LinkedList)Odatos;
+            if(Odatos instanceof VectorArit){
+                temp = (VectorArit)Odatos;
             }
             else{
                 temp = ((Matrix)Odatos).getMapeo();
@@ -69,9 +69,9 @@ public class Plot extends Sentencia{
         
         //PREGUNTO POR EL ULTIMO PARÁMETRO PARA VER QUE GRAFICAR
         Object Omain = Emain.getValor(entorno);
-        if(Omain instanceof LinkedList){
+        if(Omain instanceof VectorArit){
             //GRAFICA DE DISPERSION
-            LinkedList<Object> temp = (LinkedList)Omain;
+            LinkedList<Object> temp = (VectorArit)Omain;
             LinkedList<Double> limitesY = new LinkedList<>();
             if(temp.size()!=2){
                 entorno.addError(new Token("Grafica-Plot","Se esperaban unicamente 2 valores en el vector Ylim",fila,columna));

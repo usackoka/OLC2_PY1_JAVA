@@ -8,6 +8,7 @@ package AST.Sentencias;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.Nativas.VectorArit;
 import AST.Nodo;
 import AST.Sentencia;
 import Analyzer.Token;
@@ -37,8 +38,8 @@ public class If extends Sentencia{
         Object err = this.condicion.getValor(entorno);
         try {
             //validacion para cuando viene un vector de varios booleans
-            if(err instanceof LinkedList){
-                err = ((LinkedList)err).get(0);
+            if(err instanceof VectorArit){
+                err = ((VectorArit)err).get(0);
             }
             valCondicion = (Boolean)err;
         } catch (Exception e) {

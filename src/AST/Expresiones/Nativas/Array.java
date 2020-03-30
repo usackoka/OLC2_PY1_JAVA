@@ -67,8 +67,8 @@ public final class Array extends Expresion{
         
         //saco las dimensiones en una lista
         this.dimensiones = new LinkedList<>();
-        if(valorVector instanceof LinkedList){
-            LinkedList elements = (LinkedList)valorVector;
+        if(valorVector instanceof VectorArit){
+            LinkedList elements = (VectorArit)valorVector;
             for(Object element : elements){
                 try {
                     dimensiones.add((int)element);
@@ -90,8 +90,8 @@ public final class Array extends Expresion{
     public void instanciarValoresIngresar(Entorno entorno){
         Object valorExpresion = expresion.getValor(entorno);
         
-        if(valorExpresion instanceof LinkedList){
-            LinkedList elements = (LinkedList)valorExpresion;
+        if(valorExpresion instanceof VectorArit){
+            LinkedList elements = (VectorArit)valorExpresion;
             for(Object element : elements){
                 valoresIngresar.add(element);
             }
@@ -139,8 +139,8 @@ public final class Array extends Expresion{
             return 0;
         }
         
-        if(data.get(x) instanceof LinkedList){
-            return new Array((LinkedList)data.get(x),fila,columna);
+        if(data.get(x) instanceof VectorArit){
+            return new Array((VectorArit)data.get(x),fila,columna);
         }
         return data.get(x);
     }

@@ -36,11 +36,11 @@ public class Remove extends Expresion{
         Object valor2 = expresiones.size()==2?expresiones.get(1).getValor(entorno):null;
         Object tipo2 = expresiones.size()==2?Primitivo.getTipoDato(valor2):null;
         
-        if(valor instanceof LinkedList){
+        if(valor instanceof VectorArit){
             entorno.addError(new Token("Vector1["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede afectar el vector con mas de un valor", fila, columna));
             return defecto;
         }
-        if(valor2 instanceof LinkedList){
+        if(valor2 instanceof VectorArit){
             entorno.addError(new Token("Vector2["+tipo2+"]:"+((LinkedList<Object>)valor2).size(), "No se puede afectar el vector con mas de un valor", fila, columna));
             return defecto;
         }

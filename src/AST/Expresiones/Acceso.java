@@ -123,22 +123,27 @@ public class Acceso extends Expresion{
             }
         }
         
-        Object Osub = this.subAcceso.getValor(entorno);
-        if(Osub instanceof ListArit){
+        if(this.subAcceso instanceof Primitivo){
+            //lo mas al fondo, variable
+            Variable var = ((Primitivo)this.subAcceso).getVariable(entorno);
+            Object Osub = var.value;
             
-        }else if(Osub instanceof Matrix){
-        }else if(Osub instanceof Array){
-        }else{
-            //aquí entra linkedList y valores puntuales
-            if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
-                if(first)
+            if(first){
+                if(Osub instanceof ListArit){
                     
-                return ((new Primitivo(Osub, Primitivo.getTipoDato(Osub), fila, columna))).getPos(x, entorno);
+                }else if(Osub instanceof Matrix){
+                }else if(Osub instanceof Array){
+                }else if(Osub instanceof LinkedList){
+                }else{
+                    //valores puntuales
+                }
             }else{
-                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a vector con acceso: "+this.tipoAcceso, fila, columna));
-                return 0;
             }
+        }else{
+            //acceso
+            Object Osub = ((Acceso)this.subAcceso).setValor(entorno, null, false);
         }
+        
         
         return 0;
     }

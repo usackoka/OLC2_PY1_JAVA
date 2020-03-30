@@ -39,8 +39,8 @@ public class Hist extends Sentencia{
         LinkedList<Double> datos = new LinkedList<>();
         Object Odatos = v.getValor(entorno);
         //creo el linkedList de double
-        if(Odatos instanceof LinkedList){
-            LinkedList<Object> temp = (LinkedList)Odatos;
+        if(Odatos instanceof VectorArit){
+            LinkedList<Object> temp = (VectorArit)Odatos;
             for(Object element : temp){
                 Object tipo = Primitivo.getTipoDato(element);
                 if(!(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC))){

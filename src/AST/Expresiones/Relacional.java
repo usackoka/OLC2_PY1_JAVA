@@ -9,6 +9,7 @@ package AST.Expresiones;
 import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Nativas.Matrix;
+import AST.Expresiones.Nativas.VectorArit;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
@@ -37,13 +38,13 @@ public class Relacional extends Expresion{
             
         try {
             //========== VALIDO OPERACIONES ENTRE VECTORES
-            if(valLeft instanceof LinkedList && valRight instanceof LinkedList){
-                LinkedList<Object> tempLeft = (LinkedList)valLeft;
-                LinkedList<Object> tempRight = (LinkedList)valRight;
-                LinkedList<Object> tempNew = new LinkedList<>();
+            if(valLeft instanceof VectorArit && valRight instanceof VectorArit){
+                VectorArit tempLeft = (VectorArit)valLeft;
+                VectorArit tempRight = (VectorArit)valRight;
+                VectorArit tempNew = new VectorArit();
                 if(tempLeft.size()!=tempRight.size()){
                     entorno.addError(new Token("OPERACION-"+TipoOperacion+" entre vectores", "Los vectores no poseen el mismo tamaño", fila, columna));
-                    return new LinkedList<>();
+                    return new VectorArit();
                 }
                 for(int i=0;i<tempLeft.size();i++){
                     Primitivo pleft = new Primitivo(tempLeft.get(i), Primitivo.getTipoDato(tempLeft.get(i)),fila,columna);
@@ -53,9 +54,9 @@ public class Relacional extends Expresion{
                 }
                 return tempNew;
             }
-            else if(valLeft instanceof LinkedList){
-                LinkedList<Object> temp = (LinkedList)valLeft;
-                LinkedList<Object> tempNew = new LinkedList<>();
+            else if(valLeft instanceof VectorArit){
+                VectorArit temp = (VectorArit)valLeft;
+                VectorArit tempNew = new VectorArit();
                 for(int i = 0; i<temp.size(); i++){
                     Primitivo element = new Primitivo(temp.get(i), Primitivo.getTipoDato(temp.get(i)),fila,columna);
                     Primitivo pright = new Primitivo(valRight, Primitivo.getTipoDato(valRight), fila, columna);
@@ -64,9 +65,9 @@ public class Relacional extends Expresion{
                 }
                 return tempNew;
             }
-            else if(valRight instanceof LinkedList){
-                LinkedList<Object> temp = (LinkedList)valRight;
-                LinkedList<Object> tempNew = new LinkedList<>();
+            else if(valRight instanceof VectorArit){
+                VectorArit temp = (VectorArit)valRight;
+                VectorArit tempNew = new VectorArit();
                 for(int i = 0; i<temp.size(); i++){
                     Primitivo element = new Primitivo(temp.get(i), Primitivo.getTipoDato(temp.get(i)),fila,columna);
                     Primitivo pleft = new Primitivo(valLeft, Primitivo.getTipoDato(valLeft), fila, columna);

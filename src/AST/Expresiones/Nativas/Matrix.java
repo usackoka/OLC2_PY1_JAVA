@@ -13,7 +13,7 @@ import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
-public class Matrix extends Expresion{
+public final class Matrix extends Expresion{
 
     Expresion dataExpresion, filasExpresion, columnasExpresion;
     LinkedList<LinkedList<Object>> data;
@@ -121,8 +121,8 @@ public class Matrix extends Expresion{
         this.data.get(indexFila).set(indexColumna,value);
     }
     
-    public LinkedList<Object> getMapeo(){
-        LinkedList<Object> mapeo = new LinkedList<>();
+    public VectorArit getMapeo(){
+        VectorArit mapeo = new VectorArit();
         int col = getNCol();
         for(int i = 0; i<col; i++){
             for(LinkedList list : this.data){
@@ -161,8 +161,8 @@ public class Matrix extends Expresion{
         //VERIFICAR AQUÍ QUE SEA UN CLON EL QUE ESTOY PASANDO Y NO LA LISTA COMO TAL
         //hago el llenado por columnas
         int element = 0;
-        if(valores instanceof LinkedList){
-            LinkedList<Object> elements = (LinkedList)valores;
+        if(valores instanceof VectorArit){
+            LinkedList<Object> elements = (VectorArit)valores;
             for(int i=0; i<columnas; i++){
                 for (int j = 0; j < filas; j++) {
                     //el index del valor a obtener

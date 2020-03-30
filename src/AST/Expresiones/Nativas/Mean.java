@@ -48,7 +48,7 @@ public class Mean extends Expresion{
         
         //saco la lista de numeros
         LinkedList<Integer> numeros = new LinkedList<>();
-        if(valor instanceof LinkedList){
+        if(valor instanceof VectorArit){
             LinkedList<Object> temp = (LinkedList<Object>)valor;
             temp.forEach((num)->{
                 numeros.add((int)num);

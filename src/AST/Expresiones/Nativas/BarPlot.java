@@ -35,8 +35,8 @@ public class BarPlot extends Sentencia {
         LinkedList<Double> datos = new LinkedList<>();
         Object Odatos = Eh.getValor(entorno);
         //creo el linkedList de double
-        if(Odatos instanceof LinkedList){
-            LinkedList<Object> temp = (LinkedList)Odatos;
+        if(Odatos instanceof VectorArit){
+            LinkedList<Object> temp = (VectorArit)Odatos;
             for(Object element : temp){
                 Object tipo = Primitivo.getTipoDato(element);
                 if(!(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC))){
@@ -66,8 +66,8 @@ public class BarPlot extends Sentencia {
         LinkedList<String> labels = new LinkedList<>();
         Object Olabels = Enames.getValor(entorno);
         //creo el linkedList de string
-        if(Olabels instanceof LinkedList){
-            LinkedList<Object> temp = (LinkedList)Olabels;
+        if(Olabels instanceof VectorArit){
+            LinkedList<Object> temp = (VectorArit)Olabels;
             for(Object element :temp){
                 labels.add(element.toString());
             }

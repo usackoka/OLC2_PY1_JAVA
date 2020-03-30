@@ -34,8 +34,8 @@ public class Length extends Expresion{
                 conteo = conteo * element;
             }
             return conteo;
-        }else if(val instanceof LinkedList){
-            return ((LinkedList)val).size();
+        }else if(val instanceof VectorArit){
+            return ((VectorArit)val).size();
         }else{
             return 1;
         }

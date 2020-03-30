@@ -9,6 +9,7 @@ package AST.Expresiones;
 import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Nativas.Matrix;
+import AST.Expresiones.Nativas.VectorArit;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
@@ -36,9 +37,9 @@ public class Unaria extends Expresion{
         Object tipo = Primitivo.getTipoDato(val);
         
         //========== VALIDO OPERACIONES ENTRE VECTORES
-            if(val instanceof LinkedList){
-                LinkedList<Object> temp = (LinkedList)val;
-                LinkedList<Object> tempNew = new LinkedList<>();
+            if(val instanceof VectorArit){
+                LinkedList<Object> temp = (VectorArit)val;
+                LinkedList<Object> tempNew = new VectorArit();
                 for(int i = 0; i<temp.size(); i++){
                     Primitivo element = new Primitivo(temp.get(i), Primitivo.getTipoDato(temp.get(i)),fila,columna);
                     Unaria operacion = new Unaria(element,TipoOperacion, fila, columna);
