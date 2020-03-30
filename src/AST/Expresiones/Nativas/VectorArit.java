@@ -10,6 +10,7 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.ListArit;
 import AST.Expresiones.Primitivo;
+import Analyzer.Token;
 import java.util.LinkedList;
 
 public class VectorArit extends LinkedList<Object>{
@@ -17,7 +18,21 @@ public class VectorArit extends LinkedList<Object>{
         super();
     }
     
-    public void setValue(Object value){
+    public void setValue(Object value, int index, Entorno entorno, int fila, int columna){
+        index = index-1;
+        if(index<0){
+            entorno.addError(new Token("Vector-Primitivo","IndexOutOfBounds size:"+size()+" index:"+(index+1),fila,columna));
+            return;
+        }
+        
+        //lleno los que faltan
+        if(index>=size()){
+            for (int i = size(); i < index; i++) {
+                add("null");
+            }
+        }
+        
+        add(index, value);
     }
     
     //castear el vector

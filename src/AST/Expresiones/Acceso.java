@@ -10,6 +10,7 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Nativas.Array;
 import AST.Expresiones.Nativas.Matrix;
+import AST.Expresiones.Nativas.VectorArit;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
@@ -133,9 +134,22 @@ public class Acceso extends Expresion{
                     
                 }else if(Osub instanceof Matrix){
                 }else if(Osub instanceof Array){
-                }else if(Osub instanceof LinkedList){
+                }else if(Osub instanceof VectorArit){
+                    if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                        ((VectorArit)Osub).setValue(valor, x, entorno, fila, columna);
+                    }else{
+                        entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a vector con acceso: "+this.tipoAcceso, fila, columna));
+                    }
                 }else{
-                    //valores puntuales
+                    if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                        //valores puntuales
+                        VectorArit vec = new VectorArit();
+                        vec.add(Osub);
+                        vec.setValue(valor, x, entorno, fila, columna);
+                        var.setValue(vec);
+                    }else{
+                        entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a vector con acceso: "+this.tipoAcceso, fila, columna));
+                    }
                 }
             }else{
             }
