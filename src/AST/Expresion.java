@@ -9,7 +9,7 @@ package AST;
 public abstract class Expresion extends Nodo{
     
     public enum TIPO_PRIMITIVO{
-        INTEGER, STRING, DOUBLE, BOOLEAN, VARIABLE, DEFAULT, MATRIX, LIST, ARRAY
+        INTEGER, STRING, NUMERIC, BOOLEAN, VARIABLE, DEFAULT, MATRIX, LIST, ARRAY
     }
     
     public Object TIPO;

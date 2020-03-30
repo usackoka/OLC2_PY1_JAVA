@@ -65,7 +65,7 @@ public class Unaria extends Expresion{
                 {
                     return - Integer.parseInt(val.toString());
                 }
-                else if (tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))
+                else if (tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC))
                 {
                     return - Double.parseDouble(val.toString());
                 }

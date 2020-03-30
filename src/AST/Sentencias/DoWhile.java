@@ -10,6 +10,7 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Nodo;
 import AST.Sentencia;
+import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
@@ -27,8 +28,13 @@ public class DoWhile extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
-        entorno = new Entorno(entorno);
+        
+        //valido la condición
+        boolean valCondicion;
+        Object err;
+        
         do{
+            entorno = new Entorno(entorno);
             for (Nodo nodo : this.instrucciones)
             {
                 if (nodo instanceof Sentencia)
@@ -53,8 +59,21 @@ public class DoWhile extends Sentencia{
                     ((Expresion)nodo).getValor(entorno);
                 }
             }
+            
+            //valido la condicion
+            valCondicion = false;
+            err = this.condicion.getValor(entorno);
+            try {
+                //validacion para cuando viene un vector de varios booleans
+                if(err instanceof LinkedList){
+                    err = ((LinkedList)err).get(0);
+                }
+                valCondicion = (Boolean)err;
+            } catch (Exception e) {
+                entorno.addError(new Token("Condicion-IF","Error al convertir en boolean: "+err.getClass(), fila, columna));
+            }
         }
-        while ((Boolean)this.condicion.getValor(entorno));
+        while (valCondicion);
         
         return null;
     }

@@ -10,7 +10,6 @@ import AST.Entorno;
 import AST.Expresion;
 import AST.Expresiones.Primitivo;
 import AST.Expresiones.ListArit;
-import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
@@ -37,6 +36,12 @@ public class C extends Expresion{
             Object value = expresion.getValor(entorno);
             Object tipoDato = Primitivo.getTipoDato(value);
             tipos.add(tipoDato);
+            if(value instanceof LinkedList){
+                for(Object element : (LinkedList)value){
+                    data.add(element);
+                }
+                continue;
+            }
             data.add(value);
         }
         return castearA(getMAX(entorno,tipos),data);
@@ -50,15 +55,15 @@ public class C extends Expresion{
                 TIPOMAX=tipo;
             }else{
                 if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) | tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) | tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
                         TIPOMAX = tipo;
                     }
                 }
                 else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
                         TIPOMAX = tipo;
                     }
-                }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
+                }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.NUMERIC)){
                     if(tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
                         TIPOMAX = tipo;
                     }
@@ -77,61 +82,37 @@ public class C extends Expresion{
         LinkedList<Object> values = new LinkedList<>();
         
         if(TIPO.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN)){
-            values = data;
+            for(Object element : data){
+                values.add(element);
+            }
         }
         else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
             for(Object element : data){
-                if(element instanceof LinkedList){
-                    LinkedList elementList = (LinkedList)element;
-                    for(Object obj : elementList){
-                        values.add(obj);
-                    }
-                }else{
-                    int value = 0;
-                    try {
-                        value = Integer.parseInt(String.valueOf(element));
-                    } catch (Exception e) {
-                        value = element.toString().toLowerCase().equals("true")?1:0;
-                    }
-                    values.add(value);
+                int value = 0;
+                try {
+                    value = Integer.parseInt(String.valueOf(element));
+                } catch (Exception e) {
+                    value = element.toString().toLowerCase().equals("true")?1:0;
                 }
+                values.add(value);
             }
-        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
+        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.NUMERIC)){
             for(Object element : data){
-                if(element instanceof LinkedList){
-                    LinkedList elementList = (LinkedList)element;
-                    for(Object obj : elementList){
-                        values.add(obj);
-                    }
-                }else{
-                    double value = 0.0;
-                    try {
-                        value = Double.parseDouble(String.valueOf(element));
-                    } catch (Exception e) {
-                        value = element.toString().toLowerCase().equals("true")?1.0:0.0;
-                    }
-                    values.add(value);
+                double value = 0.0;
+                try {
+                    value = Double.parseDouble(String.valueOf(element));
+                } catch (Exception e) {
+                    value = element.toString().toLowerCase().equals("true")?1.0:0.0;
                 }
+                values.add(value);
             }
         }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
             for(Object element : data){
-                if(element instanceof LinkedList){
-                    LinkedList elementList = (LinkedList)element;
-                    for(Object obj : elementList){
-                        values.add(obj);
-                    }
-                }else{
-                    values.add(element.toString());
-                }
+                values.add(element.toString());
             }
         }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.LIST)){
             for(Object element : data){
-                if(element instanceof LinkedList){
-                    LinkedList elementList = (LinkedList)element;
-                    for(Object obj : elementList){
-                        values.add(obj);
-                    }
-                }else if(element instanceof ListArit){
+                if(element instanceof ListArit){
                     ListArit elementList = (ListArit)element;
                     for(Object obj : elementList.getData()){
                         values.add(obj);
@@ -143,6 +124,6 @@ public class C extends Expresion{
             return new ListArit(values);
         }
         
-        return values;
+        return values.size()==1?values.get(0):values;
     }
 }

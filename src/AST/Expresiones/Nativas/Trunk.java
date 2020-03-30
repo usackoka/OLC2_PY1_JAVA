@@ -39,7 +39,7 @@ public class Trunk extends Expresion{
             entorno.addError(new Token("Vector["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede truncar un vector con mas de un valor", fila, columna));
             return defecto;
         }
-        if(!tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE)){
+        if(!tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC)){
             entorno.addError(new Token("Vector["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede realizar Trunk de este tipo de vector", fila, columna));
             return defecto;
         }

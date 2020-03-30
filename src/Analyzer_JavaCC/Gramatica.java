@@ -1732,7 +1732,7 @@ CONSTANTE ::= -----------------------------------------
       break;
     case doble:
       jj_consume_token(doble);
-             {if (true) return new Primitivo(Double.parseDouble(token.image),Expresion.TIPO_PRIMITIVO.DOUBLE,token.beginLine, token.beginColumn);}
+             {if (true) return new Primitivo(Double.parseDouble(token.image),Expresion.TIPO_PRIMITIVO.NUMERIC,token.beginLine, token.beginColumn);}
       break;
     case res_null:
       jj_consume_token(res_null);

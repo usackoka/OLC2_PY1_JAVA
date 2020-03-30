@@ -39,7 +39,7 @@ public class BarPlot extends Sentencia {
             LinkedList<Object> temp = (LinkedList)Odatos;
             for(Object element : temp){
                 Object tipo = Primitivo.getTipoDato(element);
-                if(!(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))){
+                if(!(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC))){
                     entorno.addError(new Token("BarPlot-TipoDeDato Parameter(h)", "Se esperaba un vector int o double, viene: "+tipo, fila, columna));
                     return null;
                 }
@@ -51,7 +51,7 @@ public class BarPlot extends Sentencia {
             }
         }else{
             Object tipo = Primitivo.getTipoDato(Odatos);
-            if(!(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipo.equals(Expresion.TIPO_PRIMITIVO.DOUBLE))){
+            if(!(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) || tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC))){
                 entorno.addError(new Token("BarPlot-TipoDeDato Parameter(h)", "Se esperaba un vector int o double, viene: "+tipo, fila, columna));
                 return null;
             }

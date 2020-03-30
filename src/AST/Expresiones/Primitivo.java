@@ -78,7 +78,7 @@ public final class Primitivo extends Expresion{
         if(obj instanceof String){
             return Expresion.TIPO_PRIMITIVO.STRING;
         }else if(obj instanceof Double){
-            return Expresion.TIPO_PRIMITIVO.DOUBLE;
+            return Expresion.TIPO_PRIMITIVO.NUMERIC;
         }else if(obj instanceof Boolean){
             return Expresion.TIPO_PRIMITIVO.BOOLEAN;
         }else if(obj instanceof Integer){
