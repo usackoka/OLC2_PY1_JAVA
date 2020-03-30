@@ -190,7 +190,7 @@ Sentencia FUNCION() :
      {return new Funcion(t.image,b,c,t.beginLine, t.beginColumn);}
     |LOOKAHEAD(10)<l_parent> (b=LISTA_PARAMETROS())? <r_parent> <igual> <mayor> <l_llave> (c=LISTA_BLOQUES())?  <r_llave>
      {return new Funcion(t.image,b,c,t.beginLine, t.beginColumn);}
-    |LOOKAHEAD(10) bb=E() { return new Declaracion(t.image,bb,t.beginLine,t.beginColumn);}
+    |LOOKAHEAD(10) bb=E()  ((<puntocoma>)?) { return new Declaracion(t.image,bb,t.beginLine,t.beginColumn);}
     )
 }
 
@@ -480,8 +480,9 @@ LinkedList<Nodo>  LISTA_BLOQUES() :
 Nodo  LISTA_BLOQUES_CONJ() :
 {Nodo n1;}
 {
-     (n1=SENTENCIA())  { return n1;} 
-    |(n1=INSTRUCCION()) ((<puntocoma>)?) { return n1;}
+    (n1=SENTENCIA())  { return n1;} 
+    |LOOKAHEAD(3) (n1=INSTRUCCION()) ((<puntocoma>)?) { return n1;}
+    |LOOKAHEAD(3) (n1=FUNCION())  { return n1;} 
 }
 
 
