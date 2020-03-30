@@ -12,7 +12,6 @@ import java.io.StringReader;
 
 /**
  *
- * @author D_ALCAZAR
  */
 public class PrincipaJavaCC {
 
