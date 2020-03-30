@@ -8,6 +8,7 @@ package AST.Sentencias;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.Acceso;
 import AST.Sentencia;
 import GraficasArit.Graph_AST;
 
@@ -24,12 +25,16 @@ public class Modificacion extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        ((Acceso)this.acceso).setValor(entorno,this.expresion.getValor(entorno),true);
+        return null;
     }
 
     @Override
     public int Recorrido(Graph_AST arbol) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int cont_raiz = arbol.getNextContGraph();
+        arbol.addNodoGraph(cont_raiz, "ACCESO");
+        
+        return cont_raiz;
     }
 
 }

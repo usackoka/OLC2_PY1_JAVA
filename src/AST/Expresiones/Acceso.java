@@ -98,7 +98,49 @@ public class Acceso extends Expresion{
                 return 0;
             }
         }
+    }
+    
+    public Object setValor(Entorno entorno, Object valor, boolean first){
+        //empiezo a retornar el valor
+        int x = -1;
+        int y = -1;
+        if(Ex != null){
+            Object Ox = Ex.getValor(entorno);
+            try {
+                x = (int)Ox;
+            } catch (Exception e) {
+                entorno.addError(new Token("Acceso-TipoX","No se puede castear a Entero: "+Ox,fila,columna));
+                return 0;
+            }
+        }
+        if(Ey != null){
+            Object Oy = Ey.getValor(entorno);
+            try {
+                y = (int)Oy;
+            } catch (Exception e) {
+                entorno.addError(new Token("Acceso-TipoY","No se puede castear a Entero: "+Oy,fila,columna));
+                return 0;
+            }
+        }
         
+        Object Osub = this.subAcceso.getValor(entorno);
+        if(Osub instanceof ListArit){
+            
+        }else if(Osub instanceof Matrix){
+        }else if(Osub instanceof Array){
+        }else{
+            //aquí entra linkedList y valores puntuales
+            if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                if(first)
+                    
+                return ((new Primitivo(Osub, Primitivo.getTipoDato(Osub), fila, columna))).getPos(x, entorno);
+            }else{
+                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a vector con acceso: "+this.tipoAcceso, fila, columna));
+                return 0;
+            }
+        }
+        
+        return 0;
     }
     
     @Override
