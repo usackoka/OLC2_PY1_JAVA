@@ -35,15 +35,6 @@ public class Caso extends Sentencia{
                 Object val = ((Sentencia)nodo).ejecutar(entorno);
                 if (val != null)
                 {
-                    //pregunto si es un continue
-                    if (val.equals(Corte.TIPO_CORTE.CONTINUE))
-                    {
-                        break;
-                    }
-                    else if (val.equals(Corte.TIPO_CORTE.BREAK))
-                    {
-                        return Corte.TIPO_CORTE.BREAK;
-                    }
                     return val;
                 }
             }

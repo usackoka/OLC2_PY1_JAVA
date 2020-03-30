@@ -33,6 +33,7 @@ public class VectorArit extends LinkedList<Object>{
         }
         
         add(index, value);
+        castearA(entorno);
     }
     
     //castear el vector

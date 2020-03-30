@@ -158,11 +158,10 @@ public final class Matrix extends Expresion{
             this.data.add(new LinkedList<>());
         }
         
-        //VERIFICAR AQUÍ QUE SEA UN CLON EL QUE ESTOY PASANDO Y NO LA LISTA COMO TAL
         //hago el llenado por columnas
         int element = 0;
         if(valores instanceof VectorArit){
-            LinkedList<Object> elements = (VectorArit)valores;
+            VectorArit elements = (VectorArit)valores;
             for(int i=0; i<columnas; i++){
                 for (int j = 0; j < filas; j++) {
                     //el index del valor a obtener
@@ -193,13 +192,7 @@ public final class Matrix extends Expresion{
     public String toString() {
         String ret = "";
         for(LinkedList<Object> row : this.data){
-            ret += "[";
-            for(Object dato : row){
-                ret += dato+", ";
-            }
-            ret = ret.substring(0, ret.length()-2);
-            ret += "]";
-            ret += "\n";
+            ret += row+"\n";
         }
         return ret;
     }
