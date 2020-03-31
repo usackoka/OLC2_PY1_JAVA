@@ -21,6 +21,9 @@ public class Variable extends Expresion{
         this.columna = columna;
     }
     
+    public Variable(){
+    }
+    
     @Override
     public Object getValor(Entorno entorno) {
         return this.value;

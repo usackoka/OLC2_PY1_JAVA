@@ -56,6 +56,28 @@ public final class ListArit extends Expresion{
     public Object getValor(Entorno entorno) {
         return this;
     }
+    
+    public void setValue(Object valor, int index, Entorno entorno, boolean doble, int fila, int columna){
+        if(valor == null){
+            return;
+        }
+        
+        index = index-1;
+        if(index<0){
+            entorno.addError(new Token("Vector-Primitivo","IndexOutOfBounds size:"+this.data.size()+" index:"+(index+1),fila,columna));
+            return;
+        }
+        
+        //acceso doble, modificación de vector
+        //lleno los que faltan
+        if(index>=this.data.size()){
+            for (int i = this.data.size(); i < index; i++) {
+                this.data.add("null");
+            }
+        }
+
+        this.data.add(index, valor);
+    }
 
     public LinkedList<Object> getData(){
         return this.data;

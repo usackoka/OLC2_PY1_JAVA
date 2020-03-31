@@ -19,6 +19,10 @@ public class VectorArit extends LinkedList<Object>{
     }
     
     public void setValue(Object value, int index, Entorno entorno, int fila, int columna){
+        if(value == null){
+            return;
+        }
+        
         index = index-1;
         if(index<0){
             entorno.addError(new Token("Vector-Primitivo","IndexOutOfBounds size:"+size()+" index:"+(index+1),fila,columna));

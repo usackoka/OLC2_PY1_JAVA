@@ -123,40 +123,51 @@ public class Acceso extends Expresion{
             }
         }
         
+        Object Osub;
+        Variable var = new Variable();
         if(this.subAcceso instanceof Primitivo){
             //lo mas al fondo, variable
-            Variable var = ((Primitivo)this.subAcceso).getVariable(entorno);
-            Object Osub = var.value;
-            
-            if(first){
-                if(Osub instanceof ListArit){
-                    
-                }else if(Osub instanceof Matrix){
-                }else if(Osub instanceof Array){
-                }else if(Osub instanceof VectorArit){
-                    if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
-                        ((VectorArit)Osub).setValue(valor, x, entorno, fila, columna);
-                    }else{
-                        entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a vector con acceso: "+this.tipoAcceso, fila, columna));
-                    }
-                }else{
-                    if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
-                        //valores puntuales
-                        VectorArit vec = new VectorArit();
-                        vec.add(Osub);
-                        vec.setValue(valor, x, entorno, fila, columna);
-                        var.setValue(vec);
-                    }else{
-                        entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a vector con acceso: "+this.tipoAcceso, fila, columna));
-                    }
-                }
-            }else{
-            }
+            var = ((Primitivo)this.subAcceso).getVariable(entorno);
+            Osub = var.value;
         }else{
             //acceso
-            Object Osub = ((Acceso)this.subAcceso).setValor(entorno, null, false);
+            Osub = ((Acceso)this.subAcceso).setValor(entorno, null, false);
         }
         
+        if(Osub instanceof ListArit){
+            if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                ((ListArit)Osub).setValue(valor,x,entorno,false,fila,columna);
+                return Osub;
+            }else if(tipoAcceso.equals(TIPO_ACCESO.DOBLE)){
+                ((ListArit)Osub).setValue(valor,x,entorno,true,fila,columna);
+                return Osub;
+            }else{
+                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a una List con acceso: "+this.tipoAcceso, fila, columna));
+                return 0;
+            }
+        }else if(Osub instanceof Matrix){
+        }else if(Osub instanceof Array){
+        }else if(Osub instanceof VectorArit){
+            if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                ((VectorArit)Osub).setValue(valor, x, entorno, fila, columna);
+                return Osub;
+            }else{
+                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a vector con acceso: "+this.tipoAcceso, fila, columna));
+                return 0;
+            }
+        }else{
+            if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                //valores puntuales
+                VectorArit vec = new VectorArit();
+                vec.add(Osub);
+                vec.setValue(valor, x, entorno, fila, columna);
+                var.setValue(vec);
+                return vec;
+            }else{
+                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a vector con acceso: "+this.tipoAcceso, fila, columna));
+                return 0;
+            }
+        }
         
         return 0;
     }

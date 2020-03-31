@@ -43,6 +43,6 @@ public class Round extends Expresion{
             return defecto;
         }
         
-        return (int)valor;
+        return (valor instanceof Double)?((Double)valor).intValue():(int)valor;
     }
 }
