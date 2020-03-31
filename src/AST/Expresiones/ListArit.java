@@ -70,13 +70,12 @@ public final class ListArit extends Expresion{
         
         //acceso doble, modificación de vector
         //lleno los que faltan
-        if(index>=this.data.size()){
-            for (int i = this.data.size(); i < index; i++) {
-                this.data.add("null");
-            }
+        //lleno los que faltan
+        while(index>data.size()-1){
+           data.add("null");
         }
-
-        this.data.add(index, valor);
+        
+        data.set(index,valor);
     }
 
     public LinkedList<Object> getData(){

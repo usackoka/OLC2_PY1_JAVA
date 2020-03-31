@@ -146,6 +146,7 @@ public class Acceso extends Expresion{
                 return 0;
             }
         }else if(Osub instanceof Matrix){
+            
         }else if(Osub instanceof Array){
         }else if(Osub instanceof VectorArit){
             if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){

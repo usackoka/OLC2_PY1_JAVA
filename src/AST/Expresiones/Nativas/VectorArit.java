@@ -30,13 +30,11 @@ public class VectorArit extends LinkedList<Object>{
         }
         
         //lleno los que faltan
-        if(index>=size()){
-            for (int i = size(); i < index; i++) {
-                add("null");
-            }
+        while(index>size()-1){
+            add("null");
         }
         
-        add(index, value);
+        set(index,value);
         castearA(entorno);
     }
     
