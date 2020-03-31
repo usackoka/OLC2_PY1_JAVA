@@ -25,7 +25,7 @@ public class Modificacion extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
-        ((Acceso)this.acceso).setValor(entorno,this.expresion.getValor(entorno),true);
+        ((Acceso)this.acceso).setValor(entorno,this.expresion.getValor(entorno));
         return null;
     }
 

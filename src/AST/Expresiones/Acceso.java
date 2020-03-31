@@ -106,7 +106,7 @@ public class Acceso extends Expresion{
         }
     }
     
-    public Object setValor(Entorno entorno, Object valor, boolean first){
+    public Object setValor(Entorno entorno, Object valor){
         //empiezo a retornar el valor
         int x = -1;
         int y = -1;
@@ -143,7 +143,7 @@ public class Acceso extends Expresion{
             Osub = var.value;
         }else{
             //acceso
-            Osub = ((Acceso)this.subAcceso).setValor(entorno, null, false);
+            Osub = ((Acceso)this.subAcceso).setValor(entorno, null);
         }
         
         if(Osub instanceof ListArit){
@@ -176,7 +176,8 @@ public class Acceso extends Expresion{
             }
         }else if(Osub instanceof Array){
             if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
-                return ((Array)Osub).subArray(x,entorno,fila,columna);
+                ((Array)Osub).setValor(x,entorno,valor,fila,columna);
+                return Osub;
             }else{
                 entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a un Array con acceso: "+this.tipoAcceso, fila, columna));
                 return 0;
