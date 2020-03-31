@@ -102,7 +102,7 @@ public final class Primitivo extends Expresion{
         }else if(obj instanceof Array){
             return Expresion.TIPO_PRIMITIVO.array;
         }else{
-            return obj;
+            return obj.getClass();
         }
     }
     

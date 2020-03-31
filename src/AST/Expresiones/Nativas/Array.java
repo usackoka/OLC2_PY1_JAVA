@@ -145,8 +145,8 @@ public final class Array extends Expresion{
             return 0;
         }
         
-        if(data.get(x) instanceof VectorArit){
-            return new Array((VectorArit)data.get(x),fila,columna);
+        if(data.get(x) instanceof LinkedList || data.get(x) instanceof VectorArit){
+            return new Array((LinkedList)data.get(x),fila,columna);
         }
         return data.get(x);
     }

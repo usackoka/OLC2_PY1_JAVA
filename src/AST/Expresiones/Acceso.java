@@ -41,6 +41,9 @@ public class Acceso extends Expresion{
         int y = -1;
         if(Ex != null){
             Object Ox = Ex.getValor(entorno);
+            if(Ox instanceof VectorArit){
+                Ox = ((VectorArit)Ox).get(0);
+            }
             try {
                 x = (int)Ox;
             } catch (Exception e) {
@@ -50,6 +53,9 @@ public class Acceso extends Expresion{
         }
         if(Ey != null){
             Object Oy = Ey.getValor(entorno);
+            if(Oy instanceof VectorArit){
+                Oy = ((VectorArit)Oy).get(0);
+            }
             try {
                 y = (int)Oy;
             } catch (Exception e) {
@@ -106,6 +112,9 @@ public class Acceso extends Expresion{
         int y = -1;
         if(Ex != null){
             Object Ox = Ex.getValor(entorno);
+            if(Ox instanceof VectorArit){
+                Ox = ((VectorArit)Ox).get(0);
+            }
             try {
                 x = (int)Ox;
             } catch (Exception e) {
@@ -115,6 +124,9 @@ public class Acceso extends Expresion{
         }
         if(Ey != null){
             Object Oy = Ey.getValor(entorno);
+            if(Oy instanceof VectorArit){
+                Oy = ((VectorArit)Oy).get(0);
+            }
             try {
                 y = (int)Oy;
             } catch (Exception e) {
@@ -163,6 +175,12 @@ public class Acceso extends Expresion{
                 return 0;
             }
         }else if(Osub instanceof Array){
+            if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                return ((Array)Osub).subArray(x,entorno,fila,columna);
+            }else{
+                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a un Array con acceso: "+this.tipoAcceso, fila, columna));
+                return 0;
+            }
         }else if(Osub instanceof VectorArit){
             if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
                 ((VectorArit)Osub).setValue(valor, x, entorno, fila, columna);
@@ -184,8 +202,6 @@ public class Acceso extends Expresion{
                 return 0;
             }
         }
-        
-        return 0;
     }
     
     @Override
