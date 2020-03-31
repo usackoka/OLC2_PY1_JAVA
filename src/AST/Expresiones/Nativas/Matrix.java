@@ -54,7 +54,7 @@ public final class Matrix extends Expresion{
         return this;
     }
     
-    public Object getValorIndex(Integer indexFila, Integer indexColumna, Integer z, Entorno entorno){
+    public Object getValorIndex(Integer indexFila, Integer indexColumna, Integer z, Entorno entorno, int fila, int columna){
         //PREGUNTO EL TIPO DE ACCESO
         if(indexFila==null && indexColumna==null){
             //acceso Z
@@ -123,7 +123,7 @@ public final class Matrix extends Expresion{
     }
     
     //CUANDO SETEO EL VALOR DESDE ACCESOS
-    public void setValor(Integer indexFila, Integer indexColumna, Integer z, Object value, Entorno entorno){
+    public void setValor(Integer indexFila, Integer indexColumna, Integer z, Object value, Entorno entorno, int fila, int columna){
         if(value == null){
             return;
         }
@@ -169,8 +169,11 @@ public final class Matrix extends Expresion{
                         this.data.get(i++).set(indexColumna, element);
                     }
                     return;
+                }else{
+                    for(int i = 0; i<getNRow(); i++){
+                        this.data.get(i).set(indexColumna, value);
+                    }
                 }
-                entorno.addError(new Token("Matrix-setValor(Y)", "Se esperaba un vector o una lista para reemplazar la fila especificada", fila, columna));
             }
         }else if(indexColumna==null){
             //ACCSO X
@@ -202,8 +205,11 @@ public final class Matrix extends Expresion{
                         this.data.get(indexFila).set(i++, element);
                     }
                     return;
+                }else{
+                    for(int i = 0; i<getNCol(); i++){
+                        this.data.get(indexFila).set(i, value);
+                    }
                 }
-                entorno.addError(new Token("Matrix-setValor(X)", "Se esperaba un vector o una lista para reemplazar la fila especificada", fila, columna));
             }
         }else{
             //SI ES ACCESO XY

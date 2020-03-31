@@ -71,13 +71,13 @@ public class Acceso extends Expresion{
             }
         }else if(Osub instanceof Matrix){
             if(tipoAcceso.equals(TIPO_ACCESO.XY)){
-                return ((Matrix)Osub).getValorIndex(x,y,null,entorno);
+                return ((Matrix)Osub).getValorIndex(x,y,null,entorno,fila,columna);
             }else if(tipoAcceso.equals(TIPO_ACCESO.X)){
-                return ((Matrix)Osub).getValorIndex(x,null,null,entorno);
+                return ((Matrix)Osub).getValorIndex(x,null,null,entorno,fila,columna);
             }else if(tipoAcceso.equals(TIPO_ACCESO.Y)){
-                return ((Matrix)Osub).getValorIndex(null,y,null,entorno);
+                return ((Matrix)Osub).getValorIndex(null,y,null,entorno,fila,columna);
             }else if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
-                return ((Matrix)Osub).getValorIndex(null,null,x,entorno);
+                return ((Matrix)Osub).getValorIndex(null,null,x,entorno,fila,columna);
             }else{
                 entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a una Matriz con acceso: "+this.tipoAcceso, fila, columna));
                 return 0;
@@ -147,16 +147,16 @@ public class Acceso extends Expresion{
             }
         }else if(Osub instanceof Matrix){
             if(tipoAcceso.equals(TIPO_ACCESO.XY)){
-                ((Matrix)Osub).setValor(x,y,null,valor,entorno);
+                ((Matrix)Osub).setValor(x,y,null,valor,entorno,fila,columna);
                 return Osub;
             }else if(tipoAcceso.equals(TIPO_ACCESO.X)){
-                ((Matrix)Osub).setValor(x,null,null,valor,entorno);
+                ((Matrix)Osub).setValor(x,null,null,valor,entorno,fila,columna);
                 return Osub;
             }else if(tipoAcceso.equals(TIPO_ACCESO.Y)){
-                ((Matrix)Osub).setValor(null,y,null,valor,entorno);
+                ((Matrix)Osub).setValor(null,y,null,valor,entorno,fila,columna);
                 return Osub;
             }else if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
-                ((Matrix)Osub).setValor(null,null,x,valor,entorno);
+                ((Matrix)Osub).setValor(null,null,x,valor,entorno,fila,columna);
                 return Osub;
             }else{
                 entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a una Matriz con acceso: "+this.tipoAcceso, fila, columna));

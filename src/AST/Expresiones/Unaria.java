@@ -52,7 +52,7 @@ public class Unaria extends Expresion{
                 Matrix tempNew = new Matrix(tempLeft.getNRow(),tempLeft.getNCol());
                 for(int i=0; i<tempLeft.getNRow(); i++){
                     for(int j=0; j<tempLeft.getNCol(); j++){
-                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1, null,entorno), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, null,entorno)),fila,columna);
+                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1, null,entorno,fila,columna), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, null,entorno,fila,columna)),fila,columna);
                         Unaria operacion = new Unaria(pleft,TipoOperacion,fila, columna);
                         tempNew.setValor(i+1,j+1,operacion.getValor(entorno),entorno);
                     }

@@ -12,7 +12,6 @@ import AST.Expresiones.Nativas.Matrix;
 import AST.Expresiones.Nativas.VectorArit;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
-import java.util.LinkedList;
 
 public class Logica extends Expresion{
     Expresion left, right;
@@ -87,8 +86,8 @@ public class Logica extends Expresion{
                 }
                 for(int i=0; i<tempLeft.getNRow(); i++){
                     for(int j=0; j<tempLeft.getNCol(); j++){
-                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1,null, entorno), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, null,entorno)),fila,columna);
-                        Primitivo pright = new Primitivo(tempRight.getValorIndex(i+1, j+1, null,entorno), Primitivo.getTipoDato(tempRight.getValorIndex(i+1, j+1, null,entorno)),fila,columna);
+                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1,null, entorno,fila,columna), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, null,entorno,fila,columna)),fila,columna);
+                        Primitivo pright = new Primitivo(tempRight.getValorIndex(i+1, j+1, null,entorno,fila,columna), Primitivo.getTipoDato(tempRight.getValorIndex(i+1, j+1, null,entorno,fila,columna)),fila,columna);
                         Logica operacion = new Logica(pleft,pright,TipoOperacion,fila, columna);
                         tempNew.setValor(i+1,j+1,operacion.getValor(entorno),entorno);
                     }
@@ -100,7 +99,7 @@ public class Logica extends Expresion{
                 Matrix tempNew = new Matrix(tempLeft.getNRow(),tempLeft.getNCol());
                 for(int i=0; i<tempLeft.getNRow(); i++){
                     for(int j=0; j<tempLeft.getNCol(); j++){
-                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1, null,entorno), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, null,entorno)),fila,columna);
+                        Primitivo pleft = new Primitivo(tempLeft.getValorIndex(i+1, j+1, null,entorno,fila,columna), Primitivo.getTipoDato(tempLeft.getValorIndex(i+1, j+1, null,entorno,fila,columna)),fila,columna);
                         Primitivo pright = new Primitivo(valRight, Primitivo.getTipoDato(valRight),fila,columna);
                         Logica operacion = new Logica(pleft,pright,TipoOperacion,fila, columna);
                         tempNew.setValor(i+1,j+1,operacion.getValor(entorno),entorno);
@@ -114,7 +113,7 @@ public class Logica extends Expresion{
                 for(int i=0; i<tempRight.getNRow(); i++){
                     for(int j=0; j<tempRight.getNCol(); j++){
                         Primitivo pleft = new Primitivo(valLeft, Primitivo.getTipoDato(valLeft),fila,columna);
-                        Primitivo pright = new Primitivo(tempRight.getValorIndex(i+1, j+1, null,entorno), Primitivo.getTipoDato(tempRight.getValorIndex(i+1, j+1,null, entorno)),fila,columna);
+                        Primitivo pright = new Primitivo(tempRight.getValorIndex(i+1, j+1, null,entorno,fila,columna), Primitivo.getTipoDato(tempRight.getValorIndex(i+1, j+1,null, entorno,fila,columna)),fila,columna);
                         Logica operacion = new Logica(pleft,pright,TipoOperacion,fila, columna);
                         tempNew.setValor(i+1,j+1,operacion.getValor(entorno),entorno);
                     }
