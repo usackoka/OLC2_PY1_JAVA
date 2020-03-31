@@ -116,19 +116,25 @@ public final class Array extends Expresion{
         return valoresIngresar.get(cont++);
     }
     
-    public LinkedList<Object> fillData(LinkedList<Object> lista, int indexDim, LinkedList<Integer> dimensiones){
-        int limite = dimensiones.get(indexDim);
-        if(indexDim==0){//ultima iteracion
-            for(int i = 0; i<limite; i++){
-                lista.add(getDato());
+    public LinkedList<Object> fillData(LinkedList<Object> data, int index, LinkedList<Integer> dimensiones){
+        int limite = dimensiones.get(index);
+        if(index>1){
+            for (int i = 0; i < limite; i++) {
+                data.add(fillData(new LinkedList<>(), index-1, dimensiones));
+            }
+        }else if(index==1){
+            for (int i = 0; i < dimensiones.get(0); i++) {
+                data.add(new LinkedList<>());
+            }
+            for (int i = 0; i < limite; i++) {
+                for (int j = 0; j < dimensiones.get(0); j++) {
+                    ((LinkedList)data.get(j)).add(getDato());
+                }
             }
         }else{
-            //debo crear listas
-            for(int i = 0; i<limite; i++){
-                lista.add(fillData(new LinkedList<>(), indexDim-1, dimensiones));
-            }
+            data.add(getDato());
         }
-        return lista;
+        return data;
     }
     
     //=============================== SUB ARRAY =========================
@@ -151,7 +157,23 @@ public final class Array extends Expresion{
 
     @Override
     public String toString() {
-        return this.data.toString();
+        return printArray(data, dimensiones.size()-1, dimensiones).toString();
+    }
+    
+    public Object printArray(LinkedList<Object> lista, int index, LinkedList<Integer> dimensiones){
+        String ret = "";
+        if(index>1){
+            for(Object element :lista){
+                ret += printArray((LinkedList)element, index-1, dimensiones)+"\n";
+            }
+        }else if(index==1){
+            for(Object element : lista){
+                ret += element+"\n";
+            }
+        }else{
+            ret += lista+"\n";
+        }
+        return ret;
     }
 
     @Override
