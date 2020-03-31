@@ -141,28 +141,16 @@ public final class Array extends Expresion{
     }
     
     //=============================== SUB ARRAY =========================
-    public Object subArray(int x, Entorno entorno, int fila, int columna){
-        x = x-1;
-        if(x>=this.data.size() || x<0){
-            entorno.addError(new Token("Array-Acceso","IndexOutOfBounds size:"+data.size()+" index:"+(x+1),fila,columna));
-            return 0;
-        }
-        
-        if(data.get(x) instanceof LinkedList || data.get(x) instanceof VectorArit){
-            return new Array((LinkedList)data.get(x),fila,columna);
-        }
-        return data.get(x);
-    }
-    
     LinkedList<Integer> indexAccesos;
-    public void setValor(int x, Entorno entorno, Object val, int fila, int columna){
-        if(val == null){
-            indexAccesos.add(x);
-            return;
-        }
+    public Object subArray(int x, Entorno entorno, int fila, int columna){
+        int noDimensiones = getNoDimensiones(data, 0);
         indexAccesos.add(x);
+        if(indexAccesos.size()!=noDimensiones){
+            return this;
+        }
         
-        //ya es momento de setear el valor
+        //ya es momento de devolver el valor
+        Object result = 0;
         Object obj = this.data;
         for (int i = this.indexAccesos.size()-1; i >= 0; i--) {
             if(i>1){
@@ -170,7 +158,7 @@ public final class Array extends Expresion{
                 LinkedList<Object> temp = ((LinkedList)obj);
                 if(index>=temp.size() || index<0){
                     entorno.addError(new Token("Array-setValor", "IndexOutOfBounds size: "+temp.size()+" index: "+index, fila, columna));
-                    return;
+                    break;
                 }
                 obj = temp.get(index);
             }
@@ -180,12 +168,62 @@ public final class Array extends Expresion{
                 LinkedList<Object> temp = (LinkedList)obj;
                 if(indexFila>=temp.size() || indexFila<0){
                     entorno.addError(new Token("Array-setValor", "IndexOutOfBounds size: "+temp.size()+" indexFila: "+indexFila, fila, columna));
-                    return;
+                    break;
                 }
                 LinkedList<Object> temp2 = (LinkedList)(temp.get(indexFila));
                 if(indexColumna>=temp2.size() || indexColumna<0){
                     entorno.addError(new Token("Array-setValor", "IndexOutOfBounds size: "+temp.size()+" indexColumna: "+indexColumna, fila, columna));
-                    return;
+                    break;
+                }
+                result = temp2.get(indexColumna);
+                break;
+            }else{
+                int index = this.indexAccesos.get(i)-1;
+                LinkedList<Object> temp = ((LinkedList)obj);
+                if(index>=temp.size() || index<0){
+                    entorno.addError(new Token("Array-setValor", "IndexOutOfBounds size: "+temp.size()+" indexFila: "+index, fila, columna));
+                    break;
+                }
+                result = temp.get(index);
+                break;
+            }
+        }
+        
+        //reincio la lista
+        this.indexAccesos.clear();
+        return result;
+    }
+    
+    public void setValor(int x, Entorno entorno, Object val, int fila, int columna){
+        indexAccesos.add(x);
+        if(val == null){
+            return;
+        }
+        
+        //ya es momento de setear el valor
+        Object obj = this.data;
+        for (int i = this.indexAccesos.size()-1; i >= 0; i--) {
+            if(i>1){
+                int index = this.indexAccesos.get(i)-1;
+                LinkedList<Object> temp = ((LinkedList)obj);
+                if(index>=temp.size() || index<0){
+                    entorno.addError(new Token("Array-setValor", "IndexOutOfBounds size: "+temp.size()+" index: "+index, fila, columna));
+                    break;
+                }
+                obj = temp.get(index);
+            }
+            else if(i==1){
+                int indexColumna = this.indexAccesos.get(1)-1;
+                int indexFila = this.indexAccesos.get(0)-1;
+                LinkedList<Object> temp = (LinkedList)obj;
+                if(indexFila>=temp.size() || indexFila<0){
+                    entorno.addError(new Token("Array-setValor", "IndexOutOfBounds size: "+temp.size()+" indexFila: "+indexFila, fila, columna));
+                    break;
+                }
+                LinkedList<Object> temp2 = (LinkedList)(temp.get(indexFila));
+                if(indexColumna>=temp2.size() || indexColumna<0){
+                    entorno.addError(new Token("Array-setValor", "IndexOutOfBounds size: "+temp.size()+" indexColumna: "+indexColumna, fila, columna));
+                    break;
                 }
                 temp2.set(indexColumna, val);
                 break;
@@ -194,9 +232,10 @@ public final class Array extends Expresion{
                 LinkedList<Object> temp = ((LinkedList)obj);
                 if(index>=temp.size() || index<0){
                     entorno.addError(new Token("Array-setValor", "IndexOutOfBounds size: "+temp.size()+" indexFila: "+index, fila, columna));
-                    return;
+                    break;
                 }
                 temp.set(index, val);
+                break;
             }
         }
         
@@ -206,6 +245,10 @@ public final class Array extends Expresion{
     
     public LinkedList<Object> getData(){
         return this.data;
+    }
+    
+    public int getNoDimensiones(LinkedList data, int conteo){
+        return data.isEmpty()?conteo+1:(data.get(0) instanceof LinkedList)?getNoDimensiones(((LinkedList)data.get(0)), conteo+1):conteo+1;
     }
     
     public LinkedList<Object> getMapeo(){
