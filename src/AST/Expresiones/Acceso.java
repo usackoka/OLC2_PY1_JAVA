@@ -146,7 +146,22 @@ public class Acceso extends Expresion{
                 return 0;
             }
         }else if(Osub instanceof Matrix){
-            
+            if(tipoAcceso.equals(TIPO_ACCESO.XY)){
+                ((Matrix)Osub).setValor(x,y,null,valor,entorno);
+                return Osub;
+            }else if(tipoAcceso.equals(TIPO_ACCESO.X)){
+                ((Matrix)Osub).setValor(x,null,null,valor,entorno);
+                return Osub;
+            }else if(tipoAcceso.equals(TIPO_ACCESO.Y)){
+                ((Matrix)Osub).setValor(null,y,null,valor,entorno);
+                return Osub;
+            }else if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){
+                ((Matrix)Osub).setValor(null,null,x,valor,entorno);
+                return Osub;
+            }else{
+                entorno.addError(new Token("Acceso-No soportado acceso", "Se quizo acceder a una Matriz con acceso: "+this.tipoAcceso, fila, columna));
+                return 0;
+            }
         }else if(Osub instanceof Array){
         }else if(Osub instanceof VectorArit){
             if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){

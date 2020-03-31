@@ -8,6 +8,7 @@ package AST.Expresiones.Nativas;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.ListArit;
 import AST.Expresiones.Primitivo;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
@@ -121,6 +122,106 @@ public final class Matrix extends Expresion{
         this.data.get(indexFila).set(indexColumna,value);
     }
     
+    //CUANDO SETEO EL VALOR DESDE ACCESOS
+    public void setValor(Integer indexFila, Integer indexColumna, Integer z, Object value, Entorno entorno){
+        if(value == null){
+            return;
+        }
+        
+        //PREGUNTO EL TIPO DE ACCESO
+        if(indexFila==null && indexColumna==null){
+            //acceso Z
+            z = z - 1;
+            LinkedList<Object> list = getMapeo();
+            if(z>=list.size() || z<0){
+                entorno.addError(new Token("Matrix-setValor(Z)","IndexOutOfBounds size:"+list.size()+" index:"+(z+1),fila,columna));
+                return;
+            }else{
+                setMapeo(z,value);
+                return;
+            }
+        }else if(indexFila==null){
+            //ACCSO Y
+            indexColumna = indexColumna - 1;
+            if(indexColumna>=getNCol()|| indexColumna<0){
+                entorno.addError(new Token("Matrix-setValor(Y)","IndexOutOfBounds Col size:"+getNCol()+" index:"+(indexColumna+1),fila,columna));
+                return ;
+            }else{
+                //pregunto por la cantidad de valores
+                if(value instanceof VectorArit){
+                    if(((VectorArit)value).size()>getNRow()){
+                        entorno.addError(new Token("Matrix-setValor(Y)","Sizes diferentes-ReemplazarFila Row size:"+getNRow()+" size:"+((VectorArit)value).size(),fila,columna));
+                        return ;
+                    }
+                    //reemplazo los valores
+                    int i = 0;
+                    for(Object element:((VectorArit)value)){
+                        this.data.get(i++).set(indexColumna, element);
+                    }
+                    return;
+                }else if(value instanceof ListArit){
+                    if(((ListArit)value).getData().size()!=getNCol()){
+                        entorno.addError(new Token("Matrix-setValor(Y)","Sizes diferentes-ReemplazarColumna Row size:"+getNRow()+" size:"+((ListArit)value).getData().size(),fila,columna));
+                        return ;
+                    }//reemplazo los valores
+                    int i = 0;
+                    for(Object element:((ListArit)value).getData()){
+                        this.data.get(i++).set(indexColumna, element);
+                    }
+                    return;
+                }
+                entorno.addError(new Token("Matrix-setValor(Y)", "Se esperaba un vector o una lista para reemplazar la fila especificada", fila, columna));
+            }
+        }else if(indexColumna==null){
+            //ACCSO X
+            indexFila = indexFila - 1;
+            if(indexFila>=getNRow() || indexFila<0){
+                entorno.addError(new Token("Matrix-setValor(X)","IndexOutOfBounds Row size:"+getNRow()+" index:"+(indexFila+1),fila,columna));
+                return ;
+            }else{
+                //pregunto por la cantidad de valores
+                if(value instanceof VectorArit){
+                    if(((VectorArit)value).size()>getNCol()){
+                        entorno.addError(new Token("Matrix-setValor(X)","Sizes diferentes-ReemplazarFila Col size:"+getNCol()+" size:"+((VectorArit)value).size(),fila,columna));
+                        return ;
+                    }
+                    //reemplazo los valores
+                    int i = 0;
+                    for(Object element:((VectorArit)value)){
+                        this.data.get(indexFila).set(i++, element);
+                    }
+                    return;
+                }else if(value instanceof ListArit){
+                    if(((ListArit)value).getData().size()!=getNCol()){
+                        entorno.addError(new Token("Matrix-setValor(X)","Sizes diferentes-ReemplazarFila Col size:"+getNCol()+" size:"+((ListArit)value).getData().size(),fila,columna));
+                        return ;
+                    }
+                    //reemplazo los valores
+                    int i = 0;
+                    for(Object element:((ListArit)value).getData()){
+                        this.data.get(indexFila).set(i++, element);
+                    }
+                    return;
+                }
+                entorno.addError(new Token("Matrix-setValor(X)", "Se esperaba un vector o una lista para reemplazar la fila especificada", fila, columna));
+            }
+        }else{
+            //SI ES ACCESO XY
+            indexFila = indexFila - 1;
+            indexColumna = indexColumna - 1;
+            if(indexFila>=getNRow() || indexFila<0){
+                entorno.addError(new Token("Matrix-setValor","IndexOutOfBounds Row size:"+getNRow()+" index:"+(indexFila+1),fila,columna));
+                return;
+            }
+            if(indexColumna>=getNCol()|| indexColumna<0){
+                entorno.addError(new Token("Matrix-setValor","IndexOutOfBounds Col size:"+getNCol()+" index:"+(indexColumna+1),fila,columna));
+                return;
+            }
+
+            this.data.get(indexFila).set(indexColumna,value);
+        }
+    }
+    
     public VectorArit getMapeo(){
         VectorArit mapeo = new VectorArit();
         int col = getNCol();
@@ -131,6 +232,20 @@ public final class Matrix extends Expresion{
         }
         
         return mapeo;
+    }
+    
+    public void setMapeo(int z, Object value){
+        int col = getNCol();
+        int cont = 0;
+        for(int i = 0; i<col; i++){
+            for(LinkedList list : this.data){
+                if(cont==z){
+                    list.set(i, value);
+                    return;
+                }
+                cont++;
+            }
+        }
     }
     
     public void instanciarData(Entorno entorno){
