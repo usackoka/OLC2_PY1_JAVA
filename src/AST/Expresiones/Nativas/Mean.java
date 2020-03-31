@@ -37,11 +37,11 @@ public class Mean extends Expresion{
         Object tipo2 = expresiones.size()==2?Primitivo.getTipoDato(valor2):null;
         
         //hago las validaciones de tipos en los parametros para estar seguro de las conversiones luego :p
-        if(!tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
+        if(!tipo.equals(Expresion.TIPO_PRIMITIVO.integer)){
             entorno.addError(new Token("MEAN"+tipo.toString(),"Se esperaba tipo INT en el primer parametro", fila, columna));
             return defecto;
         }
-        if(tipo2!=null && !tipo2.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
+        if(tipo2!=null && !tipo2.equals(Expresion.TIPO_PRIMITIVO.integer)){
             entorno.addError(new Token("MEAN"+tipo.toString(),"Se esperaba tipo INT en el segundo parametro", fila, columna));
             return defecto;
         }

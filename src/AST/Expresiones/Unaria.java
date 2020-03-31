@@ -62,11 +62,11 @@ public class Unaria extends Expresion{
         
         switch (TipoOperacion) {
             case MENOS:
-                if (tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER))
+                if (tipo.equals(Expresion.TIPO_PRIMITIVO.integer))
                 {
                     return - Integer.parseInt(val.toString());
                 }
-                else if (tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC))
+                else if (tipo.equals(Expresion.TIPO_PRIMITIVO.numeric))
                 {
                     return - Double.parseDouble(val.toString());
                 }

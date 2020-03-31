@@ -106,7 +106,7 @@ public class Entorno {
             if (this.padre == null)
             {
                 addError(new Token(id, "No se encontró la variable: " + id + " en ningún ambito (getTipoVariable)", fila, columna));
-                return Expresion.TIPO_PRIMITIVO.STRING;
+                return Expresion.TIPO_PRIMITIVO.string;
             }
             else
             {
@@ -146,7 +146,7 @@ public class Entorno {
             if (this.padre == null)
             {
                 addError(new Token(id, "No se encontró la variable: " + id + " en ningún ambito (getVariable)", fila, columna));
-                return new Variable("", Expresion.TIPO_PRIMITIVO.STRING, fila, columna);
+                return new Variable("", Expresion.TIPO_PRIMITIVO.string, fila, columna);
             }
             else
             {

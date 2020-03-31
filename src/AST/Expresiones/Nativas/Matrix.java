@@ -140,11 +140,11 @@ public final class Matrix extends Expresion{
         Object valorColumnas = columnasExpresion.getValor(entorno);
         Object tipoColumnas = Primitivo.getTipoDato(valorColumnas);
         
-        if(!tipoFilas.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
+        if(!tipoFilas.equals(Expresion.TIPO_PRIMITIVO.integer)){
             entorno.addError(new Token("Vector["+tipoFilas+"]", "No se puede utilizar como Expresion de Filas este tipo de vector", fila, columna));
             return;
         }
-        if(!tipoColumnas.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
+        if(!tipoColumnas.equals(Expresion.TIPO_PRIMITIVO.integer)){
             entorno.addError(new Token("Vector["+tipoColumnas+"]", "No se puede utilizar como Expresion de Columnas este tipo de vector", fila, columna));
             return;
         }

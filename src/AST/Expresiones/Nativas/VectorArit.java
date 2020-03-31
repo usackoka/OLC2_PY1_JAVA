@@ -48,7 +48,7 @@ public class VectorArit extends LinkedList<Object>{
                 this.add(element);
             }
         }
-        else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
+        else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.integer)){
             for(Object element : temp){
                 int value = 0;
                 try {
@@ -58,7 +58,7 @@ public class VectorArit extends LinkedList<Object>{
                 }
                 this.add(value);
             }
-        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.NUMERIC)){
+        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.numeric)){
             for(Object element : temp){
                 double value = 0.0;
                 try {
@@ -68,11 +68,11 @@ public class VectorArit extends LinkedList<Object>{
                 }
                 this.add(value);
             }
-        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
+        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.string)){
             for(Object element : temp){
                 this.add(element.toString());
             }
-        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.LIST)){
+        }else if(TIPO.equals(Expresion.TIPO_PRIMITIVO.list)){
             for(Object element : temp){
                 if(element instanceof ListArit){
                     ListArit elementList = (ListArit)element;
@@ -98,20 +98,20 @@ public class VectorArit extends LinkedList<Object>{
                 TIPOMAX=tipo;
             }else{
                 if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.BOOLEAN)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.INTEGER) | tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.integer) | tipo.equals(Expresion.TIPO_PRIMITIVO.numeric)|tipo.equals(Expresion.TIPO_PRIMITIVO.string)|tipo.equals(Expresion.TIPO_PRIMITIVO.list)){
                         TIPOMAX = tipo;
                     }
                 }
-                else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.INTEGER)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC)|tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
+                else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.integer)){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.numeric)|tipo.equals(Expresion.TIPO_PRIMITIVO.string)|tipo.equals(Expresion.TIPO_PRIMITIVO.list)){
                         TIPOMAX = tipo;
                     }
-                }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.NUMERIC)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.STRING)|tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
+                }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.numeric)){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.string)|tipo.equals(Expresion.TIPO_PRIMITIVO.list)){
                         TIPOMAX = tipo;
                     }
-                }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.STRING)){
-                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.LIST)){
+                }else if(TIPOMAX.equals(Expresion.TIPO_PRIMITIVO.string)){
+                    if(tipo.equals(Expresion.TIPO_PRIMITIVO.list)){
                         TIPOMAX = tipo;
                     }
                 }

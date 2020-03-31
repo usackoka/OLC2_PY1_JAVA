@@ -154,6 +154,22 @@ public final class Array extends Expresion{
     public LinkedList<Object> getData(){
         return this.data;
     }
+    
+    public LinkedList<Object> getMapeo(){
+        return getMapeo(this.data);
+    }
+    
+    public LinkedList<Object> getMapeo(LinkedList<Object> data){
+        LinkedList map = new LinkedList();
+        for(Object element:data){
+            if(element instanceof LinkedList){
+                map.addAll(getMapeo((LinkedList)element));
+            }else{
+                map.add(element);
+            }
+        }
+        return map;
+    }
 
     @Override
     public String toString() {

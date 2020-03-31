@@ -2295,7 +2295,7 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-        RESULT = new Primitivo(Integer.parseInt(a),Expresion.TIPO_PRIMITIVO.INTEGER,aleft+1,aright+1);
+        RESULT = new Primitivo(Integer.parseInt(a),Expresion.TIPO_PRIMITIVO.integer,aleft+1,aright+1);
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CONSTANTE",9, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2337,7 +2337,7 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-        RESULT = new Primitivo(Double.parseDouble(a),Expresion.TIPO_PRIMITIVO.NUMERIC,aleft+1,aright+1);
+        RESULT = new Primitivo(Double.parseDouble(a),Expresion.TIPO_PRIMITIVO.numeric,aleft+1,aright+1);
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CONSTANTE",9, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2351,7 +2351,7 @@ class CUP$parser$actions {
 		int aright = ((java_cup.runtime.Symbol)CUP$parser$stack.peek()).right;
 		String a = (String)((java_cup.runtime.Symbol) CUP$parser$stack.peek()).value;
 		
-        RESULT = new Primitivo("null",Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
+        RESULT = new Primitivo("null",Expresion.TIPO_PRIMITIVO.string,aleft+1,aright+1);
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CONSTANTE",9, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }
@@ -2367,7 +2367,7 @@ class CUP$parser$actions {
 		
         String cad = a.substring(1,a.length());
         cad = cad.substring(0,cad.length()-1);
-        RESULT = new Primitivo(cad,Expresion.TIPO_PRIMITIVO.STRING,aleft+1,aright+1);
+        RESULT = new Primitivo(cad,Expresion.TIPO_PRIMITIVO.string,aleft+1,aright+1);
     
               CUP$parser$result = parser.getSymbolFactory().newSymbol("CONSTANTE",9, ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$parser$stack.peek()), RESULT);
             }

@@ -1729,7 +1729,7 @@ CONSTANTE ::= -----------------------------------------
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case numero:
       jj_consume_token(numero);
-             {if (true) return new Primitivo(Integer.parseInt(token.image),Expresion.TIPO_PRIMITIVO.INTEGER,token.beginLine, token.beginColumn);}
+             {if (true) return new Primitivo(Integer.parseInt(token.image),Expresion.TIPO_PRIMITIVO.integer,token.beginLine, token.beginColumn);}
       break;
     case res_true:
       jj_consume_token(res_true);
@@ -1741,18 +1741,18 @@ CONSTANTE ::= -----------------------------------------
       break;
     case doble:
       jj_consume_token(doble);
-             {if (true) return new Primitivo(Double.parseDouble(token.image),Expresion.TIPO_PRIMITIVO.NUMERIC,token.beginLine, token.beginColumn);}
+             {if (true) return new Primitivo(Double.parseDouble(token.image),Expresion.TIPO_PRIMITIVO.numeric,token.beginLine, token.beginColumn);}
       break;
     case res_null:
       jj_consume_token(res_null);
-                {if (true) return new Primitivo("null",Expresion.TIPO_PRIMITIVO.STRING,token.beginLine, token.beginColumn);}
+                {if (true) return new Primitivo("null",Expresion.TIPO_PRIMITIVO.string,token.beginLine, token.beginColumn);}
       break;
     case cadena:
       jj_consume_token(cadena);
                a = String.valueOf(token.image);
               cad = a.substring(1,a.length());
               cad = cad.substring(0,cad.length()-1);
-              {if (true) return new Primitivo(cad,Expresion.TIPO_PRIMITIVO.STRING,token.beginLine, token.beginColumn);}
+              {if (true) return new Primitivo(cad,Expresion.TIPO_PRIMITIVO.string,token.beginLine, token.beginColumn);}
       break;
     default:
       jj_la1[42] = jj_gen;

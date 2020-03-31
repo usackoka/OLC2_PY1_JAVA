@@ -38,7 +38,7 @@ public class For extends Sentencia{
         for (Object value : valores)
         {
             //declaro la variable
-            (new Declaracion(id, value, false, fila, columna)).ejecutar(entorno);
+            (new Declaracion(id, value, true, fila, columna)).ejecutar(entorno);
             for (Nodo nodo : this.instrucciones)
             {
                 if (nodo instanceof Sentencia)
@@ -69,7 +69,7 @@ public class For extends Sentencia{
         }else if(val instanceof Matrix){
             return ((Matrix)val).getMapeo();
         }else if(val instanceof Array){
-            return ((Array)val).getData();
+            return ((Array)val).getMapeo();
         }else{
             ret.add(val);
         }

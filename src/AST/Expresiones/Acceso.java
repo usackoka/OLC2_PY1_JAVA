@@ -58,7 +58,6 @@ public class Acceso extends Expresion{
             }
         }
         
-        
         Object Osub = this.subAcceso.getValor(entorno);
         if(Osub instanceof ListArit){
             if(tipoAcceso.equals(TIPO_ACCESO.SIMPLE)){

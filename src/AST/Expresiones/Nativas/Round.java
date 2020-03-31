@@ -38,7 +38,7 @@ public class Round extends Expresion{
             entorno.addError(new Token("Vector["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede hacer ROUND un vector con mas de un valor", fila, columna));
             return defecto;
         }
-        if(!tipo.equals(Expresion.TIPO_PRIMITIVO.NUMERIC)){
+        if(!tipo.equals(Expresion.TIPO_PRIMITIVO.numeric)){
             entorno.addError(new Token("Vector["+tipo+"]:"+((LinkedList<Object>)valor).size(), "No se puede hacer ROUND de este tipo de vector", fila, columna));
             return defecto;
         }

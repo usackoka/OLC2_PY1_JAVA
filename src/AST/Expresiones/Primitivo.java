@@ -27,7 +27,7 @@ public final class Primitivo extends Expresion{
         if(value instanceof VectorArit){
             this.values = (VectorArit)value;
         }else{
-            if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.STRING)){
+            if(this.TIPO.equals(Expresion.TIPO_PRIMITIVO.string)){
                 value = getEscapes(value.toString());
             }
             this.values.add(value);
@@ -86,21 +86,21 @@ public final class Primitivo extends Expresion{
     
     public static Object getTipoDato(Object obj){
         if(obj instanceof String){
-            return Expresion.TIPO_PRIMITIVO.STRING;
+            return Expresion.TIPO_PRIMITIVO.string;
         }else if(obj instanceof Double){
-            return Expresion.TIPO_PRIMITIVO.NUMERIC;
+            return Expresion.TIPO_PRIMITIVO.numeric;
         }else if(obj instanceof Boolean){
             return Expresion.TIPO_PRIMITIVO.BOOLEAN;
         }else if(obj instanceof Integer){
-            return Expresion.TIPO_PRIMITIVO.INTEGER;
+            return Expresion.TIPO_PRIMITIVO.integer;
         }else if(obj instanceof VectorArit){
             return getTipoDato(((VectorArit)obj).get(0));
         }else if(obj instanceof Matrix){
-            return Expresion.TIPO_PRIMITIVO.MATRIX;
+            return Expresion.TIPO_PRIMITIVO.matrix;
         }else if(obj instanceof ListArit){
-            return Expresion.TIPO_PRIMITIVO.LIST;
+            return Expresion.TIPO_PRIMITIVO.list;
         }else if(obj instanceof Array){
-            return Expresion.TIPO_PRIMITIVO.ARRAY;
+            return Expresion.TIPO_PRIMITIVO.array;
         }else{
             return obj;
         }

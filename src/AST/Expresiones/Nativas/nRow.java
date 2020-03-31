@@ -33,7 +33,7 @@ public class nRow extends Expresion{
         Object valor = expresion.getValor(entorno);
         Object tipo = Primitivo.getTipoDato(valor);
 
-        if(!tipo.equals(Expresion.TIPO_PRIMITIVO.MATRIX)){
+        if(!tipo.equals(Expresion.TIPO_PRIMITIVO.matrix)){
             entorno.addError(new Token("Found: "+tipo, "No se puede realizar nRow de este tipo de dato", fila, columna));
             return 0;
         }
