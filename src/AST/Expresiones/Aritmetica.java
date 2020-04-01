@@ -136,7 +136,8 @@ public class Aritmetica extends Expresion{
                     }
                     else if ((valLeft instanceof Integer) && (valRight instanceof Integer))
                     {
-                        return Integer.parseInt(String.valueOf(valLeft)) + Integer.parseInt(String.valueOf(valRight));
+                        Object val = Integer.parseInt(String.valueOf(valLeft)) + Integer.parseInt(String.valueOf(valRight));
+                        return Integer.parseInt(String.valueOf(val));
                     }
                 case MENOS:
                     if (valLeft instanceof Double || valRight instanceof Double)
@@ -146,8 +147,8 @@ public class Aritmetica extends Expresion{
                     }
                     else if (valLeft instanceof Integer && valRight instanceof Integer)
                     {
-                        Object value = Integer.parseInt(String.valueOf(valLeft)) - Integer.parseInt(String.valueOf(valRight));
-                        return value;
+                        Object val = Integer.parseInt(String.valueOf(valLeft)) - Integer.parseInt(String.valueOf(valRight));
+                        return Integer.parseInt(String.valueOf(val));
                     }
                 case POR:
                     if (valLeft instanceof Double || valRight instanceof Double)
@@ -156,7 +157,8 @@ public class Aritmetica extends Expresion{
                     }
                     else if (valLeft instanceof Integer && valRight instanceof Integer)
                     {
-                        return Integer.parseInt(String.valueOf(valLeft)) * Integer.parseInt(String.valueOf(valRight));
+                        Object val = Integer.parseInt(String.valueOf(valLeft)) * Integer.parseInt(String.valueOf(valRight));
+                        return Integer.parseInt(String.valueOf(val));
                     }
                 case MOD:
                     if (valLeft instanceof Double || valRight instanceof Double)
@@ -174,16 +176,17 @@ public class Aritmetica extends Expresion{
                     }
                     else if (valLeft instanceof Integer && valRight instanceof Integer)
                     {
-                        return Integer.parseInt(String.valueOf(valLeft)) / Integer.parseInt(String.valueOf(valRight));
+                        Object val = Integer.parseInt(String.valueOf(valLeft)) / Integer.parseInt(String.valueOf(valRight));
+                        return Integer.parseInt(String.valueOf(val));
                     }
                 case POT:
                     if (valLeft instanceof Double || valRight instanceof Double)
                     {
                         return Math.pow(Double.parseDouble(String.valueOf(valLeft)), Double.parseDouble(String.valueOf(valRight)));
                     }
-                    else if (valLeft instanceof Integer || valRight instanceof Integer)
+                    else if (valLeft instanceof Integer && valRight instanceof Integer)
                     {
-                        return (int)Math.pow(Integer.parseInt(String.valueOf(valLeft)), Integer.parseInt(String.valueOf(valRight)));
+                        return Math.pow(Integer.parseInt(String.valueOf(valLeft)), Integer.parseInt(String.valueOf(valRight)));
                     }
             }
         } catch (Exception e) {

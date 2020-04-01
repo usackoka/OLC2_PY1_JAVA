@@ -129,4 +129,16 @@ public class VectorArit extends LinkedList<Object>{
         }
         return tipos;
     }
+
+    @Override
+    public String toString() {
+        int i = 1;
+        String res = "";
+        for (Object element : this) {
+            res+="["+i+"] "+element+"\n";
+        }
+        return res;
+    }
+    
+    
 }
