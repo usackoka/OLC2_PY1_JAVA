@@ -18,6 +18,12 @@ public class VectorArit extends LinkedList<Object>{
         super();
     }
     
+    public VectorArit getClone(){
+        VectorArit vec = new VectorArit();
+        vec.addAll(this);
+        return vec;
+    }
+    
     public void setValue(Object value, int index, Entorno entorno, int fila, int columna){
         if(value == null){
             return;

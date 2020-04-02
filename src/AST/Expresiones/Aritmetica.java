@@ -186,7 +186,7 @@ public class Aritmetica extends Expresion{
                     }
                     else if (valLeft instanceof Integer && valRight instanceof Integer)
                     {
-                        return Math.pow(Integer.parseInt(String.valueOf(valLeft)), Integer.parseInt(String.valueOf(valRight)));
+                        return (int)Math.pow(Integer.parseInt(String.valueOf(valLeft)), Integer.parseInt(String.valueOf(valRight)));
                     }
             }
         } catch (Exception e) {

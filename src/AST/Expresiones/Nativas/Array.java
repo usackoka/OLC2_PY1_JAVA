@@ -53,6 +53,12 @@ public final class Array extends Expresion{
         this.columna =columna;
     }
     
+    public Array getClone(){
+        Array array = new Array();
+        array.data.add(this.data);
+        return array;
+    }
+    
     @Override
     public Object getValor(Entorno entorno) {
         return this;

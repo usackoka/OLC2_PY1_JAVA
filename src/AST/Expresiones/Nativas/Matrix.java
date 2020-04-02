@@ -14,7 +14,7 @@ import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
 
-public final class Matrix extends Expresion{
+public final class Matrix extends Expresion implements Cloneable{
 
     Expresion dataExpresion, filasExpresion, columnasExpresion;
     LinkedList<LinkedList<Object>> data;
@@ -47,6 +47,17 @@ public final class Matrix extends Expresion{
                 this.data.get(i).add(0);
             }
         }
+    }
+    
+    public Matrix getClone(){
+        Matrix x = new Matrix();
+        for(Object row:this.data){
+            x.data.add(new LinkedList<>());
+            for(Object column:((LinkedList)row)){
+                x.data.get(x.data.size()-1).add(column);
+            }
+        }
+        return x;
     }
     
     @Override

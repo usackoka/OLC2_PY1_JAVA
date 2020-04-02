@@ -8,6 +8,10 @@ package AST.Sentencias;
 
 import AST.Entorno;
 import AST.Expresion;
+import AST.Expresiones.ListArit;
+import AST.Expresiones.Nativas.Array;
+import AST.Expresiones.Nativas.Matrix;
+import AST.Expresiones.Nativas.VectorArit;
 import AST.Expresiones.Parametro;
 import AST.Expresiones.Primitivo;
 import AST.Nodo;
@@ -46,7 +50,6 @@ public class Funcion extends Sentencia{
     
     @Override
     public Object ejecutar(Entorno entorno) {
-
         //para cuando hago una llamada global que no se pierda el padre
         entorno = new Entorno(entorno.getEntornoGlobal());
         
@@ -81,6 +84,7 @@ public class Funcion extends Sentencia{
         
         for(Parametro parametro : parametros){
             Object value = valoresParametros.get(i++);
+            value = getValorObject(value);
             //si mandan un default
             if(value.equals(Expresion.TIPO_PRIMITIVO.DEFAULT)){
                 //preegunto si hay un valor por defecto
@@ -100,6 +104,19 @@ public class Funcion extends Sentencia{
             return 1;
         }
         return this.parametros.size();
+    }
+    
+    public Object getValorObject(Object value){
+        if(value instanceof VectorArit){
+            value = ((VectorArit)value).getClone();
+        }else if(value instanceof ListArit){
+            value = ((ListArit)value).getClone();
+        }else if(value instanceof Matrix){
+            value = ((Matrix)value).getClone();
+        }else if(value instanceof Array){
+            value = ((Array)value).getClone();
+        }
+        return value;
     }
     
     @Override

@@ -82,6 +82,12 @@ public final class ListArit extends Expresion{
         return this.data;
     }
     
+    public ListArit getClone(){
+        ListArit list = new ListArit();
+        list.data.addAll(this.data);
+        return list;
+    }
+    
     @Override
     public String toString() {
         String ret = "";
