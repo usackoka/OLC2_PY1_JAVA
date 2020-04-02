@@ -54,9 +54,7 @@ public final class Array extends Expresion{
     }
     
     public Array getClone(){
-        Array array = new Array();
-        array.data.add(this.data);
-        return array;
+        return this;
     }
     
     @Override

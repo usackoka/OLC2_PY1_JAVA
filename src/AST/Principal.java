@@ -9,6 +9,7 @@ import AST.Sentencias.Funcion;
 import Analyzer.Token;
 import GraficasArit.Graph_AST;
 import java.util.LinkedList;
+import java.util.Set;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.table.DefaultTableModel;
@@ -78,9 +79,25 @@ public class Principal extends Thread{
         dtmErrores.addRow(newRow);
     }
     
+    public void cargarTablaSimbolos(){
+        //cargo las funciones
+        Set<String> keys = entorno.funciones.keySet();
+        for(String key:keys){
+            Object[] newRow ={key, "Funcion", "---", "Global", entorno.funciones.get(key).fila, entorno.funciones.get(key).columna};
+            dtmDebugger.addRow(newRow);
+        }
+        //cargo las variables globales que quedaron
+        keys = entorno.tbs.keySet();
+        for(String key:keys){
+            Object[] newRow ={key, "Variable - "+ entorno.tbs.get(key).TIPO, entorno.tbs.get(key).getValor(entorno), "Global", entorno.tbs.get(key).fila, entorno.tbs.get(key).columna};
+            dtmDebugger.addRow(newRow);
+        }
+        
+    }
+    
     private void inicializarTablas(){
         Object[][] data = {{null,null,null,null,null,null}};
-        String[] columnNames2 = {"Lexema","Tipo","Valor","Ambito","Columna","Fila"};
+        String[] columnNames2 = {"Lexema","Tipo","Valor","Ambito","Fila","Columna"};
         dtmDebugger = new DefaultTableModel(data, columnNames2);
         tablaDebugger.setModel(dtmDebugger);
         

@@ -12,7 +12,6 @@ import javax.swing.*;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.DefaultTableModel;
 import java.awt.Image;
-import java.net.URISyntaxException;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.*;
@@ -37,26 +36,6 @@ public class GUI_Principal extends javax.swing.JFrame{
         inicializarTablas();
         
     }
-    
-    public void restartApplication() throws URISyntaxException, IOException 
-    { 
-        final String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java"; 
-        final File currentJar = new File(GUI_Principal.class.getProtectionDomain().getCodeSource().getLocation().toURI()); 
-
-        /* is it a jar file? */ 
-        if(!currentJar.getName().endsWith(".jar")) 
-        return; 
-
-        /* Build command: java -jar application.jar */ 
-        final ArrayList<String> command = new ArrayList<>(); 
-        command.add(javaBin); 
-        command.add("-jar"); 
-        command.add(currentJar.getPath()); 
-
-        final ProcessBuilder builder = new ProcessBuilder(command); 
-        builder.start(); 
-        System.exit(0); 
-    } 
     
     private void cargarImagen(String ruta, JLabel lbl2){
         //eventos para el debbugger
@@ -137,6 +116,7 @@ public class GUI_Principal extends javax.swing.JFrame{
         jMenu3 = new javax.swing.JMenu();
         jMenuItem10 = new javax.swing.JMenuItem();
         jMenuItem11 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
 
         jMenu4.setText("jMenu4");
 
@@ -330,6 +310,14 @@ public class GUI_Principal extends javax.swing.JFrame{
             }
         });
         jMenu3.add(jMenuItem11);
+
+        jMenuItem7.setText("Tabla de Símbolos");
+        jMenuItem7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem7ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem7);
 
         jMenuBar1.add(jMenu3);
 
@@ -579,6 +567,15 @@ public class GUI_Principal extends javax.swing.JFrame{
         GraficarArbolCUP();
     }//GEN-LAST:event_jButton5ActionPerformed
 
+    private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
+        // TODO add your handling code here:
+        if(this.principal==null){
+            System.out.println("Nada para analizar");
+        }
+        cargarTablaDeSimbolos();
+        this.tabPaneTablas.setSelectedIndex(1);
+    }//GEN-LAST:event_jMenuItem7ActionPerformed
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -636,6 +633,7 @@ public class GUI_Principal extends javax.swing.JFrame{
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -652,6 +650,10 @@ public class GUI_Principal extends javax.swing.JFrame{
     public static javax.swing.JTextField txtReemplazar;
     // End of variables declaration//GEN-END:variables
 
+    private void cargarTablaDeSimbolos(){
+        principal.cargarTablaSimbolos();
+    }
+    
     private void GuardarPag2(Pagina pag) {
           FileWriter fichero = null;
         PrintWriter pw = null;
