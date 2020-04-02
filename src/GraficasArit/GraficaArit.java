@@ -5,9 +5,7 @@
  */
 package GraficasArit;
 
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGEncodeParam;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
 import java.awt.Desktop;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -16,7 +14,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 
 public abstract class GraficaArit {
@@ -36,15 +36,26 @@ public abstract class GraficaArit {
     
     public static void saveToFile(JFreeChart chart, String aFileName, int width, int height,double quality) throws FileNotFoundException, IOException
     {
-        BufferedImage img = draw( chart, width, height );
-        FileOutputStream fos = new FileOutputStream("Graficas\\"+aFileName);
-        JPEGImageEncoder encoder2 = JPEGCodec.createJPEGEncoder(fos);
-        JPEGEncodeParam param2 = encoder2.getDefaultJPEGEncodeParam(img);
-        param2.setQuality((float) quality, true);
-        encoder2.encode(img,param2);
-        fos.close();
-        
-        Desktop.getDesktop().open(new File("Graficas\\"+aFileName));
+//        BufferedImage img = draw( chart, width, height );
+//        FileOutputStream fos = new FileOutputStream("Graficas\\"+aFileName);
+//        JPEGImageEncoder encoder2 = JPEGCodec.createJPEGEncoder(fos);
+//        JPEGEncodeParam param2 = encoder2.getDefaultJPEGEncodeParam(img);
+//        param2.setQuality((float) quality, true);
+//        encoder2.encode(img,param2);
+//        fos.close();
+//        
+               try {
+
+        OutputStream out = new FileOutputStream("Graficas\\"+aFileName);
+        ChartUtilities.writeChartAsPNG(out,
+                chart,
+               1500,
+                900);
+          Desktop.getDesktop().open(new File("Graficas\\"+aFileName));
+        } catch (IOException ex) {
+            System.out.println("Error Al convertirn Jfrechart en imagen");
+            System.out.println(ex.getStackTrace());
+        }
     }    
 
     protected static BufferedImage draw(JFreeChart chart, int width, int height)
